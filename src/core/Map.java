@@ -1,3 +1,6 @@
+/**
+ * Map of the game, where tokens are placed and laser(s) pass.
+ */
 package core;
 
 import tokens.Token;

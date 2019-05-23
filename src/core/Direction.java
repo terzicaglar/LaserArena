@@ -1,3 +1,6 @@
+/**
+ * Direction enum which contains four main directions
+ */
 package core;
 
 public enum Direction {

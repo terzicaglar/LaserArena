@@ -1,3 +1,7 @@
+/**
+ * Laser Beam created by a Creator Token. It moves in a straight line until it hits a token. That token will determine the following state of the beam.
+ */
+
 package core;
 import java.awt.Point;
 import java.util.ArrayList;

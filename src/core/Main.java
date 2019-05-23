@@ -1,3 +1,6 @@
+/**
+ * Main class, which runs the game.
+ */
 package core;
 
 import java.awt.Color;
@@ -19,7 +22,7 @@ public class Main {
 		//Boolean b1 = new Boolean();
 		double d = 10;
 		m = new Map(width, height);
-		lb = new LaserBeam(m, new Point(2, 3), Direction.SOUTH);
+		lb = new LaserBeam(new Point(2, 3), Direction.SOUTH);
 		panels = new ArenaPanel[width][height];
 		JFrame f = new JFrame("Laser Arena");
 		

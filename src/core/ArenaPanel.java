@@ -1,3 +1,6 @@
+/**
+ * JPanel where Map, Tokens and Laser Beam(s) are shown.
+ */
 package core;
 
 import java.awt.FontMetrics;

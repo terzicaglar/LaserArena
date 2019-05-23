@@ -1,3 +1,7 @@
+/**
+ * Interface for Tokens that can create new Laser Beams.
+ * Applicable Tokens: Green, Red
+ */
 package interfaces;
 
 import core.Direction;

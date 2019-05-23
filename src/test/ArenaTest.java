@@ -1,3 +1,6 @@
+/**
+ * Test class for LaserArena Game
+ */
 package test;
 
 import org.junit.jupiter.api.Test;

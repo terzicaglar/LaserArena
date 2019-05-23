@@ -1,6 +1,7 @@
 package interfaces;
 /**
- * Interface for Tokens that have reflecting capability, i.e., Blue Mirror, Green Mirror, and Purple Target
+ * Interface for Tokens that have reflecting capability.
+ * Applicable Tokens: Blue Mirror, Green Mirror, and Purple Target
  */
 
 import core.*;
