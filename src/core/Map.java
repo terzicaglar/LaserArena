@@ -1,21 +1,21 @@
 package core;
 
-import shapes.Shape;
+import tokens.Token;
 
 public class Map{
 	private int width, height;
-	private Shape[][] shapes;
+	private static Token[][] tokens;
 	
 	public Map(int width, int height)
 	{
 		this.setWidth(width);
 		this.setWidth(height);
-		shapes = new Shape[width][height];
+		tokens = new Token[width][height];
 	}
 	
-	public Shape getShapeLocatedInXY(int x, int y)
+	public static Token getShapeLocatedInXY(int x, int y)
 	{
-		return shapes[x][y];
+		return tokens[x][y];
 	}
 
 	public int getWidth() {

@@ -1,10 +1,10 @@
-package shapes;
+package tokens;
 import java.awt.Point;
 
 import core.Direction;
 
 
-public class Shape {
+public class Token {
 
 	Direction direction;
 	int noOfDirections;

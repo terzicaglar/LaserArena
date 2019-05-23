@@ -2,22 +2,20 @@ package core;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import shapes.Shape;
+import tokens.Token;
 
 public class LaserBeam {
 	Direction direction;
 	Point location;
 	ArrayList<Point> previousPath;
-	Map m;
-	Shape s;
+	Token t;
 	boolean isStuck;
 	
-	public LaserBeam(Map m, Point location, Direction direction) {
+	public LaserBeam(Point location, Direction direction) {
 		isStuck = false;
 		this.direction = direction;
 		this.location = location;
 		previousPath = new ArrayList<Point>();
-		this.m = m;
 	}
 	
 	void move()
@@ -39,10 +37,10 @@ public class LaserBeam {
 				break;
 		}
 		try {
-			s = m.getShapeLocatedInXY(location.x, location.y);
-			if(s != null)
+			t = Map.getShapeLocatedInXY(location.x, location.y);
+			if(t != null)
 			{
-				direction = s.action();
+				direction = t.action();
 			}
 		}catch(ArrayIndexOutOfBoundsException e){
 			System.out.println("Index of of bounds: " + location.x + "," + location.y);

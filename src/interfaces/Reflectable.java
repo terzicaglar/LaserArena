@@ -1,4 +1,7 @@
 package interfaces;
+/**
+ * Interface for Tokens that have reflecting capability, i.e., Blue Mirror, Green Mirror, and Purple Target
+ */
 
 import core.*;
 
@@ -20,7 +23,6 @@ public interface Reflectable {
 					return Direction.EAST;
 				case WEST:
 					return Direction.NORTH;
-					
 			}
 		}
 		else if(currentPosition == 1)
