@@ -4,7 +4,10 @@
 
 package tokens;
 
+import core.Direction;
 import interfaces.Transparent;
 
 public class WhiteObstacle extends Token implements Transparent {
+
+
 }

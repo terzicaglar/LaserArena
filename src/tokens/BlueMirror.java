@@ -4,7 +4,7 @@
 
 package tokens;
 
-import interfaces.Reflectable;
+import interfaces.Reflector;
 
-public class BlueMirror extends Token implements Reflectable {
+public class BlueMirror extends Token implements Reflector {
 }

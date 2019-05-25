@@ -7,7 +7,7 @@ package tokens;
 
 import interfaces.BeamCreator;
 import interfaces.Transparent;
-import interfaces.Reflectable;
+import interfaces.Reflector;
 
-public class GreenMirror extends Token implements Reflectable, BeamCreator, Transparent {
+public class GreenMirror extends Token implements Reflector, BeamCreator, Transparent {
 }

@@ -5,6 +5,10 @@
 
 package interfaces;
 
+import core.Direction;
+
 public interface Transparent {
+
+
 
 }

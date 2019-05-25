@@ -6,7 +6,7 @@ package interfaces;
 
 import core.*;
 
-public interface Reflectable {
+public interface Reflector {
 
 	default Direction reflect(Direction directionOfBeam, int currentPosition)
 	{

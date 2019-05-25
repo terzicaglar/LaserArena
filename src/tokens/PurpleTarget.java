@@ -7,11 +7,11 @@
 package tokens;
 
 import core.Direction;
-import interfaces.Reflectable;
+import interfaces.Reflector;
 import interfaces.Stuckable;
 import interfaces.Targetable;
 
-public class PurpleTarget extends Token implements Reflectable, Stuckable, Targetable {
+public class PurpleTarget extends Token implements Reflector, Stuckable, Targetable {
 	
 	
 	
