@@ -8,10 +8,10 @@ import core.*;
 
 public interface Reflector {
 
-	default Direction reflect(Direction directionOfBeam, int currentPosition)
+	default Direction reflect(Direction directionOfBeam, MirrorDirection mirrorDirection)
 	{
 		System.out.println("interface reflect()");
-		if(currentPosition == 0)
+		if(mirrorDirection == MirrorDirection.SLASH)
 		{
 			
 			switch(directionOfBeam) //for position of mirror like this: /
@@ -26,7 +26,7 @@ public interface Reflector {
 					return Direction.NORTH;
 			}
 		}
-		else if(currentPosition == 1)
+		else if(mirrorDirection == MirrorDirection.BACK_SLASH)
 		{
 			switch(directionOfBeam) //for position of mirror like this: \
 			{

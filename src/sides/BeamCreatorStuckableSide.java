@@ -2,8 +2,9 @@ package sides;
 
 import core.Direction;
 import interfaces.BeamCreator;
+import interfaces.Stuckable;
 
-public class CreatorSide extends Side implements BeamCreator {
+public class BeamCreatorStuckableSide extends Side implements BeamCreator, Stuckable {
 
     @Override
     public Direction action() {
