@@ -8,9 +8,9 @@ import core.*;
 
 public interface Reflector {
 
+	//Reflected Direction is returned according to the coming directionOfBeam and the mirrorDirection
 	default Direction reflect(Direction directionOfBeam, MirrorDirection mirrorDirection)
 	{
-		System.out.println("interface reflect()");
 		if(mirrorDirection == MirrorDirection.SLASH)
 		{
 			

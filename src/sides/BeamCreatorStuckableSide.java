@@ -7,7 +7,7 @@ import interfaces.Stuckable;
 public class BeamCreatorStuckableSide extends Side implements BeamCreator, Stuckable {
 
     @Override
-    public Direction action() {
+    public Direction action(Direction direction) {
         return null;
     }
 }
