@@ -4,6 +4,9 @@
 
 package sides;
 
-public class Side {
+import core.Direction;
+
+public abstract class Side {
+    public abstract Direction action();
 
 }

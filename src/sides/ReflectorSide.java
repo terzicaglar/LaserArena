@@ -1,10 +1,9 @@
 package sides;
 
 import core.Direction;
-import interfaces.BeamCreator;
+import interfaces.Reflector;
 
-public class CreatorSide extends Side implements BeamCreator {
-
+public class ReflectorSide extends Side implements Reflector {
     @Override
     public Direction action() {
         return null;
