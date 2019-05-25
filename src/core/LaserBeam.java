@@ -44,7 +44,7 @@ public class LaserBeam {
 			t = Map.getShapeLocatedInXY(location.x, location.y);
 			if(t != null)
 			{
-				direction = t.action();
+				//direction = t.action();
 			}
 		}catch(ArrayIndexOutOfBoundsException e){
 			System.out.println("Index of of bounds: " + location.x + "," + location.y);

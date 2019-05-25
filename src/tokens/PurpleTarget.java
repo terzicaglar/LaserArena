@@ -12,13 +12,6 @@ import interfaces.Stuckable;
 import interfaces.Targetable;
 
 public class PurpleTarget extends Token implements Reflector, Stuckable, Targetable {
-	
-	
-	
-	@Override
-	public Direction action() {
-		// TODO Auto-generated method stub
-		return super.action();
-	}
+
 	
 }
