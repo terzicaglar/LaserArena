@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ArenaTest {
 
+
+
     @Test
     public void BackSlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(MirrorDirection.BACK_SLASH);
