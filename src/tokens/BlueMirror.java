@@ -4,17 +4,16 @@
 
 package tokens;
 
-import core.MirrorDirection;
+import core.Orientation;
 import sides.BackSlashReflectorSide;
-import sides.Side;
 import sides.SlashReflectorSide;
 
 public class BlueMirror extends Token{
-    private MirrorDirection mirrorDirection;
-    public BlueMirror(MirrorDirection mirrorDirection)
+    private Orientation orientation;
+    public BlueMirror(Orientation orientation)
     {
         super();
-        this.mirrorDirection = mirrorDirection;
+        this.orientation = orientation;
         construct();
     }
 
@@ -22,12 +21,14 @@ public class BlueMirror extends Token{
     private void construct()
     {
         for (int i = 0; i < sides.length; i++) {
-            switch(mirrorDirection)
+            switch(orientation)
             {
-                case SLASH:
+                case O0:
+                case O2:
                     sides[i] = new SlashReflectorSide();
                     break;
-                case BACK_SLASH:
+                case O1:
+                case O3:
                     sides[i] = new BackSlashReflectorSide();
                     break;
                 default:

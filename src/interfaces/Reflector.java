@@ -8,40 +8,42 @@ import core.*;
 
 public interface Reflector {
 
-	//Reflected Direction is returned according to the coming directionOfBeam and the mirrorDirection
-	default Direction reflect(Direction directionOfBeam, MirrorDirection mirrorDirection)
+	//Reflected Direction is returned according to the coming directionOfBeam and the orientation
+	default Direction reflect(Direction directionOfBeam, Orientation orientation)
 	{
-		if(mirrorDirection == MirrorDirection.SLASH)
+		switch (orientation)
 		{
-			
-			switch(directionOfBeam) //for position of mirror like this: /
-			{
-				case NORTH: //beam is coming from top, i.e., NORTH
-					return Direction.WEST; //beam goes to left, i.e., WEST
-				case EAST: //EAST
-					return Direction.SOUTH; //SOUTH
-				case SOUTH:
-					return Direction.EAST;
-				case WEST:
-					return Direction.NORTH;
+			case O0:
+			case O2:
+				switch(directionOfBeam) //for position of mirror like this: /
+				{
+					case NORTH: //beam is coming from top, i.e., NORTH
+						return Direction.WEST; //beam goes to left, i.e., WEST
+					case EAST: //EAST
+						return Direction.SOUTH; //SOUTH
+					case SOUTH:
+						return Direction.EAST;
+					case WEST:
+						return Direction.NORTH;
+				}
+				break;
+			case O1:
+			case O3:
+				switch(directionOfBeam) //for position of mirror like this: \
+				{
+					case NORTH: //beam is coming from top, i.e., NORTH
+						return Direction.EAST; //beam goes to left, i.e., EAST
+					case EAST: //EAST
+						return Direction.NORTH; //NORTH
+					case SOUTH:
+						return Direction.WEST;
+					case WEST:
+						return Direction.SOUTH;
+
+				}
+				break;
 			}
-		}
-		else if(mirrorDirection == MirrorDirection.BACK_SLASH)
-		{
-			switch(directionOfBeam) //for position of mirror like this: \
-			{
-				case NORTH: //beam is coming from top, i.e., NORTH
-					return Direction.EAST; //beam goes to left, i.e., EAST
-				case EAST: //EAST
-					return Direction.NORTH; //NORTH
-				case SOUTH:
-					return Direction.WEST;
-				case WEST:
-					return Direction.SOUTH;
-					
-			}
-		}
-		return null;
+		throw new IllegalArgumentException();
 	}
 	
 }
