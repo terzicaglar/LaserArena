@@ -20,7 +20,7 @@ public class LaserBeam {
 	}
 
 	//moves the LaserBeam by one cell in the current Direction
-	void move()
+	public void move()
 	{
 		pathHistory.add(location);
 		switch(direction)
@@ -56,5 +56,13 @@ public class LaserBeam {
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
+	}
+
+	public Point getLocation() {
+		return location;
+	}
+
+	public void setLocation(Point location) {
+		this.location = location;
 	}
 }

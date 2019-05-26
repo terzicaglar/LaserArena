@@ -4,11 +4,15 @@
 package test;
 
 import core.Direction;
+import core.GameMap;
+import core.LaserBeam;
 import core.Orientation;
 import org.junit.jupiter.api.Test;
 import tokens.BlueMirror;
 import tokens.Token;
 import tokens.YellowBridge;
+
+import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -75,6 +79,13 @@ public class ArenaTest {
 
     @Test
     public void CreateLaserAndHitAToken(){
+        LaserBeam beam = new LaserBeam(new Point(1,1), Direction.EAST);
+        GameMap map = new GameMap(5,5);
+        beam.move();
+        //assertFalse();
+        assertTrue(beam.getLocation().getX() == 2 && beam.getLocation().getY() == 1);
+        assertTrue( map.addToken(new YellowBridge(Orientation.O1),new Point(3,1)));
+        beam.move();
 
     }
 

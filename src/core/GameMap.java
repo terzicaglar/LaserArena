@@ -5,6 +5,8 @@ package core;
 
 import tokens.Token;
 
+import java.awt.*;
+
 public class GameMap {
 	private int width, height;
 	private static Token[][] tokens;
@@ -12,13 +14,25 @@ public class GameMap {
 	public GameMap(int width, int height)
 	{
 		this.setWidth(width);
-		this.setWidth(height);
+		this.setHeight(height);
 		tokens = new Token[width][height];
 	}
 	
 	public static Token getTokenLocatedInXY(int x, int y)
 	{
 		return tokens[x][y];
+	}
+
+	public boolean addToken(Token token, Point point)
+	{
+		if(point.getY() < height && point.getY() >= 0
+			&& point.getX() < width && point.getX() >= 0)
+		{
+			tokens[(int) point.getX()][(int) point.getY()] = token;
+			return true;
+		}
+		else
+			return false;
 	}
 
 	public int getWidth() {
