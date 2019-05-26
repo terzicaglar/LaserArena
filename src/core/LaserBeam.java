@@ -40,7 +40,7 @@ public class LaserBeam {
 		}
 		//TODO This commented part should be checked in GameMap, if LaserBeam goes out of bounds
 		/*try {
-			t = GameMap.getShapeLocatedInXY(location.x, location.y);
+			t = GameMap.getTokenLocatedInXY(location.x, location.y);
 			if(t != null)
 			{
 				//direction = t.action();

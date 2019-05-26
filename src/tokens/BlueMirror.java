@@ -51,8 +51,6 @@ public class BlueMirror extends Token{
                 //TODO Type of exception may be a better than IllegalArgumentException
                 throw new IllegalArgumentException();
         }
-
-
     }
 
 

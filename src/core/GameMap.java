@@ -16,7 +16,7 @@ public class GameMap {
 		tokens = new Token[width][height];
 	}
 	
-	public static Token getShapeLocatedInXY(int x, int y)
+	public static Token getTokenLocatedInXY(int x, int y)
 	{
 		return tokens[x][y];
 	}

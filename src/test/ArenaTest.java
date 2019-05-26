@@ -8,6 +8,8 @@ import core.Orientation;
 import org.junit.jupiter.api.Test;
 import tokens.BlueMirror;
 import tokens.Token;
+import tokens.YellowBridge;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ArenaTest {
@@ -17,7 +19,9 @@ public class ArenaTest {
     @Test
     public void BackSlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.O1); //Backslash
-        //assertTrue(blueMirror.getSides()[0] instanceof SlashReflectorSide);
+
+        //this loop checks all conditions regardless of the side and incoming laser beam direction, i.e., it also checks an incoming laser beam from EAST when checking
+        //side located at SOUTH, although it is impossilble, since only laser beam from NORTH can hit side located at SOUTH
         for (Direction dir: Direction.values()){
             if(dir != Direction.NONE)
             {
@@ -35,9 +39,12 @@ public class ArenaTest {
     @Test
     public void SlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.O2); //SLASH
-        //assertTrue(blueMirror.getSides()[0] instanceof SlashReflectorSide);
+
+        //this loop checks all conditions regardless of the side and incoming laser beam direction, i.e., it also checks an incoming laser beam from EAST when checking
+            //side located at SOUTH, although it is impossilble, since only laser beam from NORTH can hit side located at SOUTH
         for (Direction dir: Direction.values()){
             if(dir != Direction.NONE) {
+
                 assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.EAST);
                 assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.SOUTH);
                 assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.WEST);
@@ -46,6 +53,29 @@ public class ArenaTest {
         }
 
         //assertThrows(IllegalArgumentException.class, () -> blueMirror.getSides()[0].action(Direction.DENEME));
+    }
+
+    @Test
+    public void YellowBridgeCreationTest(){
+        Token yellowBridge = new YellowBridge(Orientation.O0); //"|" Bridge
+
+        assertTrue(yellowBridge.getSide(Direction.NORTH).action(Direction.SOUTH) == Direction.NONE); //stucks
+        assertTrue(yellowBridge.getSide(Direction.SOUTH).action(Direction.NORTH) == Direction.NONE); //stucks
+        assertTrue(yellowBridge.getSide(Direction.EAST).action(Direction.WEST) == Direction.WEST); //passes directly
+        assertTrue(yellowBridge.getSide(Direction.WEST).action(Direction.EAST) == Direction.EAST); //passes directly
+
+        Token yellowBridge2 = new YellowBridge(Orientation.O3); //"--" Bridge
+
+        assertTrue(yellowBridge2.getSide(Direction.NORTH).action(Direction.SOUTH) == Direction.SOUTH); //passes directly
+        assertTrue(yellowBridge2.getSide(Direction.SOUTH).action(Direction.NORTH) == Direction.NORTH); //passes directly
+        assertTrue(yellowBridge2.getSide(Direction.EAST).action(Direction.WEST) == Direction.NONE); //stucks
+        assertTrue(yellowBridge2.getSide(Direction.WEST).action(Direction.EAST) == Direction.NONE); //stucks
+
+    }
+
+    @Test
+    public void CreateLaserAndHitAToken(){
+
     }
 
 }
