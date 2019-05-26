@@ -29,10 +29,10 @@ public class ArenaTest {
         for (Direction dir: Direction.values()){
             if(dir != Direction.NONE)
             {
-                assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.WEST);
-                assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.SOUTH);
-                assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.EAST);
-                assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.NORTH);
+                assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.EAST);
+                assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.SOUTH);
+                assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.WEST);
+                assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.NORTH);
             }
         }
 
@@ -49,10 +49,10 @@ public class ArenaTest {
         for (Direction dir: Direction.values()){
             if(dir != Direction.NONE) {
 
-                assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.EAST);
-                assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.SOUTH);
-                assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.WEST);
-                assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.NORTH);
+                assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.WEST);
+                assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.SOUTH);
+                assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.EAST);
+                assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.NORTH);
             }
         }
 
@@ -82,10 +82,20 @@ public class ArenaTest {
         LaserBeam beam = new LaserBeam(new Point(1,1), Direction.EAST);
         GameMap map = new GameMap(5,5);
         beam.move();
-        //assertFalse();
+        assertTrue(GameMap.getTokenLocatedInXY(2,1) == null);
         assertTrue(beam.getLocation().getX() == 2 && beam.getLocation().getY() == 1);
-        assertTrue( map.addToken(new YellowBridge(Orientation.O1),new Point(3,1)));
         beam.move();
+        //assertTrue( map.addToken(new YellowBridge(Orientation.O0),new Point(3,1))); //"|" Bridge
+        //assertTrue( map.addToken(new YellowBridge(Orientation.O1),new Point(3,1))); //"--" Bridge
+        assertTrue( map.addToken(new BlueMirror(Orientation.O1),new Point(3,1))); //"\" Mirror
+        //assertTrue( map.addToken(new BlueMirror(Orientation.O0),new Point(3,1))); //"/" Mirror
+
+        assertFalse(GameMap.getTokenLocatedInXY(3,1) == null);
+        Token t = GameMap.getTokenLocatedInXY(3,1);
+        //assertTrue(t instanceof YellowBridge);
+        beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam.getDirection()));
+        beam.move();
+        System.out.println(beam);
 
     }
 

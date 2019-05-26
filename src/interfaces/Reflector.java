@@ -8,7 +8,7 @@ import core.*;
 
 public interface Reflector {
 
-	//Reflected Direction is returned according to the coming directionOfBeam and the orientation
+	//Reflected Direction is returned according to the coming directionOfBeam and the orientation of the Mirror
 	default Direction reflect(Direction directionOfBeam, Orientation orientation)
 	{
 		switch (orientation)
@@ -18,13 +18,13 @@ public interface Reflector {
 				switch(directionOfBeam) //for position of mirror like this: /
 				{
 					case NORTH: //beam is coming from top, i.e., NORTH
-						return Direction.WEST; //beam goes to left, i.e., WEST
+						return Direction.EAST; //beam goes to left, i.e., WEST
 					case EAST: //EAST
-						return Direction.SOUTH; //SOUTH
+						return Direction.NORTH; //SOUTH
 					case SOUTH:
-						return Direction.EAST;
+						return Direction.WEST;
 					case WEST:
-						return Direction.NORTH;
+						return Direction.SOUTH;
 				}
 				break;
 			case O1:
@@ -32,12 +32,12 @@ public interface Reflector {
 				switch(directionOfBeam) //for position of mirror like this: \
 				{
 					case NORTH: //beam is coming from top, i.e., NORTH
-						return Direction.EAST; //beam goes to left, i.e., EAST
-					case EAST: //EAST
+						return Direction.WEST; //beam goes to left, i.e., EAST
+					case WEST: //EAST
 						return Direction.NORTH; //NORTH
 					case SOUTH:
-						return Direction.WEST;
-					case WEST:
+						return Direction.EAST;
+					case EAST:
 						return Direction.SOUTH;
 
 				}

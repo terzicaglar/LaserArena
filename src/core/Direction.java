@@ -9,4 +9,17 @@ public enum Direction {
 	SOUTH, 
 	WEST,
 	NONE; //used for Stucked Laser Beam
+
+	private Direction opposite;
+
+	static {
+		NORTH.opposite = SOUTH;
+		SOUTH.opposite = NORTH;
+		EAST.opposite = WEST;
+		WEST.opposite = EAST;
+	}
+
+	public Direction getOppositeDirection() {
+		return opposite;
+	}
 }

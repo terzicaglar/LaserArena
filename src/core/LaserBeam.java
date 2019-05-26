@@ -65,4 +65,9 @@ public class LaserBeam {
 	public void setLocation(Point location) {
 		this.location = location;
 	}
+
+	@Override
+	public String toString() {
+		return "Direction: " + direction + " , Location: (" + location.getX() + "," + location.getY() + ")";
+	}
 }
