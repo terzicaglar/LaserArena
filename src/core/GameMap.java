@@ -6,13 +6,15 @@ package core;
 import tokens.Token;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GameMap {
 	private int width, height;
 	private static Token[][] tokens;
-	
+	private ArrayList<LaserBeam> lasers;
 	public GameMap(int width, int height)
 	{
+		lasers = new ArrayList<>();
 		this.setWidth(width);
 		this.setHeight(height);
 		tokens = new Token[width][height];

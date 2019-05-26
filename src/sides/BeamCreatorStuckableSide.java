@@ -9,6 +9,6 @@ public class BeamCreatorStuckableSide extends Side implements BeamCreator, Stuck
 
     @Override
     public Direction action(Direction direction) {
-        return null;
+        return stuck();
     }
 }
