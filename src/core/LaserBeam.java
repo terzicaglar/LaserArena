@@ -70,4 +70,12 @@ public class LaserBeam {
 	public String toString() {
 		return "Direction: " + direction + " , Location: (" + location.getX() + "," + location.getY() + ")";
 	}
+
+	public ArrayList<Point> getPathHistory() {
+		return pathHistory;
+	}
+
+	public void setPathHistory(ArrayList<Point> pathHistory) {
+		this.pathHistory = pathHistory;
+	}
 }

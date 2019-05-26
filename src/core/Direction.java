@@ -8,6 +8,7 @@ public enum Direction {
 	EAST, 
 	SOUTH, 
 	WEST,
+	TARGET_HIT,// TODO: not sure of this
 	NONE; //used for Stucked Laser Beam
 
 	private Direction opposite;

@@ -5,6 +5,11 @@
 
 package interfaces;
 
-public interface Targetable {
+import core.Direction;
 
+public interface Targetable {
+    default Direction target()
+    {
+        return Direction.TARGET_HIT;
+    }
 }

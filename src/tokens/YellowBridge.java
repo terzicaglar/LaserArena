@@ -5,12 +5,10 @@ package tokens;
 
 import core.Direction;
 import core.Orientation;
-import interfaces.Stuckable;
-import interfaces.Transparent;
 import sides.StuckableSide;
 import sides.TransparentSide;
 
-public class YellowBridge extends Token implements Transparent, Stuckable {
+public class YellowBridge extends Token{
     public YellowBridge(Orientation orientation)
     {
         super();

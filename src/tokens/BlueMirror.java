@@ -26,26 +26,18 @@ public class BlueMirror extends Token{
             case O0:
             case O2:
                 //Slash Type Mirror "/"
-                for (Direction dir: Direction.values())
-                {
-                    //Assigns all of the sides to SlashReflectorSide
-                    if(dir != Direction.NONE)
-                    {
-                        sides.put(dir, new SlashReflectorSide());
-                    }
-                }
+                sides.put(Direction.NORTH, new SlashReflectorSide());
+                sides.put(Direction.WEST, new SlashReflectorSide());
+                sides.put(Direction.EAST, new SlashReflectorSide());
+                sides.put(Direction.SOUTH, new SlashReflectorSide());
                 break;
             case O1:
             case O3:
                 //BackSlash Type Mirror "\"
-                for (Direction dir: Direction.values())
-                {
-                    //Assigns all of the sides to BackSlashReflectorSide
-                    if(dir != Direction.NONE)
-                    {
-                        sides.put(dir, new BackSlashReflectorSide());
-                    }
-                }
+                sides.put(Direction.NORTH, new BackSlashReflectorSide());
+                sides.put(Direction.WEST, new BackSlashReflectorSide());
+                sides.put(Direction.EAST, new BackSlashReflectorSide());
+                sides.put(Direction.SOUTH, new BackSlashReflectorSide());
                 break;
             default:
                 //TODO Type of exception may be a better than IllegalArgumentException

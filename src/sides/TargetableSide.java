@@ -6,6 +6,7 @@ import interfaces.Targetable;
 public class TargetableSide extends Side implements Targetable {
     @Override
     public Direction action(Direction direction) {
-        return null;
+        return target();
+
     }
 }

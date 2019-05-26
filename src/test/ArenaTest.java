@@ -9,6 +9,7 @@ import core.LaserBeam;
 import core.Orientation;
 import org.junit.jupiter.api.Test;
 import tokens.BlueMirror;
+import tokens.PurpleTarget;
 import tokens.Token;
 import tokens.YellowBridge;
 
@@ -27,7 +28,7 @@ public class ArenaTest {
         //this loop checks all conditions regardless of the side and incoming laser beam direction, i.e., it also checks an incoming laser beam from EAST when checking
         //side located at SOUTH, although it is impossilble, since only laser beam from NORTH can hit side located at SOUTH
         for (Direction dir: Direction.values()){
-            if(dir != Direction.NONE)
+            if(dir == Direction.WEST || dir == Direction.EAST || dir == Direction.NORTH || dir == Direction.SOUTH)
             {
                 assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.EAST);
                 assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.SOUTH);
@@ -47,8 +48,7 @@ public class ArenaTest {
         //this loop checks all conditions regardless of the side and incoming laser beam direction, i.e., it also checks an incoming laser beam from EAST when checking
             //side located at SOUTH, although it is impossilble, since only laser beam from NORTH can hit side located at SOUTH
         for (Direction dir: Direction.values()){
-            if(dir != Direction.NONE) {
-
+            if(dir == Direction.WEST || dir == Direction.EAST || dir == Direction.NORTH || dir == Direction.SOUTH) {
                 assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.WEST);
                 assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.SOUTH);
                 assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.EAST);
@@ -87,8 +87,9 @@ public class ArenaTest {
         beam.move();
         //assertTrue( map.addToken(new YellowBridge(Orientation.O0),new Point(3,1))); //"|" Bridge
         //assertTrue( map.addToken(new YellowBridge(Orientation.O1),new Point(3,1))); //"--" Bridge
-        assertTrue( map.addToken(new BlueMirror(Orientation.O1),new Point(3,1))); //"\" Mirror
+        //assertTrue( map.addToken(new BlueMirror(Orientation.O1),new Point(3,1))); //"\" Mirror
         //assertTrue( map.addToken(new BlueMirror(Orientation.O0),new Point(3,1))); //"/" Mirror
+        assertTrue( map.addToken(new PurpleTarget(Orientation.O0),new Point(3,1))); //"/" Mirror
 
         assertFalse(GameMap.getTokenLocatedInXY(3,1) == null);
         Token t = GameMap.getTokenLocatedInXY(3,1);
@@ -96,6 +97,8 @@ public class ArenaTest {
         beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam.getDirection()));
         beam.move();
         System.out.println(beam);
+        System.out.println(beam.getPathHistory());
+        //System.out.println(Direction.SOUTH.ordinal());
 
     }
 

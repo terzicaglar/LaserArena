@@ -6,12 +6,55 @@
 
 package tokens;
 
+
 import core.Direction;
-import interfaces.Reflector;
-import interfaces.Stuckable;
-import interfaces.Targetable;
+import core.Orientation;
+import sides.BackSlashReflectorSide;
+import sides.SlashReflectorSide;
+import sides.StuckableSide;
+import sides.TargetableSide;
 
-public class PurpleTarget extends Token implements Reflector, Stuckable, Targetable {
+public class PurpleTarget extends Token {
+    public PurpleTarget(Orientation orientation)
+    {
+        super();
+        this.orientation = orientation;
+        construct();
+    }
 
+    //TODO This may be an abstract class in Token OR this may be done with setSides method, I have not decided on that
+    private void construct()
+    {
+        switch(orientation)
+        {
+            case O0: //Target on WEST, Stuckable on NORTH, Mirrors on EAST and SOUTH
+                sides.put(Direction.SOUTH, new SlashReflectorSide());
+                sides.put(Direction.NORTH, new StuckableSide());
+                sides.put(Direction.EAST, new SlashReflectorSide());
+                sides.put(Direction.WEST, new TargetableSide());
+                break;
+            case O1: //Target on NORTH
+                sides.put(Direction.SOUTH, new BackSlashReflectorSide());
+                sides.put(Direction.NORTH, new TargetableSide());
+                sides.put(Direction.EAST, new StuckableSide());
+                sides.put(Direction.WEST, new BackSlashReflectorSide());
+                break;
+            case O2: //Target on EAST
+                sides.put(Direction.SOUTH, new StuckableSide());
+                sides.put(Direction.NORTH, new SlashReflectorSide());
+                sides.put(Direction.EAST, new TargetableSide());
+                sides.put(Direction.WEST, new SlashReflectorSide());
+                break;
+            case O3: //Target on SOUTH
+                sides.put(Direction.SOUTH, new TargetableSide());
+                sides.put(Direction.NORTH, new BackSlashReflectorSide());
+                sides.put(Direction.EAST, new BackSlashReflectorSide());
+                sides.put(Direction.WEST, new StuckableSide());
+                break;
+            default:
+                //TODO Type of exception may be a better than IllegalArgumentException
+                throw new IllegalArgumentException();
+        }
+    }
 	
 }
