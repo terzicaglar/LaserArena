@@ -1,15 +1,15 @@
 /**
- * Map of the game, where tokens are placed and laser(s) pass.
+ * GameMap of the game, where tokens are placed and laser(s) pass.
  */
 package core;
 
 import tokens.Token;
 
-public class Map{
+public class GameMap {
 	private int width, height;
 	private static Token[][] tokens;
 	
-	public Map(int width, int height)
+	public GameMap(int width, int height)
 	{
 		this.setWidth(width);
 		this.setWidth(height);

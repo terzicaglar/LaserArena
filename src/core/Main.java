@@ -9,11 +9,10 @@ import java.awt.Point;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Main {
 	
-	static Map m;
+	static GameMap m;
 	static int width = 5, height = 5;
 	static ArenaPanel[][] panels;
 	static LaserBeam lb;
@@ -21,7 +20,7 @@ public class Main {
 	public static void main(String[] args) {
 		//Boolean b1 = new Boolean();
 		double d = 10;
-		m = new Map(width, height);
+		m = new GameMap(width, height);
 		lb = new LaserBeam(new Point(2, 3), Direction.SOUTH);
 		panels = new ArenaPanel[width][height];
 		JFrame f = new JFrame("Laser Arena");

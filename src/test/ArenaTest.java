@@ -18,11 +18,14 @@ public class ArenaTest {
     public void BackSlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.O1); //Backslash
         //assertTrue(blueMirror.getSides()[0] instanceof SlashReflectorSide);
-        for (int i = 0; i < blueMirror.getSides().length; i++) {
-            assertTrue(blueMirror.getSides()[i].action(Direction.SOUTH) == Direction.WEST);
-            assertTrue(blueMirror.getSides()[i].action(Direction.WEST) == Direction.SOUTH);
-            assertTrue(blueMirror.getSides()[i].action(Direction.NORTH) == Direction.EAST);
-            assertTrue(blueMirror.getSides()[i].action(Direction.EAST) == Direction.NORTH);
+        for (Direction dir: Direction.values()){
+            if(dir != Direction.NONE)
+            {
+                assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.WEST);
+                assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.SOUTH);
+                assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.EAST);
+                assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.NORTH);
+            }
         }
 
         //assertThrows(IllegalArgumentException.class, () -> blueMirror.getSides()[0].action(Direction.DENEME));
@@ -33,11 +36,13 @@ public class ArenaTest {
     public void SlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.O2); //SLASH
         //assertTrue(blueMirror.getSides()[0] instanceof SlashReflectorSide);
-        for (int i = 0; i < blueMirror.getSides().length; i++) {
-            assertTrue(blueMirror.getSides()[0].action(Direction.SOUTH) == Direction.EAST);
-            assertTrue(blueMirror.getSides()[0].action(Direction.EAST) == Direction.SOUTH);
-            assertTrue(blueMirror.getSides()[0].action(Direction.NORTH) == Direction.WEST);
-            assertTrue(blueMirror.getSides()[0].action(Direction.WEST) == Direction.NORTH);
+        for (Direction dir: Direction.values()){
+            if(dir != Direction.NONE) {
+                assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.EAST);
+                assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.SOUTH);
+                assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.WEST);
+                assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.NORTH);
+            }
         }
 
         //assertThrows(IllegalArgumentException.class, () -> blueMirror.getSides()[0].action(Direction.DENEME));

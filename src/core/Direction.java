@@ -4,8 +4,9 @@
 package core;
 
 public enum Direction {
-	NORTH, 
+	NORTH,
 	EAST, 
 	SOUTH, 
-	WEST;
+	WEST,
+	NONE; //used for Stucked Laser Beam
 }

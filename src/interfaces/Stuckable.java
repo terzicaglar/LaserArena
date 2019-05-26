@@ -5,6 +5,11 @@
 
 package interfaces;
 
-public interface Stuckable {
+import core.Direction;
 
+public interface Stuckable {
+    default Direction stuck()
+    {
+        return Direction.NONE;
+    }
 }

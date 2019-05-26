@@ -4,12 +4,12 @@
 
 package tokens;
 
+import core.Direction;
 import core.Orientation;
 import sides.BackSlashReflectorSide;
 import sides.SlashReflectorSide;
 
 public class BlueMirror extends Token{
-    private Orientation orientation;
     public BlueMirror(Orientation orientation)
     {
         super();
@@ -20,22 +20,38 @@ public class BlueMirror extends Token{
     //TODO This may be an abstract class in Token OR this may be done with setSides method, I have not decided on that
     private void construct()
     {
-        for (int i = 0; i < sides.length; i++) {
-            switch(orientation)
-            {
-                case O0:
-                case O2:
-                    sides[i] = new SlashReflectorSide();
-                    break;
-                case O1:
-                case O3:
-                    sides[i] = new BackSlashReflectorSide();
-                    break;
-                default:
-                    //TODO Type of exception may be a better than IllegalArgumentException
-                    throw new IllegalArgumentException();
-            }
+
+        switch(orientation)
+        {
+            case O0:
+            case O2:
+                //Slash Type Mirror "/"
+                for (Direction dir: Direction.values())
+                {
+                    //Assigns all of the sides to SlashReflectorSide
+                    if(dir != Direction.NONE)
+                    {
+                        sides.put(dir, new SlashReflectorSide());
+                    }
+                }
+                break;
+            case O1:
+            case O3:
+                //BackSlash Type Mirror "\"
+                for (Direction dir: Direction.values())
+                {
+                    //Assigns all of the sides to BackSlashReflectorSide
+                    if(dir != Direction.NONE)
+                    {
+                        sides.put(dir, new BackSlashReflectorSide());
+                    }
+                }
+                break;
+            default:
+                //TODO Type of exception may be a better than IllegalArgumentException
+                throw new IllegalArgumentException();
         }
+
 
     }
 

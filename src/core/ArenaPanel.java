@@ -1,5 +1,5 @@
 /**
- * JPanel where Map, Tokens and Laser Beam(s) are shown.
+ * JPanel where GameMap, Tokens and Laser Beam(s) are shown.
  */
 package core;
 

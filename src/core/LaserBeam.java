@@ -6,25 +6,23 @@ package core;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import tokens.Token;
-
 public class LaserBeam {
-	Direction direction;
-	Point location;
-	ArrayList<Point> previousPath;
-	Token t;
-	boolean isStuck;
+	private Direction direction;
+	private Point location;
+	private ArrayList<Point> pathHistory;
+	private boolean isStuck;
 	
 	public LaserBeam(Point location, Direction direction) {
 		isStuck = false;
 		this.direction = direction;
 		this.location = location;
-		previousPath = new ArrayList<Point>();
+		pathHistory = new ArrayList<Point>();
 	}
-	
+
+	//moves the LaserBeam by one cell in the current Direction
 	void move()
 	{
-		previousPath.add(location);
+		pathHistory.add(location);
 		switch(direction)
 		{
 			case EAST:
@@ -40,15 +38,23 @@ public class LaserBeam {
 				location = new Point(location.x, location.y+1);
 				break;
 		}
-		try {
-			t = Map.getShapeLocatedInXY(location.x, location.y);
+		//TODO This commented part should be checked in GameMap, if LaserBeam goes out of bounds
+		/*try {
+			t = GameMap.getShapeLocatedInXY(location.x, location.y);
 			if(t != null)
 			{
 				//direction = t.action();
 			}
 		}catch(ArrayIndexOutOfBoundsException e){
 			System.out.println("Index of of bounds: " + location.x + "," + location.y);
-		}
-		
+		}*/
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
 	}
 }
