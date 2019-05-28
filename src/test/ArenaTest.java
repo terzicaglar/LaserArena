@@ -27,7 +27,9 @@ public class ArenaTest {
 
         //this loop checks all conditions regardless of the side and incoming laser beam direction, i.e., it also checks an incoming laser beam from EAST when checking
         //side located at SOUTH, although it is impossilble, since only laser beam from NORTH can hit side located at SOUTH
-        for (Direction dir: Direction.values()){
+
+        //TODO code below will be modified for LaserBeam parameter given to action method
+        /*for (Direction dir: Direction.values()){
             if(dir == Direction.WEST || dir == Direction.EAST || dir == Direction.NORTH || dir == Direction.SOUTH)
             {
                 assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.EAST);
@@ -35,7 +37,7 @@ public class ArenaTest {
                 assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.WEST);
                 assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.NORTH);
             }
-        }
+        }*/
 
         //assertThrows(IllegalArgumentException.class, () -> blueMirror.getSides()[0].action(Direction.DENEME));
 
@@ -47,14 +49,16 @@ public class ArenaTest {
 
         //this loop checks all conditions regardless of the side and incoming laser beam direction, i.e., it also checks an incoming laser beam from EAST when checking
             //side located at SOUTH, although it is impossilble, since only laser beam from NORTH can hit side located at SOUTH
-        for (Direction dir: Direction.values()){
+
+        //TODO code below will be modified for LaserBeam parameter given to action method
+        /*for (Direction dir: Direction.values()){
             if(dir == Direction.WEST || dir == Direction.EAST || dir == Direction.NORTH || dir == Direction.SOUTH) {
                 assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.WEST);
                 assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.SOUTH);
                 assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.EAST);
                 assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.NORTH);
             }
-        }
+        }*/
 
         //assertThrows(IllegalArgumentException.class, () -> blueMirror.getSides()[0].action(Direction.DENEME));
     }
@@ -63,7 +67,8 @@ public class ArenaTest {
     public void YellowBridgeCreationTest(){
         Token yellowBridge = new YellowBridge(Orientation.O0); //"|" Bridge
 
-        assertTrue(yellowBridge.getSide(Direction.NORTH).action(Direction.SOUTH) == Direction.NONE); //stucks
+        //TODO code below will be modified for LaserBeam parameter given to action method
+        /*assertTrue(yellowBridge.getSide(Direction.NORTH).action(Direction.SOUTH) == Direction.NONE); //stucks
         assertTrue(yellowBridge.getSide(Direction.SOUTH).action(Direction.NORTH) == Direction.NONE); //stucks
         assertTrue(yellowBridge.getSide(Direction.EAST).action(Direction.WEST) == Direction.WEST); //passes directly
         assertTrue(yellowBridge.getSide(Direction.WEST).action(Direction.EAST) == Direction.EAST); //passes directly
@@ -74,6 +79,7 @@ public class ArenaTest {
         assertTrue(yellowBridge2.getSide(Direction.SOUTH).action(Direction.NORTH) == Direction.NORTH); //passes directly
         assertTrue(yellowBridge2.getSide(Direction.EAST).action(Direction.WEST) == Direction.NONE); //stucks
         assertTrue(yellowBridge2.getSide(Direction.WEST).action(Direction.EAST) == Direction.NONE); //stucks
+        */
 
     }
 
@@ -94,7 +100,7 @@ public class ArenaTest {
         assertFalse(GameMap.getTokenLocatedInXY(3,1) == null);
         Token t = GameMap.getTokenLocatedInXY(3,1);
         //assertTrue(t instanceof YellowBridge);
-        beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam.getDirection()));
+        beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
         beam.move();
         System.out.println(beam);
         System.out.println(beam.getPathHistory());

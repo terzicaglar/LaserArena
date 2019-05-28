@@ -1,6 +1,7 @@
 package sides;
 
 import core.Direction;
+import core.LaserBeam;
 import interfaces.BeamCreator;
 import interfaces.Stuckable;
 
@@ -8,7 +9,7 @@ import interfaces.Stuckable;
 public class BeamCreatorStuckableSide extends Side implements BeamCreator, Stuckable {
 
     @Override
-    public Direction action(Direction direction) {
+    public Direction action(LaserBeam laserBeam) {
         return stuck();
     }
 }

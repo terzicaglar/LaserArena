@@ -5,11 +5,12 @@
 package sides;
 
 import core.Direction;
+import core.LaserBeam;
 
 public abstract class Side {
 
 
     //action method called when a laser beam hits the Side object
-    public abstract Direction action(Direction direction);
+    public abstract Direction action(LaserBeam laserBeam);
 
 }
