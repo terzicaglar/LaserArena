@@ -11,10 +11,9 @@ import java.util.ArrayList;
 public class GameMap {
 	private int width, height;
 	private static Token[][] tokens;
-	private ArrayList<LaserBeam> lasers;
+	private static ArrayList<LaserBeam> lasers = new ArrayList<>(4);;
 	public GameMap(int width, int height)
 	{
-		lasers = new ArrayList<>();
 		this.setWidth(width);
 		this.setHeight(height);
 		tokens = new Token[width][height];
@@ -51,5 +50,25 @@ public class GameMap {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public static ArrayList<LaserBeam> getLasers() {
+		return lasers;
+	}
+
+	public static void setLasers(ArrayList<LaserBeam> lasers) {
+		GameMap.lasers = lasers;
+	}
+
+	public static Token[][] getTokens() {
+		return tokens;
+	}
+
+	public static void setTokens(Token[][] tokens) {
+		GameMap.tokens = tokens;
+	}
+
+	public static boolean addLaserBeam(LaserBeam l) {
+		return lasers.add(l);
 	}
 }

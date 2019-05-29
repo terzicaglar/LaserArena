@@ -91,10 +91,6 @@ public class ArenaTest {
         assertTrue(GameMap.getTokenLocatedInXY(2,1) == null);
         assertTrue(beam.getLocation().getX() == 2 && beam.getLocation().getY() == 1);
         beam.move();
-        //assertTrue( map.addToken(new YellowBridge(Orientation.O0),new Point(3,1))); //"|" Bridge
-        //assertTrue( map.addToken(new YellowBridge(Orientation.O1),new Point(3,1))); //"--" Bridge
-        //assertTrue( map.addToken(new BlueMirror(Orientation.O1),new Point(3,1))); //"\" Mirror
-        //assertTrue( map.addToken(new BlueMirror(Orientation.O0),new Point(3,1))); //"/" Mirror
         assertTrue( map.addToken(new PurpleTarget(Orientation.O0),new Point(3,1))); //"/" Mirror
 
         assertFalse(GameMap.getTokenLocatedInXY(3,1) == null);
