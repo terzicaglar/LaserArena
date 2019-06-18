@@ -20,7 +20,6 @@ public class BlueMirror extends Token{
     //TODO This may be an abstract class in Token OR this may be done with setSides method, I have not decided on that
     private void construct()
     {
-
         switch(orientation)
         {
             case O0:

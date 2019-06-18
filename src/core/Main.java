@@ -12,15 +12,14 @@ import javax.swing.JFrame;
 
 public class Main {
 	
-	static GameMap m;
+	static GameMap map;
 	static int width = 5, height = 5;
 	static ArenaPanel[][] panels;
 	static LaserBeam lb;
 	
 	public static void main(String[] args) {
 		//Boolean b1 = new Boolean();
-		double d = 10;
-		m = new GameMap(width, height);
+		map = new GameMap(width, height);
 		lb = new LaserBeam(new Point(2, 3), Direction.SOUTH);
 		panels = new ArenaPanel[width][height];
 		JFrame f = new JFrame("Laser Arena");
@@ -35,7 +34,7 @@ public class Main {
 		}
 		
 		
-		f.setLayout(new GridLayout(m.getWidth(),m.getHeight()));
+		f.setLayout(new GridLayout(map.getWidth(), map.getHeight()));
 	    f.setSize(500,500);  
 	    f.setVisible(true);  
 	    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
