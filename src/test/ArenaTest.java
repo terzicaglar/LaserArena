@@ -25,21 +25,8 @@ public class ArenaTest {
     public void BackSlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.O1); //Backslash
 
-        //this loop checks all conditions regardless of the side and incoming laser beam direction, i.e., it also checks an incoming laser beam from EAST when checking
-        //side located at SOUTH, although it is impossilble, since only laser beam from NORTH can hit side located at SOUTH
-
-        //TODO code below will be modified for LaserBeam parameter given to action method
-        /*for (Direction dir: Direction.values()){
-            if(dir == Direction.WEST || dir == Direction.EAST || dir == Direction.NORTH || dir == Direction.SOUTH)
-            {
-                assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.EAST);
-                assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.SOUTH);
-                assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.WEST);
-                assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.NORTH);
-            }
-        }*/
-
-        //assertThrows(IllegalArgumentException.class, () -> blueMirror.getSides()[0].action(Direction.DENEME));
+        LaserBeam beam = new LaserBeam(new Point(2,1), Direction.EAST);
+        assertTrue(blueMirror.getSide(Direction.WEST).action(beam) == Direction.SOUTH);
 
     }
 
@@ -47,20 +34,8 @@ public class ArenaTest {
     public void SlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.O2); //SLASH
 
-        //this loop checks all conditions regardless of the side and incoming laser beam direction, i.e., it also checks an incoming laser beam from EAST when checking
-            //side located at SOUTH, although it is impossilble, since only laser beam from NORTH can hit side located at SOUTH
-
-        //TODO code below will be modified for LaserBeam parameter given to action method
-        /*for (Direction dir: Direction.values()){
-            if(dir == Direction.WEST || dir == Direction.EAST || dir == Direction.NORTH || dir == Direction.SOUTH) {
-                assertTrue(blueMirror.getSide(dir).action(Direction.SOUTH) == Direction.WEST);
-                assertTrue(blueMirror.getSide(dir).action(Direction.WEST) == Direction.SOUTH);
-                assertTrue(blueMirror.getSide(dir).action(Direction.NORTH) == Direction.EAST);
-                assertTrue(blueMirror.getSide(dir).action(Direction.EAST) == Direction.NORTH);
-            }
-        }*/
-
-        //assertThrows(IllegalArgumentException.class, () -> blueMirror.getSides()[0].action(Direction.DENEME));
+        LaserBeam beam = new LaserBeam(new Point(2,1), Direction.EAST);
+        assertTrue(blueMirror.getSide(Direction.WEST).action(beam) == Direction.NORTH);
     }
 
     @Test
@@ -101,7 +76,6 @@ public class ArenaTest {
         System.out.println(beam);
         System.out.println(beam.getPathHistory());
         //System.out.println(Direction.SOUTH.ordinal());
-
     }
 
 }

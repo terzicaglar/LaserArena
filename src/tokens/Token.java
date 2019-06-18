@@ -18,7 +18,7 @@ public abstract class Token {
 	 */
 	protected static int UNIQUE_ID = 0;
 	protected int id;
-	protected Point location;
+	//protected Point location;
 	protected Map<Direction, Side> sides;
 	protected Orientation orientation;
 

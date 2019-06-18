@@ -15,34 +15,13 @@ public interface Reflector {
 		{
 			case O0:
 			case O2:
-				switch(directionOfBeam) //for position of mirror like this: /
-				{
-					case NORTH: //beam is coming from top, i.e., NORTH
-						return Direction.EAST; //beam goes to left, i.e., WEST
-					case EAST: //EAST
-						return Direction.NORTH; //SOUTH
-					case SOUTH:
-						return Direction.WEST;
-					case WEST:
-						return Direction.SOUTH;
-				}
-				break;
+				//for position of mirror like this: /
+				return directionOfBeam.getBackSlashDirection();
 			case O1:
 			case O3:
-				switch(directionOfBeam) //for position of mirror like this: \
-				{
-					case NORTH: //beam is coming from top, i.e., NORTH
-						return Direction.WEST; //beam goes to left, i.e., EAST
-					case WEST: //EAST
-						return Direction.NORTH; //NORTH
-					case SOUTH:
-						return Direction.EAST;
-					case EAST:
-						return Direction.SOUTH;
-
-				}
-				break;
-			}
+				//for position of mirror like this: \
+				return directionOfBeam.getSlashDirection();
+		}
 		throw new IllegalArgumentException();
 	}
 	
