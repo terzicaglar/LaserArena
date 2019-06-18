@@ -19,15 +19,15 @@ public enum Direction {
 		EAST.opposite = WEST;
 		WEST.opposite = EAST;
 
-		NORTH.backSlash = EAST;
-		SOUTH.backSlash = WEST;
-		EAST.backSlash = NORTH;
-		WEST.backSlash = SOUTH;
+		NORTH.slash = EAST;
+		SOUTH.slash = WEST;
+		EAST.slash = NORTH;
+		WEST.slash = SOUTH;
 
-		NORTH.slash = WEST;
-		SOUTH.slash = EAST;
-		EAST.slash = SOUTH;
-		WEST.slash = NORTH;
+		NORTH.backSlash = WEST;
+		SOUTH.backSlash = EAST;
+		EAST.backSlash = SOUTH;
+		WEST.backSlash = NORTH;
 	}
 
 	public Direction getOppositeDirection() {

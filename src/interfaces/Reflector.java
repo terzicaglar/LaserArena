@@ -15,12 +15,12 @@ public interface Reflector {
 		{
 			case O0:
 			case O2:
-				//for position of mirror like this: /
-				return directionOfBeam.getBackSlashDirection();
+				//for position of slash mirror like this: /
+				return directionOfBeam.getSlashDirection();
 			case O1:
 			case O3:
-				//for position of mirror like this: \
-				return directionOfBeam.getSlashDirection();
+				//for position of back_slash mirror like this: \
+				return directionOfBeam.getBackSlashDirection();
 		}
 		throw new IllegalArgumentException();
 	}
