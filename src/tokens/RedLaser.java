@@ -7,10 +7,7 @@ package tokens;
 
 import core.Direction;
 import core.Orientation;
-import sides.BackSlashReflectorSide;
-import sides.SlashReflectorSide;
-import sides.StuckableSide;
-import sides.TargetableSide;
+import sides.*;
 
 public class RedLaser extends Token {
 
@@ -26,8 +23,33 @@ public class RedLaser extends Token {
     {
         switch(orientation)
         {
-            //TODO: Implement this method
-            //
+            case O0: //LaserGenerator on WEST
+                sides.put(Direction.SOUTH, new StuckableSide());
+                sides.put(Direction.NORTH, new StuckableSide());
+                sides.put(Direction.EAST, new StuckableSide());
+                sides.put(Direction.WEST, new BeamCreatorStuckableSide());
+                break;
+            case O1: //LaserGenerator on NORTH
+                sides.put(Direction.SOUTH, new StuckableSide());
+                sides.put(Direction.NORTH, new BeamCreatorStuckableSide());
+                sides.put(Direction.EAST, new StuckableSide());
+                sides.put(Direction.WEST, new StuckableSide());
+                break;
+            case O2: //LaserGenerator on EAST
+                sides.put(Direction.SOUTH, new StuckableSide());
+                sides.put(Direction.NORTH, new StuckableSide());
+                sides.put(Direction.EAST, new BeamCreatorStuckableSide());
+                sides.put(Direction.WEST, new StuckableSide());
+                break;
+            case O3: //LaserGenerator on SOUTH
+                sides.put(Direction.SOUTH, new BeamCreatorStuckableSide());
+                sides.put(Direction.NORTH, new StuckableSide());
+                sides.put(Direction.EAST, new StuckableSide());
+                sides.put(Direction.WEST, new StuckableSide());
+                break;
+            default:
+                //TODO Type of exception may be a better than IllegalArgumentException
+                throw new IllegalArgumentException();
         }
     }
 

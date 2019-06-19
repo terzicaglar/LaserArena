@@ -7,25 +7,25 @@ import core.Direction;
 import core.GameMap;
 import core.LaserBeam;
 import core.Orientation;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tokens.BlueMirror;
-import tokens.PurpleTarget;
-import tokens.Token;
-import tokens.YellowBridge;
+import tokens.*;
 
 import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ArenaTest {
-
-
+    LaserBeam beam;
+    @BeforeEach
+    public void initEach()
+    {
+        beam = new LaserBeam(new Point(2,1), Direction.EAST);
+    }
 
     @Test
     public void BackSlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.O1); //Backslash
-
-        LaserBeam beam = new LaserBeam(new Point(2,1), Direction.EAST);
         assertTrue(blueMirror.getSide(Direction.WEST).action(beam) == Direction.SOUTH);
 
     }
@@ -33,8 +33,6 @@ public class ArenaTest {
     @Test
     public void SlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.O2); //SLASH
-
-        LaserBeam beam = new LaserBeam(new Point(2,1), Direction.EAST);
         assertTrue(blueMirror.getSide(Direction.WEST).action(beam) == Direction.NORTH);
     }
 
@@ -56,6 +54,15 @@ public class ArenaTest {
         assertTrue(yellowBridge2.getSide(Direction.WEST).action(Direction.EAST) == Direction.NONE); //stucks
         */
 
+    }
+
+    @Test
+    public void RedLaserCreationTest(){
+        Token generator1 = new RedLaser(Orientation.O0);
+        Token generator2 = new RedLaser(Orientation.O1);
+
+        assertTrue(generator1.getSide(Direction.WEST).action(beam) == Direction.NONE);
+        assertTrue(generator2.getSide(Direction.WEST).action(beam) == Direction.NONE);
     }
 
     @Test
