@@ -36,4 +36,6 @@ public abstract class Token {
 	{
 		return sides.get(direction);
 	}
+
+	abstract protected void construct();
 }

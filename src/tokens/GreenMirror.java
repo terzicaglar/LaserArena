@@ -6,4 +6,8 @@
 package tokens;
 
 public class GreenMirror extends Token{
+    @Override
+    protected void construct() {
+
+    }
 }

@@ -17,8 +17,7 @@ public class WhiteObstacle extends Token {
         construct();
     }
 
-    //TODO This may be an abstract class in Token OR this may be done with setSides method, I have not decided on that
-    private void construct()
+    protected void construct()
     {
         sides.put(Direction.NORTH, new TransparentSide());
         sides.put(Direction.WEST, new TransparentSide());
