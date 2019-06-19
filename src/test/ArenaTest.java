@@ -17,10 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ArenaTest {
     LaserBeam beam;
+    GameMap map;
     @BeforeEach
     public void initEach()
     {
         beam = new LaserBeam(new Point(2,1), Direction.EAST);
+        map = new GameMap(5,5);
     }
 
     @Test
@@ -68,7 +70,7 @@ public class ArenaTest {
     @Test
     public void CreateLaserAndHitAToken(){
         LaserBeam beam = new LaserBeam(new Point(1,1), Direction.EAST);
-        GameMap map = new GameMap(5,5);
+
         beam.move();
         assertTrue(GameMap.getTokenLocatedInXY(2,1) == null);
         assertTrue(beam.getLocation().getX() == 2 && beam.getLocation().getY() == 1);
