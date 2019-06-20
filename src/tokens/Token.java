@@ -18,7 +18,7 @@ public abstract class Token {
 	 */
 	protected static int UNIQUE_ID = 0;
 	protected int id;
-	//protected Point location;
+	//protected Point location; //TODO: Currently, tokens do not have location field, in the future it can be added
 	protected Map<Direction, Side> sides;
 	protected Orientation orientation;
 

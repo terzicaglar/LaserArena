@@ -1,13 +1,14 @@
-/**
- * GameMap of the game, where tokens are placed and laser(s) pass.
- */
 package core;
 
+import tokens.RedLaser;
 import tokens.Token;
 
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * GameMap of the game, where tokens are placed and laser(s) pass.
+ */
 public class GameMap {
 	private int width, height;
 	private static Token[][] tokens;
@@ -30,6 +31,8 @@ public class GameMap {
 			&& point.getX() < width && point.getX() >= 0)
 		{
 			tokens[(int) point.getX()][(int) point.getY()] = token;
+			if(token instanceof RedLaser)
+				addLaserBeam(new LaserBeam(point, ((RedLaser) token).getGeneratedLaserDirection()));
 			return true;
 		}
 		else

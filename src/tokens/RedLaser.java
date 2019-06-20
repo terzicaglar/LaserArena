@@ -52,4 +52,22 @@ public class RedLaser extends Token {
         }
     }
 
+    public Direction getGeneratedLaserDirection()
+    {
+        switch(orientation)
+        {
+            case GENERATOR_ON_WEST: //LaserGenerator on WEST
+                return Direction.WEST;
+            case GENERATOR_ON_NORTH: //LaserGenerator on NORTH
+                return Direction.NORTH;
+            case GENERATOR_ON_EAST: //LaserGenerator on EAST
+                return Direction.EAST;
+            case GENERATOR_ON_SOUTH: //LaserGenerator on SOUTH
+                return Direction.SOUTH;
+            default:
+                //TODO Type of exception may be a better than IllegalArgumentException
+                throw new IllegalArgumentException();
+        }
+    }
+
 }
