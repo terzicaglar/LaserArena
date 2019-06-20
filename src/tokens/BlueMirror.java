@@ -21,16 +21,14 @@ public class BlueMirror extends Token{
     {
         switch(orientation)
         {
-            case O0:
-            case O2:
+            case SLASH_MIRROR:
                 //Slash Type Mirror "/"
                 sides.put(Direction.NORTH, new SlashReflectorSide());
                 sides.put(Direction.WEST, new SlashReflectorSide());
                 sides.put(Direction.EAST, new SlashReflectorSide());
                 sides.put(Direction.SOUTH, new SlashReflectorSide());
                 break;
-            case O1:
-            case O3:
+            case BACKSLASH_MIRROR:
                 //BackSlash Type Mirror "\"
                 sides.put(Direction.NORTH, new BackSlashReflectorSide());
                 sides.put(Direction.WEST, new BackSlashReflectorSide());

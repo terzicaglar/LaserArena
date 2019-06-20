@@ -24,16 +24,14 @@ public class GreenMirror extends Token{
     {
         switch(orientation)
         {
-            case O0:
-            case O2:
+            case SLASH_MIRROR:
                 //Slash Type Mirror "/"
                 sides.put(Direction.NORTH, new SlashReflectorTransparentSide());
                 sides.put(Direction.WEST, new SlashReflectorTransparentSide());
                 sides.put(Direction.EAST, new SlashReflectorTransparentSide());
                 sides.put(Direction.SOUTH, new SlashReflectorTransparentSide());
                 break;
-            case O1:
-            case O3:
+            case BACKSLASH_MIRROR:
                 //BackSlash Type Mirror "\"
                 sides.put(Direction.NORTH, new BackSlashReflectorTransparentSide());
                 sides.put(Direction.WEST, new BackSlashReflectorTransparentSide());

@@ -8,6 +8,6 @@ import interfaces.Reflector;
 public class SlashReflectorSide extends Side implements Reflector {
     @Override
     public Direction action(LaserBeam laserBeam) {
-        return reflect(laserBeam.getDirection(), Orientation.O0);
+        return reflect(laserBeam.getDirection(), Orientation.SLASH_MIRROR);
     }
 }

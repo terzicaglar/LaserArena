@@ -7,8 +7,16 @@ package core;
  */
 
 public enum Orientation {
-    O0,
-    O1,
-    O2,
-    O3;
+    SLASH_MIRROR,
+    BACKSLASH_MIRROR,
+    HORIZONTAL_BRIDGE,
+    VERTICAL_BRIDGE,
+    GENERATOR_ON_WEST,
+    GENERATOR_ON_EAST,
+    GENERATOR_ON_NORTH,
+    GENERATOR_ON_SOUTH,
+    TARGET_ON_WEST,
+    TARGET_ON_EAST,
+    TARGET_ON_NORTH,
+    TARGET_ON_SOUTH;
 }

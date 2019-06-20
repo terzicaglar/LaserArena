@@ -22,25 +22,25 @@ public class RedLaser extends Token {
     {
         switch(orientation)
         {
-            case O0: //LaserGenerator on WEST
+            case GENERATOR_ON_WEST: //LaserGenerator on WEST
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new StuckableSide());
                 sides.put(Direction.EAST, new StuckableSide());
                 sides.put(Direction.WEST, new BeamCreatorStuckableSide());
                 break;
-            case O1: //LaserGenerator on NORTH
+            case GENERATOR_ON_NORTH: //LaserGenerator on NORTH
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new BeamCreatorStuckableSide());
                 sides.put(Direction.EAST, new StuckableSide());
                 sides.put(Direction.WEST, new StuckableSide());
                 break;
-            case O2: //LaserGenerator on EAST
+            case GENERATOR_ON_EAST: //LaserGenerator on EAST
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new StuckableSide());
                 sides.put(Direction.EAST, new BeamCreatorStuckableSide());
                 sides.put(Direction.WEST, new StuckableSide());
                 break;
-            case O3: //LaserGenerator on SOUTH
+            case GENERATOR_ON_SOUTH: //LaserGenerator on SOUTH
                 sides.put(Direction.SOUTH, new BeamCreatorStuckableSide());
                 sides.put(Direction.NORTH, new StuckableSide());
                 sides.put(Direction.EAST, new StuckableSide());

@@ -26,25 +26,25 @@ public class PurpleTarget extends Token {
     {
         switch(orientation)
         {
-            case O0: //Target on WEST, Stuckable on NORTH, Mirrors on EAST and SOUTH
+            case TARGET_ON_WEST: //Target on WEST, Stuckable on NORTH, Mirrors on EAST and SOUTH
                 sides.put(Direction.SOUTH, new SlashReflectorSide());
                 sides.put(Direction.NORTH, new StuckableSide());
                 sides.put(Direction.EAST, new SlashReflectorSide());
                 sides.put(Direction.WEST, new TargetableSide());
                 break;
-            case O1: //Target on NORTH
+            case TARGET_ON_NORTH: //Target on NORTH
                 sides.put(Direction.SOUTH, new BackSlashReflectorSide());
                 sides.put(Direction.NORTH, new TargetableSide());
                 sides.put(Direction.EAST, new StuckableSide());
                 sides.put(Direction.WEST, new BackSlashReflectorSide());
                 break;
-            case O2: //Target on EAST
+            case TARGET_ON_EAST: //Target on EAST
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new SlashReflectorSide());
                 sides.put(Direction.EAST, new TargetableSide());
                 sides.put(Direction.WEST, new SlashReflectorSide());
                 break;
-            case O3: //Target on SOUTH
+            case TARGET_ON_SOUTH: //Target on SOUTH
                 sides.put(Direction.SOUTH, new TargetableSide());
                 sides.put(Direction.NORTH, new BackSlashReflectorSide());
                 sides.put(Direction.EAST, new BackSlashReflectorSide());

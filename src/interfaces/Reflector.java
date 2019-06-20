@@ -13,12 +13,10 @@ public interface Reflector {
 	{
 		switch (orientation)
 		{
-			case O0:
-			case O2:
+			case SLASH_MIRROR:
 				//for position of slash mirror like this: /
 				return directionOfBeam.getSlashDirection();
-			case O1:
-			case O3:
+			case BACKSLASH_MIRROR:
 				//for position of back_slash mirror like this: \
 				return directionOfBeam.getBackSlashDirection();
 		}
