@@ -19,6 +19,8 @@ public class LaserBeam {
 		pathHistory = new ArrayList<Point>();
 	}
 
+	//TODO: moveUntilHitATokenOrOutOfBounds() method will be implemented which uses move() method
+
 	//moves the LaserBeam by one cell in the current Direction
 	public void move()
 	{

@@ -87,4 +87,18 @@ public class ArenaTest {
         //System.out.println(Direction.SOUTH.ordinal());
     }
 
+    @Test
+    public void GameMapWithTwoPurpleTargetsAndOneGreenMirror()
+    {
+        Token greenMirror = new GreenMirror(Orientation.BACKSLASH_MIRROR);
+        Token target1 = new PurpleTarget(Orientation.TARGET_ON_WEST);
+        Token target2 = new PurpleTarget(Orientation.TARGET_ON_NORTH);
+
+        map.addToken(greenMirror, new Point(3,1));
+        map.addToken(target1, new Point(4,1));
+        map.addToken(target2, new Point(3,3));
+
+        //TODO: not completed, test if two lasers hit two targets
+    }
+
 }
