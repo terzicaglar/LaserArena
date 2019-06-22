@@ -10,6 +10,6 @@ import core.Direction;
 public interface Stuckable {
     default Direction stuck()
     {
-        return Direction.NONE;
+        return Direction.STUCKED;
     }
 }

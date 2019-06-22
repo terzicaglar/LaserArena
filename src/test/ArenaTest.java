@@ -63,8 +63,8 @@ public class ArenaTest {
         Token generator1 = new RedLaser(Orientation.GENERATOR_ON_WEST);
         Token generator2 = new RedLaser(Orientation.GENERATOR_ON_NORTH);
 
-        assertTrue(generator1.getSide(Direction.WEST).action(beam) == Direction.NONE);
-        assertTrue(generator2.getSide(Direction.WEST).action(beam) == Direction.NONE);
+        assertTrue(generator1.getSide(Direction.WEST).action(beam) == Direction.STUCKED);
+        assertTrue(generator2.getSide(Direction.WEST).action(beam) == Direction.STUCKED);
     }
 
     @Test
