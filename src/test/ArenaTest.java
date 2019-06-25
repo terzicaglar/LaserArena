@@ -92,19 +92,15 @@ public class ArenaTest {
         //LaserBeam beam = new LaserBeam(new Point(1,1), Direction.EAST);
         //TODO: not completed
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST),new Point(1,1));
-        beam.move();
-        assertTrue(GameMap.getTokenLocatedInXY(2,1) == null);
-        assertTrue(beam.getLocation().getX() == 2 && beam.getLocation().getY() == 1);
-        beam.move();
         assertTrue( map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST),new Point(3,1))); //"/" Mirror
 
         assertFalse(GameMap.getTokenLocatedInXY(3,1) == null);
         Token t = GameMap.getTokenLocatedInXY(3,1);
         //assertTrue(t instanceof YellowBridge);
-        beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
-        //beam.move();
-        System.out.println(beam);
-        System.out.println(beam.getPathHistory());
+        GameMap.getBeams().get(0).setDirection( t.getSide(GameMap.getBeams().get(0).getDirection().getOppositeDirection()).action(GameMap.getBeams().get(0)));
+        //GameMap.getBeams().get(0).move();
+        System.out.println(GameMap.getBeams().get(0));
+        System.out.println(GameMap.getBeams().get(0).getPathHistory());
         //System.out.println(Direction.SOUTH.ordinal());
     }
 
