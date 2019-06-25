@@ -14,7 +14,7 @@ public enum Direction {
 	OUT_OF_BOUNDS; //used for Stucked Laser Beam
 
 	private Direction opposite, backSlash, slash;
-	private boolean moveable;
+	private boolean movable;
 
 	static {
 		NORTH.opposite = SOUTH;
@@ -32,13 +32,13 @@ public enum Direction {
 		EAST.backSlash = SOUTH;
 		WEST.backSlash = NORTH;
 
-		NORTH.moveable = true;
-		SOUTH.moveable = true;
-		EAST.moveable = true;
-		WEST.moveable = true;
-		TARGET_HIT.moveable = false;
-		STUCKED.moveable = false;
-		OUT_OF_BOUNDS.moveable = false;
+		NORTH.movable = true;
+		SOUTH.movable = true;
+		EAST.movable = true;
+		WEST.movable = true;
+		TARGET_HIT.movable = false;
+		STUCKED.movable = false;
+		OUT_OF_BOUNDS.movable = false;
 	}
 
 	public Direction getOppositeDirection() {
@@ -50,8 +50,8 @@ public enum Direction {
 	public Direction getBackSlashDirection() {
 		return backSlash;
 	}
-	public boolean moveable()
+	public boolean isMovable()
 	{
-		return moveable;
+		return movable;
 	}
 }
