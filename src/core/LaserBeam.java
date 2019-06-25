@@ -20,6 +20,14 @@ public class LaserBeam {
 	}
 
 	//TODO: moveUntilHitATokenOrOutOfBounds() method will be implemented which uses move() method
+	public void moveUntilHitATokenOrOutOfBounds()
+	{
+		while(direction.isMovable())
+		{
+			move();
+		}
+		//TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
+	}
 
 	//moves the LaserBeam by one cell in the current Direction
 	public void move()
@@ -39,6 +47,8 @@ public class LaserBeam {
 			case SOUTH:
 				location = new Point(location.x, location.y+1);
 				break;
+			default:
+				throw new IllegalArgumentException(); //if LaserBeam not movable, return false
 		}
 		//TODO This commented part should be checked in GameMap, if LaserBeam goes out of bounds
 		/*try {
