@@ -19,15 +19,7 @@ public class LaserBeam {
 		pathHistory = new ArrayList<Point>();
 	}
 
-	//TODO: moveUntilHitATokenOrOutOfBounds() method will be implemented which uses move() method
-	public void moveUntilHitATokenOrOutOfBounds()
-	{
-		while(direction.isMovable())
-		{
-			move();
-		}
-		//TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
-	}
+
 
 	//moves the LaserBeam by one cell in the current Direction
 	public void move()
@@ -90,4 +82,6 @@ public class LaserBeam {
 	public void setPathHistory(ArrayList<Point> pathHistory) {
 		this.pathHistory = pathHistory;
 	}
+
+
 }

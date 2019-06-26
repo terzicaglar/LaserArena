@@ -82,11 +82,12 @@ public class ArenaTest {
         //assertTrue(t instanceof YellowBridge);
         beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
         //beam.move();
-        System.out.println(beam);
-        System.out.println(beam.getPathHistory());
+        //System.out.println(beam);
+        //System.out.println(beam.getPathHistory());
         //System.out.println(Direction.SOUTH.ordinal());
     }
 
+    /*
     @Test
     public void CreateLaserAndHitATokenUsingmoveUntilHitATokenOrOutOfBounds(){
         //LaserBeam beam = new LaserBeam(new Point(1,1), Direction.EAST);
@@ -103,8 +104,8 @@ public class ArenaTest {
         System.out.println(GameMap.getBeams().get(0).getPathHistory());
         //System.out.println(Direction.SOUTH.ordinal());
     }
+    */
 
-    @Test
     public void GameMapWithTwoPurpleTargetsAndOneGreenMirror()
     {
         Token greenMirror = new GreenMirror(Orientation.BACKSLASH_MIRROR);
@@ -116,6 +117,14 @@ public class ArenaTest {
         map.addToken(target2, new Point(3,3));
 
         //TODO: not completed, test if two lasers hit two targets
+    }
+
+    @Test
+    public void checkMoveBeamsUntilNotMovable()
+    {
+        GameMapWithTwoPurpleTargetsAndOneGreenMirror();
+        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST),new Point(1,1));
+        map.moveBeamsUntilNotMovable();
     }
 
 }

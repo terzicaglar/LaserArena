@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * GameMap of the game, where tokens are placed and laser(s) pass.
  */
 public class GameMap {
+	private static final int MAX_LOOP = 1000;
 	private int width, height;
 	private static Token[][] tokens;
 	private static ArrayList<LaserBeam> beams = new ArrayList<>(4);;
@@ -25,6 +26,11 @@ public class GameMap {
 		return tokens[x][y];
 	}
 
+	public static Token getTokenLocatedInPoint(Point p)
+	{
+		return tokens[(int)p.getX()][(int)p.getY()];
+	}
+
 	public boolean addToken(Token token, Point point)
 	{
 		if(point.getY() < height && point.getY() >= 0
@@ -37,6 +43,36 @@ public class GameMap {
 		}
 		else
 			return false;
+	}
+
+	public void moveBeamsUntilNotMovable()
+	{
+		//TODO: not completed
+		System.out.println("init beam:" + beams.get(0));
+		LaserBeam beam;
+		int i;
+		for(int k = 0; k < beams.size(); k++)
+		{
+			beam = beams.get(k);
+			i = 0;
+			while(beam.getDirection().isMovable() && i < MAX_LOOP )
+			{
+				beam.move();
+				Token t = getTokenLocatedInPoint(beam.getLocation());
+				if(  t != null)
+				{
+					beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
+				}
+				i++;
+			}
+			System.out.println( "final beam(s): " + beam);
+		}
+
+		/*while(direction.isMovable())
+		{
+			move();
+		}*/
+		//TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
 	}
 
 	public int getWidth() {
