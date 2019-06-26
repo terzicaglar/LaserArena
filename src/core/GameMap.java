@@ -58,12 +58,21 @@ public class GameMap {
 			while(beam.getDirection().isMovable() && i < MAX_LOOP )
 			{
 				beam.move();
-				Token t = getTokenLocatedInPoint(beam.getLocation());
-				if(  t != null)
+				if(isOutOfBounds(beam.getLocation()))
 				{
-					beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
+					beam.setDirection(Direction.OUT_OF_BOUNDS);
+				}
+				else
+				{
+					Token t = getTokenLocatedInPoint(beam.getLocation());
+					if(t != null)
+					{
+						beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
+					}
+
 				}
 				i++;
+
 			}
 			System.out.println( "final beam(s): " + beam);
 		}
@@ -73,6 +82,12 @@ public class GameMap {
 			move();
 		}*/
 		//TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
+	}
+
+	private boolean isOutOfBounds(Point p)
+	{
+		return (p.getX() >= width || p.getY() >= height
+					|| p.getX() < 0 || p.getY() < 0);
 	}
 
 	public int getWidth() {

@@ -106,12 +106,15 @@ public class ArenaTest {
     }
     */
 
-    public void GameMapWithTwoPurpleTargetsAndOneGreenMirror()
+    public void GameMapWithGreenAndPurpleTokens()
     {
         Token greenMirror = new GreenMirror(Orientation.BACKSLASH_MIRROR);
         Token target1 = new PurpleTarget(Orientation.TARGET_ON_WEST);
         Token target2 = new PurpleTarget(Orientation.TARGET_ON_NORTH);
+        //Token bridge1 = new YellowBridge(Orientation.HORIZONTAL_BRIDGE);
+        Token greenMirror2 = new GreenMirror(Orientation.SLASH_MIRROR);
 
+        map.addToken(greenMirror2, new Point(2,1));
         map.addToken(greenMirror, new Point(3,1));
         map.addToken(target1, new Point(4,1));
         map.addToken(target2, new Point(3,3));
@@ -120,11 +123,32 @@ public class ArenaTest {
     }
 
     @Test
+    public void GameMapWitAllTokens()
+    {
+        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST), new Point(0,3));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST), new Point(0,0));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(0,2));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(3,4));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST), new Point(4,3));
+        map.addToken(new BlueMirror(Orientation.SLASH_MIRROR), new Point(4,4));
+        map.addToken(new BlueMirror(Orientation.BACKSLASH_MIRROR), new Point(2,2));
+        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(3,3));
+        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(2,3));
+        map.addToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE), new Point(0,1));
+        map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE), new Point(1,3));
+        map.addToken(new WhiteObstacle(), new Point(1,2));
+        map.addToken(new WhiteObstacle(), new Point(4,0));
+        map.moveBeamsUntilNotMovable();
+
+        //TODO: not completed, test if two lasers hit two targets
+    }
+
+    @Test
     public void checkMoveBeamsUntilNotMovable()
     {
-        GameMapWithTwoPurpleTargetsAndOneGreenMirror();
+       /* GameMapWithGreenAndPurpleTokens();
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST),new Point(1,1));
-        map.moveBeamsUntilNotMovable();
+        map.moveBeamsUntilNotMovable();*/
     }
 
 }

@@ -11,7 +11,7 @@ public enum Direction {
 	WEST,
 	TARGET_HIT,
 	STUCKED,
-	OUT_OF_BOUNDS; //used for Stucked Laser Beam
+	OUT_OF_BOUNDS; //used for Laser Beam out of Map
 
 	private Direction opposite, backSlash, slash;
 	private boolean movable;

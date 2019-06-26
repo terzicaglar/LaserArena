@@ -17,6 +17,7 @@ public class LaserBeam {
 		this.direction = direction;
 		this.location = location;
 		pathHistory = new ArrayList<Point>();
+		pathHistory.add(location);
 	}
 
 
@@ -24,7 +25,7 @@ public class LaserBeam {
 	//moves the LaserBeam by one cell in the current Direction
 	public void move()
 	{
-		pathHistory.add(location);
+
 		switch(direction)
 		{
 			case EAST:
@@ -42,6 +43,7 @@ public class LaserBeam {
 			default:
 				throw new IllegalArgumentException(); //if LaserBeam not movable, return false
 		}
+		pathHistory.add(location);
 		//TODO This commented part should be checked in GameMap, if LaserBeam goes out of bounds
 		/*try {
 			t = GameMap.getTokenLocatedInXY(location.x, location.y);
@@ -72,7 +74,7 @@ public class LaserBeam {
 
 	@Override
 	public String toString() {
-		return "Direction: " + direction + " , Location: (" + location.getX() + "," + location.getY() + ")";
+		return "Direction: " + direction + " , Location: (" + location.getX() + "," + location.getY() + ")" + ", Path: " + pathHistory;
 	}
 
 	public ArrayList<Point> getPathHistory() {

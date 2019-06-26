@@ -10,10 +10,9 @@ import sides.TransparentSide;
 
 public class WhiteObstacle extends Token {
 
-    public WhiteObstacle(Orientation orientation)
+    public WhiteObstacle()
     {
         super();
-        this.orientation = orientation;
         construct();
     }
 
