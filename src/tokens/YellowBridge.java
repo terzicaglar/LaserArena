@@ -21,15 +21,15 @@ public class YellowBridge extends Token{
 
         switch(orientation)
         {
-            case HORIZONTAL_BRIDGE:
-                //Horizontal Bridge "--"
+            case VERTICAL_BRIDGE:
+                //Vertical Bridge "|"
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new StuckableSide());
                 sides.put(Direction.EAST, new TransparentSide());
                 sides.put(Direction.WEST, new TransparentSide());
                 break;
-            case VERTICAL_BRIDGE:
-                //Vertical Bridge "|"
+            case HORIZONTAL_BRIDGE:
+                //Horizontal Bridge "--"
                 sides.put(Direction.EAST, new StuckableSide());
                 sides.put(Direction.WEST, new StuckableSide());
                 sides.put(Direction.SOUTH, new TransparentSide());
