@@ -9,17 +9,29 @@ package tokens;
 
 import core.Direction;
 import core.Orientation;
-import sides.BackSlashReflectorSide;
-import sides.SlashReflectorSide;
-import sides.StuckableSide;
-import sides.TargetableSide;
+import sides.*;
 
 public class PurpleTarget extends Token {
+    public boolean isMandatoryTarget() {
+        return isMandatoryTarget;
+    }
+
+    boolean isMandatoryTarget;
+
     public PurpleTarget(Orientation orientation)
     {
         super();
         this.orientation = orientation;
         construct();
+        isMandatoryTarget = false;
+    }
+
+    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget)
+    {
+        super();
+        this.orientation = orientation;
+        construct();
+        this.isMandatoryTarget = isMandatoryTarget;
     }
 
     public String toIconString() {
@@ -40,28 +52,41 @@ public class PurpleTarget extends Token {
 
     protected void construct()
     {
+        //TODO: Mandatory Target will be added
         switch(orientation)
         {
             case TARGET_ON_WEST: //Target on WEST, Stuckable on NORTH, Mirrors on EAST and SOUTH
                 sides.put(Direction.SOUTH, new SlashReflectorSide());
                 sides.put(Direction.NORTH, new StuckableSide());
                 sides.put(Direction.EAST, new SlashReflectorSide());
-                sides.put(Direction.WEST, new TargetableSide());
+                if(isMandatoryTarget)
+                    sides.put(Direction.WEST, new MandatoryTargetableSide());
+                else
+                    sides.put(Direction.WEST, new TargetableSide());
                 break;
             case TARGET_ON_NORTH: //Target on NORTH
                 sides.put(Direction.SOUTH, new BackSlashReflectorSide());
-                sides.put(Direction.NORTH, new TargetableSide());
+                if(isMandatoryTarget)
+                    sides.put(Direction.NORTH, new MandatoryTargetableSide());
+                else
+                    sides.put(Direction.NORTH, new TargetableSide());
                 sides.put(Direction.EAST, new StuckableSide());
                 sides.put(Direction.WEST, new BackSlashReflectorSide());
                 break;
             case TARGET_ON_EAST: //Target on EAST
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new SlashReflectorSide());
-                sides.put(Direction.EAST, new TargetableSide());
+                if(isMandatoryTarget)
+                    sides.put(Direction.EAST, new MandatoryTargetableSide());
+                else
+                    sides.put(Direction.EAST, new TargetableSide());
                 sides.put(Direction.WEST, new SlashReflectorSide());
                 break;
             case TARGET_ON_SOUTH: //Target on SOUTH
-                sides.put(Direction.SOUTH, new TargetableSide());
+                if(isMandatoryTarget)
+                    sides.put(Direction.SOUTH, new MandatoryTargetableSide());
+                else
+                    sides.put(Direction.SOUTH, new TargetableSide());
                 sides.put(Direction.NORTH, new BackSlashReflectorSide());
                 sides.put(Direction.EAST, new BackSlashReflectorSide());
                 sides.put(Direction.WEST, new StuckableSide());

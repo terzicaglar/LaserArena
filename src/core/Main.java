@@ -48,7 +48,7 @@ public class Main {
 		map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST), new Point(0,0));
 		map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(0,2));
 		map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(3,4));
-		map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST), new Point(4,3));
+		map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST,true), new Point(4,3));
 		map.addToken(new BlueMirror(Orientation.SLASH_MIRROR), new Point(4,4));
 		map.addToken(new BlueMirror(Orientation.BACKSLASH_MIRROR), new Point(2,2));
 		map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(3,3));

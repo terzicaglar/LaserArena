@@ -1,5 +1,6 @@
 package core;
 
+import tokens.PurpleTarget;
 import tokens.RedLaser;
 import tokens.Token;
 
@@ -11,11 +12,19 @@ import java.util.ArrayList;
  */
 public class GameMap {
 	private static final int MAX_LOOP = 1000;
-	private int width, height;
+	private int width, height, noOfTargets;
 	private static Token[][] tokens;
 	private static ArrayList<LaserBeam> beams = new ArrayList<>(4);;
 	public GameMap(int width, int height)
 	{
+		this.setWidth(width);
+		this.setHeight(height);
+		tokens = new Token[width][height];
+	}
+
+	public GameMap(int width, int height, int noOfTargets)
+	{
+		this.noOfTargets = noOfTargets;
 		this.setWidth(width);
 		this.setHeight(height);
 		tokens = new Token[width][height];
@@ -82,6 +91,39 @@ public class GameMap {
 			move();
 		}*/
 		//TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
+	}
+
+	private int getWantedMandatoryTargets()
+	{
+		int noOfWantedMandatoryTargets = 0;
+		for(Token token_arr[]: tokens)
+		{
+			for(Token t: token_arr)
+			{
+				if(t instanceof PurpleTarget && ((PurpleTarget) t).isMandatoryTarget())
+				{
+					noOfWantedMandatoryTargets++;
+				}
+			}
+		}
+		return noOfWantedMandatoryTargets;
+	}
+
+	private boolean checkIfAllTargetsHit()
+	{
+		//TODO: not tested
+		int noOfMandatoryTargetsHit = 0;
+		int noOfRandomTargetsHit = 0;
+		for(LaserBeam beam: beams)
+		{
+			if(beam.getDirection() == Direction.TARGET_HIT)
+				noOfRandomTargetsHit++;
+			else if( beam.getDirection() == Direction.TARGET_HIT_MANDATORY)
+				noOfMandatoryTargetsHit++;
+		}
+
+		return (noOfMandatoryTargetsHit == getWantedMandatoryTargets() &&
+				(noOfMandatoryTargetsHit + noOfRandomTargetsHit) == noOfTargets);
 	}
 
 	private boolean isOutOfBounds(Point p)
