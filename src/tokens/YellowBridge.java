@@ -16,6 +16,18 @@ public class YellowBridge extends Token{
         construct();
     }
 
+    public String toIconString() {
+        switch(orientation) {
+            case HORIZONTAL_BRIDGE:
+                return this.getClass().getSimpleName().charAt(0) + " --";
+            case VERTICAL_BRIDGE:
+                return this.getClass().getSimpleName().charAt(0) + " |";
+            default:
+                return null;
+        }
+
+    }
+
     protected void construct()
     {
 

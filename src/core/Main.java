@@ -3,6 +3,8 @@
  */
 package core;
 
+import tokens.*;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -20,7 +22,7 @@ public class Main {
 	public static void main(String[] args) {
 		//Boolean b1 = new Boolean();
 		map = new GameMap(width, height);
-		lb = new LaserBeam(new Point(2, 3), Direction.SOUTH);
+		initMap();
 		panels = new ArenaPanel[width][height];
 		JFrame f = new JFrame("Laser Arena");
 		
@@ -39,5 +41,21 @@ public class Main {
 	    f.setVisible(true);  
 	    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
+	public static void initMap()
+	{
+		map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST), new Point(0,3));
+		map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST), new Point(0,0));
+		map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(0,2));
+		map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(3,4));
+		map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST), new Point(4,3));
+		map.addToken(new BlueMirror(Orientation.SLASH_MIRROR), new Point(4,4));
+		map.addToken(new BlueMirror(Orientation.BACKSLASH_MIRROR), new Point(2,2));
+		map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(3,3));
+		map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(2,3));
+		map.addToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE), new Point(0,1));
+		map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE), new Point(1,3));
+		map.addToken(new WhiteObstacle(), new Point(1,2));
+		map.addToken(new WhiteObstacle(), new Point(4,0));
+	}
 }

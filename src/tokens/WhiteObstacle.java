@@ -16,6 +16,12 @@ public class WhiteObstacle extends Token {
         construct();
     }
 
+    public String toIconString() {
+        return "" + this.getClass().getSimpleName().charAt(0);
+
+    }
+
+
     protected void construct()
     {
         sides.put(Direction.NORTH, new TransparentSide());

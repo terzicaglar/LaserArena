@@ -17,6 +17,19 @@ public class BlueMirror extends Token{
         construct();
     }
 
+    @Override
+    public String toIconString() {
+        switch(orientation) {
+            case SLASH_MIRROR:
+                return this.getClass().getSimpleName().charAt(0) + " /";
+            case BACKSLASH_MIRROR:
+                return this.getClass().getSimpleName().charAt(0) + " \\";
+            default:
+                return null;
+        }
+
+    }
+
     protected void construct()
     {
         switch(orientation)

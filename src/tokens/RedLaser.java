@@ -18,6 +18,22 @@ public class RedLaser extends Token {
         construct();
     }
 
+    public String toIconString() {
+        switch(orientation) {
+            case GENERATOR_ON_WEST:
+                return this.getClass().getSimpleName().charAt(0) + " W";
+            case GENERATOR_ON_NORTH:
+                return this.getClass().getSimpleName().charAt(0) + " N";
+            case GENERATOR_ON_EAST:
+                return this.getClass().getSimpleName().charAt(0) + " E";
+            case GENERATOR_ON_SOUTH:
+                return this.getClass().getSimpleName().charAt(0) + " S";
+            default:
+                return null;
+        }
+
+    }
+
     protected void construct()
     {
         switch(orientation)

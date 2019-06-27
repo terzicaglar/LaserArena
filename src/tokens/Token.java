@@ -37,5 +37,7 @@ public abstract class Token {
 		return sides.get(direction);
 	}
 
+	abstract public String toIconString();
+
 	abstract protected void construct();
 }
