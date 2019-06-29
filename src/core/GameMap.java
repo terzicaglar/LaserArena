@@ -109,7 +109,7 @@ public class GameMap {
 		return noOfWantedMandatoryTargets;
 	}
 
-	private boolean checkIfAllTargetsHit()
+	private boolean checkIfAllWantedTargetsHit()
 	{
 		//TODO: not tested
 		int noOfMandatoryTargetsHit = 0;
