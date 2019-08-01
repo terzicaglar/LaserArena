@@ -5,12 +5,8 @@ package core;
 
 import tokens.*;
 
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.Point;
-
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
 
 public class Main {
 	
@@ -23,6 +19,7 @@ public class Main {
 		//Boolean b1 = new Boolean();
 		map = new GameMap(width, height);
 		initMap();
+
 		panels = new ArenaPanel[width][height];
 		JFrame f = new JFrame("Laser Arena");
 		
@@ -57,5 +54,6 @@ public class Main {
 		map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE), new Point(1,3));
 		map.addToken(new WhiteObstacle(), new Point(1,2));
 		map.addToken(new WhiteObstacle(), new Point(4,0));
+		map.moveBeamsUntilNotMovable();
 	}
 }

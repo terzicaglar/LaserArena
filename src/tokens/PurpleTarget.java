@@ -37,13 +37,13 @@ public class PurpleTarget extends Token {
     public String toIconString() {
         switch(orientation) {
             case TARGET_ON_WEST:
-                return this.getClass().getSimpleName().charAt(0) + " W";
+                return this.getClass().getSimpleName().charAt(0) + " W/";
             case TARGET_ON_NORTH:
-                return this.getClass().getSimpleName().charAt(0) + " N";
+                return this.getClass().getSimpleName().charAt(0) + " N\\";
             case TARGET_ON_EAST:
-                return this.getClass().getSimpleName().charAt(0) + " E";
+                return this.getClass().getSimpleName().charAt(0) + " E/";
             case TARGET_ON_SOUTH:
-                return this.getClass().getSimpleName().charAt(0) + " S";
+                return this.getClass().getSimpleName().charAt(0) + " S\\";
             default:
                 return null;
         }

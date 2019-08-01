@@ -5,13 +5,8 @@ package core;
 
 import tokens.Token;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 
 public class ArenaPanel extends JPanel {
 	int x, y;
@@ -29,7 +24,6 @@ public class ArenaPanel extends JPanel {
 
         super.paintComponent(g);
 
-        
         Graphics2D g2d = (Graphics2D) g.create();
         String text;
         Token t = GameMap.getTokenLocatedInXY(x,y);
@@ -38,11 +32,24 @@ public class ArenaPanel extends JPanel {
         else
             text = GameMap.getTokenLocatedInXY(x,y).toIconString();
         FontMetrics fm = g2d.getFontMetrics();
-        int x = (getWidth() - fm.stringWidth(text)) / 2;
-        int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
-        g2d.drawString(text, x, y);
-        g2d.drawString(text, x, y);
-        g2d.dispose();
+        int beamNo = 0;
+        for(LaserBeam beam: GameMap.getBeams())
+        {
+            for(Point point: beam.getPathHistory())
+            {
+                if(x == (int)point.getX() && y == (int)point.getY())
+                {
+                    text += "X" + beamNo;
+                }
+
+            }
+            beamNo++;
+        }
+
+        int xText = (getWidth() - fm.stringWidth(text)) / 2;
+        int yText = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
+        g2d.drawString(text, xText, yText);
+        g2d.drawString(text, xText, yText);
 
         /*Image image = null;
         try {
@@ -56,6 +63,6 @@ public class ArenaPanel extends JPanel {
         //int yImage   = this.getParent().getHeight()/2 - iHeight2;
         g.drawImage(image,x,y,this);*/
 
-
+        g2d.dispose();
     }
 }
