@@ -22,16 +22,16 @@ public class PurpleTarget extends Token {
     {
         super();
         this.orientation = orientation;
-        construct();
         isMandatoryTarget = false;
+        construct();
     }
 
     public PurpleTarget(Orientation orientation, boolean isMandatoryTarget)
     {
         super();
         this.orientation = orientation;
-        construct();
         this.isMandatoryTarget = isMandatoryTarget;
+        construct();
     }
 
     public String toIconString() {

@@ -12,8 +12,8 @@ public interface Targetable {
     {
         //TODO: return type of these kinds of methods should be Tuple <Direction,Status>
         if(isMandatoryTarget)
-            return Direction.TARGET_HIT;
-        else
             return Direction.TARGET_HIT_MANDATORY;
+        else
+            return Direction.TARGET_HIT;
     }
 }
