@@ -9,15 +9,15 @@ import java.util.ArrayList;
 public class LaserBeam {
 	private Direction direction;
 	private Point location;
-	private ArrayList<Point> pathHistory;
+	private ArrayList<PointWithDirection> pathHistory;
 	private boolean isStuck;
 	
 	public LaserBeam(Point location, Direction direction) {
 		isStuck = false;
 		this.direction = direction;
 		this.location = location;
-		pathHistory = new ArrayList<Point>();
-		pathHistory.add(location);
+		pathHistory = new ArrayList<PointWithDirection>();
+		pathHistory.add(new PointWithDirection(location,direction));
 	}
 
 
@@ -43,7 +43,7 @@ public class LaserBeam {
 			default:
 				throw new IllegalArgumentException(); //if LaserBeam not movable, return false
 		}
-		pathHistory.add(location);
+
 		//TODO This commented part should be checked in GameMap, if LaserBeam goes out of bounds
 		/*try {
 			t = GameMap.getTokenLocatedInXY(location.x, location.y);
@@ -77,13 +77,16 @@ public class LaserBeam {
 		return "Direction: " + direction + " , Location: (" + location.getX() + "," + location.getY() + ")" + ", Path: " + pathHistory;
 	}
 
-	public ArrayList<Point> getPathHistory() {
+	public ArrayList<PointWithDirection> getPathHistory() {
 		return pathHistory;
 	}
 
-	public void setPathHistory(ArrayList<Point> pathHistory) {
+	public void setPathHistory(ArrayList<PointWithDirection> pathHistory) {
 		this.pathHistory = pathHistory;
 	}
 
 
+	public void updatePath() {
+		pathHistory.add(new PointWithDirection(location,direction));
+	}
 }

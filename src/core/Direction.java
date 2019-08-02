@@ -10,7 +10,7 @@ public enum Direction {
 	SOUTH, 
 	WEST,
 	TARGET_HIT,
-	TARGET_HIT_MANDATORY,
+	MANDATORY_TARGET_HIT,
 	STUCKED,
 	OUT_OF_BOUNDS; //used for Laser Beam out of Map
 

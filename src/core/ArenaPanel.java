@@ -35,11 +35,11 @@ public class ArenaPanel extends JPanel {
         int beamNo = 0;
         for(LaserBeam beam: GameMap.getBeams())
         {
-            for(Point point: beam.getPathHistory())
+            for(PointWithDirection pwd: beam.getPathHistory())
             {
-                if(x == (int)point.getX() && y == (int)point.getY())
+                if(x == (int)pwd.getPoint().getX() && y == (int)pwd.getPoint().getY())
                 {
-                    text += "X" + beamNo;
+                    text += "X" + beamNo + pwd.getDirection().toString().substring(0,2);
                 }
 
             }

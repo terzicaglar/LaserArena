@@ -81,6 +81,7 @@ public class GameMap {
 
 				}
 				i++;
+				beam.updatePath();
 
 			}
 			System.out.println( "final beam(s): " + beam);
@@ -118,7 +119,7 @@ public class GameMap {
 		{
 			if(beam.getDirection() == Direction.TARGET_HIT)
 				noOfRandomTargetsHit++;
-			else if( beam.getDirection() == Direction.TARGET_HIT_MANDATORY)
+			else if( beam.getDirection() == Direction.MANDATORY_TARGET_HIT)
 				noOfMandatoryTargetsHit++;
 		}
 
