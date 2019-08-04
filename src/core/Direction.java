@@ -38,6 +38,7 @@ public enum Direction {
 		EAST.movable = true;
 		WEST.movable = true;
 		TARGET_HIT.movable = false;
+		MANDATORY_TARGET_HIT.movable =  false;
 		STUCKED.movable = false;
 		OUT_OF_BOUNDS.movable = false;
 	}

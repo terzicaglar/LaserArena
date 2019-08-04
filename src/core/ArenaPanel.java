@@ -45,13 +45,13 @@ public class ArenaPanel extends JPanel {
                     text += " " + beamNo + pwd.getDirection().toString().substring(0,2);
                     g2d.setColor(colors[beamNo]);
                     prev_line_x2 = prev_line_y2 = line_y2 = line_x2 = -1;
+                    //System.out.println(pwd.getDirection());
                     if(pwd.getDirection().isMovable()) {
 
                         if(prevDirection == Direction.EAST)
                         {
                             prev_line_x2 = 0;
                             prev_line_y2 = getHeight()/2;
-
                         }
                         else if(prevDirection == Direction.WEST)
                         {
@@ -91,10 +91,37 @@ public class ArenaPanel extends JPanel {
                         }
 
 
-                        if(prev_line_x2 != -1 && prev_line_y2 != -1)
+                        if(prev_line_x2 != -1 && prev_line_y2 != -1) //if there is a previous line, i.e., not newly created
                             g2d.drawLine(getWidth()/2, getHeight()/2, prev_line_x2, prev_line_y2);
-                        if(line_x2 != -1 && line_y2 != -1)
+                        if(line_x2 != -1 && line_y2 != -1) //if there is a current movable line, i.e., it is NOT stucked, hit or out of bounds, etc.
                             g2d.drawLine(getWidth() / 2, getHeight() / 2, line_x2, line_y2);
+                    }
+                    else //it is stucked, hit or out of bounds, etc.
+                    {
+                        prev_line_x2 = prev_line_y2 = -1;
+                        if(prevDirection == Direction.EAST)
+                        {
+                            prev_line_x2 = 0;
+                            prev_line_y2 = getHeight()/2;
+                        }
+                        else if(prevDirection == Direction.WEST)
+                        {
+                            prev_line_x2 = getWidth();
+                            prev_line_y2 = getHeight()/2;
+                        }
+                        else if(prevDirection == Direction.NORTH)
+                        {
+                            prev_line_x2 = getWidth()/2;
+                            prev_line_y2 = getHeight();
+                        }
+                        else if(prevDirection == Direction.SOUTH)
+                        {
+                            prev_line_x2 = getWidth()/2;
+                            prev_line_y2 = 0;
+                        }
+                        if(prev_line_x2 != -1 && prev_line_y2 != -1) //if there is a current movable line, i.e., it is NOT stucked, hit or out of bounds, etc.
+                            g2d.drawString("X", prev_line_x2, prev_line_y2);
+
                     }
                     g2d.setColor(Color.BLACK);
                 }
