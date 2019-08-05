@@ -42,7 +42,7 @@ public class ArenaPanel extends JPanel {
             {
                 if(x == (int)pwd.getPoint().getX() && y == (int)pwd.getPoint().getY())
                 {
-                    text += " " + beamNo + pwd.getDirection().toString().substring(0,2);
+                    //text += " " + beamNo + pwd.getDirection().toString().substring(0,2);
                     g2d.setColor(colors[beamNo]);
                     prev_line_x2 = prev_line_y2 = line_y2 = line_x2 = -1;
                     //System.out.println(pwd.getDirection());

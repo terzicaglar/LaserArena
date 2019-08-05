@@ -110,7 +110,7 @@ public class GameMap {
 		return noOfWantedMandatoryTargets;
 	}
 
-	private boolean checkIfAllWantedTargetsHit()
+	public boolean checkIfAllWantedTargetsHit()
 	{
 		//TODO: not tested
 		int noOfMandatoryTargetsHit = 0;
@@ -123,8 +123,8 @@ public class GameMap {
 				noOfMandatoryTargetsHit++;
 		}
 
-		return (noOfMandatoryTargetsHit == getWantedMandatoryTargets() &&
-				(noOfMandatoryTargetsHit + noOfRandomTargetsHit) == noOfTargets);
+		return (noOfMandatoryTargetsHit >= getWantedMandatoryTargets() &&
+				(noOfMandatoryTargetsHit + noOfRandomTargetsHit) >= noOfTargets);
 	}
 
 	private boolean isOutOfBounds(Point p)

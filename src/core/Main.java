@@ -3,6 +3,7 @@
  */
 package core;
 
+import groovy.ui.SystemOutputInterceptor;
 import tokens.*;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		//Boolean b1 = new Boolean();
-		map = new GameMap(width, height);
+		map = new GameMap(width, height, 1);
 		initMap();
 
 		panels = new ArenaPanel[width][height];
@@ -42,10 +43,17 @@ public class Main {
 	public static void initMap()
 	{
 		map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST), new Point(0,3));
-		map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST), new Point(0,0));
+		map1();
+		map.moveBeamsUntilNotMovable();
+		System.out.println(map.checkIfAllWantedTargetsHit());
+	}
+
+	public static void map1()
+	{
+		map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true), new Point(0,0));
 		map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(0,2));
 		map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(3,4));
-		map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST,true), new Point(4,3));
+		map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST,false), new Point(4,3));
 		map.addToken(new BlueMirror(Orientation.SLASH_MIRROR), new Point(4,4));
 		map.addToken(new BlueMirror(Orientation.BACKSLASH_MIRROR), new Point(2,2));
 		map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(3,3));
@@ -54,6 +62,13 @@ public class Main {
 		map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE), new Point(1,3));
 		map.addToken(new WhiteObstacle(), new Point(1,2));
 		map.addToken(new WhiteObstacle(), new Point(4,0));
-		map.moveBeamsUntilNotMovable();
+	}
+
+	public static void map2()
+	{
+		map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(1,3));
+		map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(2,3));
+		map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(3,3));
+		map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(4,3));
 	}
 }
