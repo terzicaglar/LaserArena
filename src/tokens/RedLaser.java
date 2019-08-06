@@ -9,6 +9,8 @@ import core.Direction;
 import core.Orientation;
 import sides.*;
 
+import java.util.ArrayList;
+
 public class RedLaser extends Token {
 
     public RedLaser(Orientation orientation)
@@ -16,6 +18,16 @@ public class RedLaser extends Token {
         super();
         this.orientation = orientation;
         construct();
+    }
+
+    public RedLaser()
+    {
+        super();
+        possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.GENERATOR_ON_WEST);
+        possibleOrientations.add(Orientation.GENERATOR_ON_EAST);
+        possibleOrientations.add(Orientation.GENERATOR_ON_NORTH);
+        possibleOrientations.add(Orientation.GENERATOR_ON_SOUTH);
     }
 
     public String toIconString() {

@@ -9,12 +9,22 @@ import core.Orientation;
 import sides.BackSlashReflectorSide;
 import sides.SlashReflectorSide;
 
+import java.util.ArrayList;
+
 public class BlueMirror extends Token{
     public BlueMirror(Orientation orientation)
     {
         super();
         this.orientation = orientation;
         construct();
+    }
+
+    public BlueMirror()
+    {
+        super();
+        possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.SLASH_MIRROR);
+        possibleOrientations.add(Orientation.BACKSLASH_MIRROR);
     }
 
     @Override

@@ -8,11 +8,14 @@ import core.Direction;
 import core.Orientation;
 import sides.TransparentSide;
 
+import java.util.ArrayList;
+
 public class WhiteObstacle extends Token {
 
     public WhiteObstacle()
     {
         super();
+        possibleOrientations = new ArrayList<Orientation>();
         construct();
     }
 

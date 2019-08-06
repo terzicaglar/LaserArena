@@ -8,12 +8,22 @@ import core.Orientation;
 import sides.StuckableSide;
 import sides.TransparentSide;
 
+import java.util.ArrayList;
+
 public class YellowBridge extends Token{
     public YellowBridge(Orientation orientation)
     {
         super();
         this.orientation = orientation;
         construct();
+    }
+
+    public YellowBridge()
+    {
+        super();
+        possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.VERTICAL_BRIDGE);
+        possibleOrientations.add(Orientation.HORIZONTAL_BRIDGE);
     }
 
     public String toIconString() {

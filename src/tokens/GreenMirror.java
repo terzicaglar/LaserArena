@@ -12,12 +12,22 @@ import sides.BackSlashReflectorTransparentSide;
 import sides.SlashReflectorSide;
 import sides.SlashReflectorTransparentSide;
 
+import java.util.ArrayList;
+
 public class GreenMirror extends Token{
     public GreenMirror(Orientation orientation)
     {
         super();
         this.orientation = orientation;
         construct();
+    }
+
+    public GreenMirror()
+    {
+        super();
+        possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.SLASH_MIRROR);
+        possibleOrientations.add(Orientation.BACKSLASH_MIRROR);
     }
 
     public String toIconString() {

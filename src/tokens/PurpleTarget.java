@@ -11,6 +11,8 @@ import core.Direction;
 import core.Orientation;
 import sides.*;
 
+import java.util.ArrayList;
+
 public class PurpleTarget extends Token {
     public boolean isMandatoryTarget() {
         return isMandatoryTarget;
@@ -32,6 +34,15 @@ public class PurpleTarget extends Token {
         this.orientation = orientation;
         this.isMandatoryTarget = isMandatoryTarget;
         construct();
+    }
+
+    public PurpleTarget() {
+        super();
+        possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.TARGET_ON_SOUTH);
+        possibleOrientations.add(Orientation.TARGET_ON_WEST);
+        possibleOrientations.add(Orientation.TARGET_ON_EAST);
+        possibleOrientations.add(Orientation.TARGET_ON_NORTH);
     }
 
     public String toIconString() {
