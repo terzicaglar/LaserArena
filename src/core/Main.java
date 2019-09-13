@@ -45,7 +45,7 @@ public class Main {
 		map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST), new Point(0,3));
 		map1();
 		map.moveBeamsUntilNotMovable();
-		System.out.println(map.checkIfAllWantedTargetsHit());
+		System.out.println("map.checkIfAllWantedTargetsHit(): " + map.checkIfAllWantedTargetsHit());
 	}
 
 	public static void map1()
