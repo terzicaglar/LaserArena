@@ -18,5 +18,33 @@ public enum Orientation {
     TARGET_ON_WEST,
     TARGET_ON_EAST,
     TARGET_ON_NORTH,
-    TARGET_ON_SOUTH;
+    TARGET_ON_SOUTH,
+    NONE;
+
+    Orientation next;
+
+    static{
+        SLASH_MIRROR.next = BACKSLASH_MIRROR;
+        BACKSLASH_MIRROR.next = SLASH_MIRROR;
+
+        HORIZONTAL_BRIDGE.next = VERTICAL_BRIDGE;
+        VERTICAL_BRIDGE.next = HORIZONTAL_BRIDGE;
+
+        GENERATOR_ON_WEST.next = GENERATOR_ON_NORTH;
+        GENERATOR_ON_NORTH.next = GENERATOR_ON_EAST;
+        GENERATOR_ON_EAST.next = GENERATOR_ON_SOUTH;
+        GENERATOR_ON_SOUTH.next = GENERATOR_ON_WEST;
+
+        TARGET_ON_WEST.next = TARGET_ON_NORTH;
+        TARGET_ON_NORTH.next = TARGET_ON_EAST;
+        TARGET_ON_EAST.next = TARGET_ON_SOUTH;
+        TARGET_ON_SOUTH.next = TARGET_ON_WEST;
+
+        NONE.next = NONE;
+    }
+
+    public Orientation nextOrientation()
+    {
+        return next;
+    }
 }

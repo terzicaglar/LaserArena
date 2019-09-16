@@ -16,7 +16,9 @@ public class WhiteObstacle extends Token {
     public WhiteObstacle()
     {
         super();
+        this.orientation = Orientation.NONE;
         possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.NONE);
         construct();
     }
 
