@@ -8,6 +8,7 @@ import core.Orientation;
 import sides.StuckableSide;
 import sides.TransparentSide;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class YellowBridge extends Token{
@@ -16,6 +17,15 @@ public class YellowBridge extends Token{
         super();
         this.orientation = orientation;
         construct();
+    }
+
+    @Override
+    public void paintToken(Graphics g, int width, int height) {
+        g.setColor(Color.YELLOW);
+        if(orientation == Orientation.VERTICAL_BRIDGE)
+            g.drawLine(width/2,0, width/2, height);
+        else if(orientation == Orientation.HORIZONTAL_BRIDGE)
+            g.drawLine(0, height/2, width, height/2);
     }
 
     public YellowBridge()

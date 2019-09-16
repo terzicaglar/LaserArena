@@ -11,6 +11,7 @@ import core.Direction;
 import core.Orientation;
 import sides.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class PurpleTarget extends Token {
@@ -59,6 +60,55 @@ public class PurpleTarget extends Token {
                 return null;
         }
 
+    }
+
+    @Override
+    public void paintToken(Graphics g, int width, int height) {
+        g.setColor(Color.MAGENTA);
+        int xPoints[], yPoints[];
+        xPoints = new int[3];
+        yPoints = new int[3];
+        if(orientation == Orientation.TARGET_ON_WEST)
+        {
+            g.drawLine(0, height, width, 0);
+            xPoints[0] = 0;
+            yPoints[0] = 0;
+            xPoints[1] = width/2;
+            yPoints[1] = height/2;
+            xPoints[2] = 0;
+            yPoints[2] = height;
+        }
+        else if(orientation == Orientation.TARGET_ON_EAST)
+        {
+            g.drawLine(0, height, width, 0);
+            xPoints[0] = width;
+            yPoints[0] = 0;
+            xPoints[1] = width/2;
+            yPoints[1] = height/2;
+            xPoints[2] = width;
+            yPoints[2] = height;
+        }
+        else if(orientation == Orientation.TARGET_ON_SOUTH)
+        {
+            g.drawLine(0,0, width, height);
+            xPoints[0] = 0;
+            yPoints[0] = height;
+            xPoints[1] = width/2;
+            yPoints[1] = height/2;
+            xPoints[2] = width;
+            yPoints[2] = height;
+        }
+        else if(orientation == Orientation.TARGET_ON_NORTH)
+        {
+            g.drawLine(0,0, width, height);
+            xPoints[0] = 0;
+            yPoints[0] = 0;
+            xPoints[1] = width/2;
+            yPoints[1] = height/2;
+            xPoints[2] = width;
+            yPoints[2] = 0;
+        }
+        g.fillPolygon(xPoints, yPoints, 3);
     }
 
     protected void construct()

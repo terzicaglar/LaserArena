@@ -3,7 +3,7 @@
  */
 
 package tokens;
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,4 +43,6 @@ public abstract class Token {
 	abstract public String toIconString();
 
 	abstract protected void construct();
+
+	abstract public void paintToken(Graphics g, int width, int height);
 }

@@ -2,8 +2,7 @@
  * Main class, which runs the game.
  */
 package core;
-
-import groovy.ui.SystemOutputInterceptor;
+//import groovy.ui.SystemOutputInterceptor;
 import tokens.*;
 
 import javax.swing.*;
@@ -60,8 +59,9 @@ public class Main {
 		map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(2,3));
 		map.addToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE), new Point(0,1));
 		map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE), new Point(1,3));
-		map.addToken(new WhiteObstacle(), new Point(1,2));
 		map.addToken(new WhiteObstacle(), new Point(4,0));
+		map.addToken(new WhiteObstacle(), new Point(1,2));
+
 	}
 
 	public static void map2()
