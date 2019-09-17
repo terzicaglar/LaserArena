@@ -18,6 +18,8 @@ public class ArenaFrame extends JFrame implements ActionListener {
     public ArenaFrame(String title)
     {
         super(title);
+        map = new GameMap(width, height, noOftargets);
+        map1();
         initMap();
         button1 = new JButton("refresh");
         this.setLayout(new GridLayout(map.getHeight()+1, map.getWidth()));
@@ -46,9 +48,9 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
     public void initMap()
     {
-        map = new GameMap(width, height, noOftargets);
-        map1();
+
         map.moveBeamsUntilNotMovable();
+        map.print();
         System.out.println("map.checkIfAllWantedTargetsHit(): " + map.checkIfAllWantedTargetsHit());
 
         createPanels();
@@ -84,6 +86,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == button1)
         {
+            //TODO: RedLaser orientation change works but mirror etc. orientation change does not work
             initMap();
             this.repaint();
         }

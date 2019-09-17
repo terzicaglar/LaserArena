@@ -40,6 +40,7 @@ public abstract class Token {
 
 	public void nextOrientation(){
 		this.orientation = orientation.nextOrientation();
+		construct();
 	}
 
 	public ArrayList<Orientation> possibleOrientations;

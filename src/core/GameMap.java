@@ -48,17 +48,28 @@ public class GameMap {
 			&& point.getX() < width && point.getX() >= 0)
 		{
 			tokens[(int) point.getX()][(int) point.getY()] = token;
-			if(token instanceof RedLaser)
-				addLaserBeam(new LaserBeam(point, ((RedLaser) token).getGeneratedLaserDirection()));
+			/*if(token instanceof RedLaser)
+				addLaserBeam(new LaserBeam(point, ((RedLaser) token).getGeneratedLaserDirection()));*/
 			return true;
 		}
 		else
 			return false;
 	}
-	////
+
 	public void moveBeamsUntilNotMovable()
 	{
-		//TODO: not completed
+		//TODO: destroy all beams and create them from scratch, including beams.get(0)
+		beams = new ArrayList<>(4);
+
+		for (int i = 0; i < tokens.length; i++) {
+			for (int j = 0; j < tokens[i].length; j++) {
+				if( tokens[i][j] instanceof RedLaser)
+				{
+					addLaserBeam(new LaserBeam(new Point(i,j), ((RedLaser) tokens[i][j]).getGeneratedLaserDirection()));
+					//System.out.println("RL loc: " + i + "," + j);
+				}
+			}
+		}
 		System.out.println("init beam:" + beams.get(0));
 		LaserBeam beam;
 		int i;
@@ -171,7 +182,7 @@ public class GameMap {
 		return beams.add(l);
 	}
 
-	public static void print(){
+	public void print(){
 		String str = "";
 		Token t;
 		for (int i = 0; i < tokens.length; i++) {
