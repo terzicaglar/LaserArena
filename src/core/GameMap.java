@@ -12,7 +12,8 @@ import java.util.ArrayList;
  */
 public class GameMap {
 	private static final int MAX_LOOP = 1000;
-	private int width, height, noOfTargets;
+	private static int width, height;
+	private int noOfTargets;
 	private static Token[][] tokens;
 	private static ArrayList<LaserBeam> beams;
 	public GameMap(int width, int height)
@@ -42,7 +43,12 @@ public class GameMap {
 		return tokens[(int)p.getX()][(int)p.getY()];
 	}
 
-	public boolean addToken(Token token, Point point)
+	public static void removeTokenLocatedinXY(int x, int y)
+	{
+		tokens[x][y] = null;
+	}
+
+	public static boolean addToken(Token token, Point point)
 	{
 		if(point.getY() < height && point.getY() >= 0
 			&& point.getX() < width && point.getX() >= 0)
@@ -69,7 +75,8 @@ public class GameMap {
 				}
 			}
 		}
-		System.out.println("init beam:" + beams.get(0));
+		if(beams.size() > 0)
+			System.out.println("init beam:" + beams.get(0));
 		LaserBeam beam;
 		int i;
 		for(int k = 0; k < beams.size(); k++)

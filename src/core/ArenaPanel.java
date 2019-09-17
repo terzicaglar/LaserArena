@@ -3,8 +3,7 @@
  */
 package core;
 
-import tokens.Token;
-import tokens.WhiteObstacle;
+import tokens.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,11 +14,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class ArenaPanel extends JPanel implements MouseListener {
-	int x, y;
+	int x, y, clickCount;
 	GameMap map;
     Token t;
+    JPopupMenu popup;
+
 	public ArenaPanel(int x, int y) {
 		super();
+		clickCount = 0;
         t = GameMap.getTokenLocatedInXY(x,y);
 		this.x = x;
 		this.y = y;
@@ -44,6 +46,9 @@ public class ArenaPanel extends JPanel implements MouseListener {
         g.drawImage(image,x,y,this);
 
          */
+
+
+
         int midWidth = getWidth()/2;
         int midHeight = getHeight()/2;
 
@@ -65,7 +70,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
         FontMetrics fm = g2d.getFontMetrics();
         int beamNo = 0, line_x2 = 0, line_y2 = 0, prev_line_x2 = 0, prev_line_y2 = 0;
         Direction prevDirection= null;
-        Color colors[] = {Color.RED, Color.MAGENTA, Color.DARK_GRAY, Color.CYAN, Color.BLUE, Color.GREEN};
+        Color colors[] = {Color.RED,  Color.DARK_GRAY, Color.MAGENTA, Color.CYAN, Color.BLUE, Color.GREEN};
 
         Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         g2d.setStroke(dashed);
@@ -161,7 +166,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
                         {
                             //TODO: Add different shapes for mandatory target and random target (?)
                             //draws a green half rectangle if target is hit
-                            if(pwd.getDirection() == Direction.TARGET_HIT) {
+                            if(pwd.getDirection() == Direction.TARGET_HIT || pwd.getDirection() == Direction.MANDATORY_TARGET_HIT) {
                                 g2d.setColor(Color.GREEN);
                                 g2d.fillPolygon(new int[]{prev_line_x2 - midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 - midWidth / 4},
                                         new int[]{prev_line_y2 - midHeight / 4, prev_line_y2 - midHeight / 4, prev_line_y2 + midHeight / 4, prev_line_y2 + midHeight / 4},
@@ -180,11 +185,6 @@ public class ArenaPanel extends JPanel implements MouseListener {
             }
             beamNo++;
         }
-        /*g2d.setColor(Color.BLACK);
-        int xText = (getWidth() - fm.stringWidth(text)) / 2;
-        int yText = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
-        g2d.drawString(text, xText, yText);
-        g2d.drawString(text, xText, yText);*/
 
         g2d.dispose();
     }
@@ -192,17 +192,54 @@ public class ArenaPanel extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
         //Left click changes the orientation of token
         if(t != null && e.getButton() == MouseEvent.BUTTON1){
             t.nextOrientation();
             repaint();
         }
+        //Middle click deletes token
+        else if(t != null && e.getButton() == MouseEvent.BUTTON2)
+        {
+            GameMap.removeTokenLocatedinXY(x,y);
+            t = null;
+            repaint();
+        }
+        //Right click changes token
+        else if(e.getButton() == MouseEvent.BUTTON3){
+            Token newToken = null;
+            System.out.println("clickCount: " + clickCount);
+            switch(clickCount%6)
+            {
+                case 0:
+                    newToken = new BlueMirror(Orientation.SLASH_MIRROR);
+                    break;
+                case 1:
+                    newToken = new GreenMirror(Orientation.SLASH_MIRROR);
+                    break;
+                case 2:
+                    newToken = new PurpleTarget(Orientation.TARGET_ON_SOUTH);
+                    break;
+                case 3:
+                    newToken = new RedLaser(Orientation.GENERATOR_ON_SOUTH);
+                    break;
+                case 4:
+                    newToken = new WhiteObstacle();
+                    break;
+                case 5:
+                    newToken = new YellowBridge(Orientation.HORIZONTAL_BRIDGE);
+                    break;
+            }
+            GameMap.addToken(newToken, new Point(x,y));
+            t = newToken;
+            clickCount++;
+            repaint();
+        }
         //TODO: Right click will enable user to change the token or create one.
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
     }
 
     @Override

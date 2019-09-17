@@ -48,11 +48,9 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
     public void initMap()
     {
-
         map.moveBeamsUntilNotMovable();
-        map.print();
+        //map.print();
         System.out.println("map.checkIfAllWantedTargetsHit(): " + map.checkIfAllWantedTargetsHit());
-
         createPanels();
     }
 
