@@ -55,7 +55,7 @@ public class GameMap {
 		else
 			return false;
 	}
-	//
+	////
 	public void moveBeamsUntilNotMovable()
 	{
 		//TODO: not completed
