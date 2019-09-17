@@ -191,15 +191,13 @@ public class ArenaPanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-	    //TODO: Not working propoerly. Whole Map and beams are not updating.
 
+        //Left click changes the orientation of token
         if(t != null && e.getButton() == MouseEvent.BUTTON1){
             t.nextOrientation();
-            //Main.initMap();
-            //GameMap.print();
-
             repaint();
         }
+        //TODO: Right click will enable user to change the token or create one.
     }
 
     @Override

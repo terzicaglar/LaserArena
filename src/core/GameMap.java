@@ -58,7 +58,6 @@ public class GameMap {
 
 	public void moveBeamsUntilNotMovable()
 	{
-		//TODO: destroy all beams and create them from scratch, including beams.get(0)
 		beams = new ArrayList<>(4);
 
 		for (int i = 0; i < tokens.length; i++) {
