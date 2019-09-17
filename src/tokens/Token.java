@@ -38,6 +38,10 @@ public abstract class Token {
 		return sides.get(direction);
 	}
 
+	public void nextOrientation(){
+		this.orientation = orientation.nextOrientation();
+	}
+
 	public ArrayList<Orientation> possibleOrientations;
 
 	abstract public String toIconString();

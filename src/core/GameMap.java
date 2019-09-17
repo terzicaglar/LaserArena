@@ -14,9 +14,10 @@ public class GameMap {
 	private static final int MAX_LOOP = 1000;
 	private int width, height, noOfTargets;
 	private static Token[][] tokens;
-	private static ArrayList<LaserBeam> beams = new ArrayList<>(4);;
+	private static ArrayList<LaserBeam> beams;
 	public GameMap(int width, int height)
 	{
+		beams = new ArrayList<>(4);
 		this.setWidth(width);
 		this.setHeight(height);
 		tokens = new Token[width][height];
@@ -24,6 +25,7 @@ public class GameMap {
 
 	public GameMap(int width, int height, int noOfTargets)
 	{
+		beams = new ArrayList<>(4);
 		this.noOfTargets = noOfTargets;
 		this.setWidth(width);
 		this.setHeight(height);
@@ -167,5 +169,18 @@ public class GameMap {
 
 	public static boolean addLaserBeam(LaserBeam l) {
 		return beams.add(l);
+	}
+
+	public static void print(){
+		String str = "";
+		Token t;
+		for (int i = 0; i < tokens.length; i++) {
+			for (int j = 0; j < tokens[i].length; j++) {
+				t = tokens[i][j];
+				if(t != null)
+					System.out.println(t.toIconString() + " " + i + "," + j);
+			}
+
+		}
 	}
 }

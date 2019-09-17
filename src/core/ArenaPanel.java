@@ -9,23 +9,25 @@ import tokens.WhiteObstacle;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
-public class ArenaPanel extends JPanel {
+public class ArenaPanel extends JPanel implements MouseListener {
 	int x, y;
 	GameMap map;
+    Token t;
 	public ArenaPanel(int x, int y) {
 		super();
+        t = GameMap.getTokenLocatedInXY(x,y);
 		this.x = x;
 		this.y = y;
+		this.addMouseListener(this);
 	}
-
-
 
 	@Override
     protected void paintComponent(Graphics g) {
-
         super.paintComponent(g);
 
         /*Image image = null;
@@ -49,7 +51,6 @@ public class ArenaPanel extends JPanel {
         g2d.setStroke(new BasicStroke(3));
 
         String text;
-        Token t = GameMap.getTokenLocatedInXY(x,y);
         if( t == null)
             text = "";
         else
@@ -186,5 +187,38 @@ public class ArenaPanel extends JPanel {
         g2d.drawString(text, xText, yText);*/
 
         g2d.dispose();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+	    //TODO: Not working propoerly. Whole Map and beams are not updating.
+
+        if(t != null && e.getButton() == MouseEvent.BUTTON1){
+            t.nextOrientation();
+            //Main.initMap();
+            //GameMap.print();
+
+            repaint();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
