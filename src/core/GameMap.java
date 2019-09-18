@@ -32,7 +32,20 @@ public class GameMap {
 		this.setHeight(height);
 		tokens = new Token[width][height];
 	}
-	
+
+	public static boolean isAllTokensPassed()
+	{
+		for (int i = 0; i < tokens.length; i++) {
+			for (int j = 0; j < tokens[i].length; j++) {
+				if(tokens[i][j] != null && !(tokens[i][j] instanceof RedLaser) && !tokens[i][j].isPassed()) {
+					System.out.println(i + "," + j + " not passed");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	public static Token getTokenLocatedInXY(int x, int y)
 	{
 		return tokens[x][y];
@@ -64,6 +77,14 @@ public class GameMap {
 
 	public void moveBeamsUntilNotMovable()
 	{
+		for (int i = 0; i < tokens.length; i++) {
+			for (int j = 0; j < tokens[i].length; j++) {
+				if(tokens[i][j] != null)
+					tokens[i][j].setPassed(false);
+			}
+		}
+
+
 		beams = new ArrayList<>(4);
 
 		for (int i = 0; i < tokens.length; i++) {
@@ -96,6 +117,7 @@ public class GameMap {
 					if(t != null)
 					{
 						beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
+						t.setPassed(true);
 					}
 
 				}

@@ -47,7 +47,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
 
          */
 
-
+        //System.out.println("IsAllTokensPassed: " + GameMap.isAllTokensPassed());
 
         int midWidth = getWidth()/2;
         int midHeight = getHeight()/2;

@@ -14,6 +14,7 @@ import sides.Side;
 
 
 public abstract class Token {
+	//TODO: New Tokens (BalckHole and Portal) will be added
 	/*	TODO Orientation (position) field can be added and Orientation will be removed. Each token will have four orientations. For mirrors; orientation 1 and 3, i.e., SLASH, and
 			2 and 4, i.e., BACK_SLASH, will be the same. For WhiteObstacle, all four orientations will be the same, for PurpleTarget each orientation will be different, etc.
 	 */
@@ -22,6 +23,8 @@ public abstract class Token {
 	//protected Point location; //TODO: Currently, tokens do not have location field, in the future it can be added
 	protected Map<Direction, Side> sides;
 	protected Orientation orientation;
+
+	private boolean isPassed = false; //checks if a beam passes on this token
 
 	public Token()
 	{
@@ -41,6 +44,14 @@ public abstract class Token {
 	public void nextOrientation(){
 		this.orientation = orientation.nextOrientation();
 		construct();
+	}
+
+	public void setPassed(boolean passed) {
+		isPassed = passed;
+	}
+
+	public boolean isPassed() {
+		return isPassed;
 	}
 
 	public ArrayList<Orientation> possibleOrientations;
