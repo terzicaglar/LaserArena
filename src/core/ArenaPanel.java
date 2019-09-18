@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ArenaPanel extends JPanel implements MouseListener {
-	int x, y, clickCount;
+	int x, y, clickCount, numberOfTokenClasses = 6;
 	GameMap map;
     Token t;
     JPopupMenu popup;
@@ -213,7 +213,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
         else if(e.getButton() == MouseEvent.BUTTON3){
             Token newToken = null;
             System.out.println("clickCount: " + clickCount);
-            switch(clickCount%6)
+            switch(clickCount%numberOfTokenClasses+1)
             {
                 case 0:
                     newToken = new BlueMirror(Orientation.SLASH_MIRROR);
@@ -233,8 +233,14 @@ public class ArenaPanel extends JPanel implements MouseListener {
                 case 5:
                     newToken = new YellowBridge(Orientation.HORIZONTAL_BRIDGE);
                     break;
+                case 6:
+                    newToken = null;
+                    break;
             }
-            GameMap.addToken(newToken, new Point(x,y));
+            if(newToken != null)
+                GameMap.addToken(newToken, new Point(x,y));
+            else
+                GameMap.removeTokenLocatedinXY(x,y);
             t = newToken;
             clickCount++;
             repaint();
