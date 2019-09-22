@@ -29,7 +29,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
         setSize(500,500);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        setResizable(false);
 
     }
 

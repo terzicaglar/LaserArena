@@ -213,7 +213,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
         else if(e.getButton() == MouseEvent.BUTTON3){
             Token newToken = null;
             System.out.println("clickCount: " + clickCount);
-            switch(clickCount%numberOfTokenClasses+1)
+            switch(clickCount%(numberOfTokenClasses+1))
             {
                 case 0:
                     newToken = new BlueMirror(Orientation.SLASH_MIRROR);
