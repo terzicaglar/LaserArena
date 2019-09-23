@@ -22,6 +22,7 @@ public class WhiteObstacle extends Token {
         construct();
     }
 
+
     public String toIconString() {
         return "" + this.getClass().getSimpleName().charAt(0);
 

@@ -14,9 +14,10 @@ import java.util.ArrayList;
 
 public class RedLaser extends Token {
 
-    public RedLaser(Orientation orientation)
+    public RedLaser(Orientation orientation, boolean isFixed)
     {
         super();
+        this.isFixed = isFixed;
         this.orientation = orientation;
         construct();
     }

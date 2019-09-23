@@ -21,17 +21,18 @@ public class PurpleTarget extends Token {
 
     boolean isMandatoryTarget;
 
-    public PurpleTarget(Orientation orientation)
+    /*public PurpleTarget(Orientation orientation)
     {
         super();
         this.orientation = orientation;
         isMandatoryTarget = false;
         construct();
-    }
+    }*/
 
-    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget)
+    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget, boolean isFixed)
     {
         super();
+        this.isFixed = isFixed;
         this.orientation = orientation;
         this.isMandatoryTarget = isMandatoryTarget;
         construct();

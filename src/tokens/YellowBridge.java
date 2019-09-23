@@ -12,9 +12,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class YellowBridge extends Token{
-    public YellowBridge(Orientation orientation)
+    public YellowBridge(Orientation orientation, boolean isFixed)
     {
         super();
+        this.isFixed = isFixed;
         this.orientation = orientation;
         construct();
     }

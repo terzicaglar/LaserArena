@@ -26,6 +26,8 @@ public abstract class Token {
 
 	private boolean isPassed = false; //checks if a beam passes on this token
 
+	protected boolean isFixed = false; //denotes if the orientation of the token can be changed by clicking
+
 	public Token()
 	{
 		sides = new HashMap<>(4);
@@ -44,6 +46,14 @@ public abstract class Token {
 	public void nextOrientation(){
 		this.orientation = orientation.nextOrientation();
 		construct();
+	}
+
+	public boolean isFixed() {
+		return isFixed;
+	}
+
+	public void setFixed(boolean fixed) {
+		isFixed = fixed;
 	}
 
 	public void setPassed(boolean passed) {

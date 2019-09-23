@@ -16,9 +16,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GreenMirror extends Token{
-    public GreenMirror(Orientation orientation)
+    public GreenMirror(Orientation orientation, boolean isFixed)
     {
         super();
+        this.isFixed = isFixed;
         this.orientation = orientation;
         construct();
     }

@@ -199,8 +199,11 @@ public class ArenaPanel extends JPanel implements MouseListener {
     public void mousePressed(MouseEvent e) {
         //Left click changes the orientation of token
         if(t != null && e.getButton() == MouseEvent.BUTTON1){
-            t.nextOrientation();
-            repaint();
+            if(!t.isFixed())
+            {
+                t.nextOrientation();
+                repaint();
+            }
         }
         //Middle click deletes token
         else if(t != null && e.getButton() == MouseEvent.BUTTON2)
@@ -216,22 +219,22 @@ public class ArenaPanel extends JPanel implements MouseListener {
             switch(clickCount%(numberOfTokenClasses+1))
             {
                 case 0:
-                    newToken = new BlueMirror(Orientation.SLASH_MIRROR);
+                    newToken = new BlueMirror(Orientation.SLASH_MIRROR, false); //TODO: these new tokens are added as isFixed=false, it will be corrected
                     break;
                 case 1:
-                    newToken = new GreenMirror(Orientation.SLASH_MIRROR);
+                    newToken = new GreenMirror(Orientation.SLASH_MIRROR, false);
                     break;
                 case 2:
-                    newToken = new PurpleTarget(Orientation.TARGET_ON_SOUTH);
+                    newToken = new PurpleTarget(Orientation.TARGET_ON_SOUTH, false, false);
                     break;
                 case 3:
-                    newToken = new RedLaser(Orientation.GENERATOR_ON_SOUTH);
+                    newToken = new RedLaser(Orientation.GENERATOR_ON_SOUTH, false);
                     break;
                 case 4:
                     newToken = new WhiteObstacle();
                     break;
                 case 5:
-                    newToken = new YellowBridge(Orientation.HORIZONTAL_BRIDGE);
+                    newToken = new YellowBridge(Orientation.HORIZONTAL_BRIDGE, false);
                     break;
                 case 6:
                     newToken = null;

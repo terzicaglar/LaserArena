@@ -56,17 +56,17 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
     public void map1()
     {
-        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST), new Point(0,3));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true), new Point(0,0));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(0,2));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH), new Point(3,4));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST,false), new Point(4,3));
-        map.addToken(new BlueMirror(Orientation.SLASH_MIRROR), new Point(4,4));
-        map.addToken(new BlueMirror(Orientation.BACKSLASH_MIRROR), new Point(2,2));
-        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(3,3));
-        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(2,3));
-        map.addToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE), new Point(0,1));
-        map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE), new Point(1,3));
+        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, true), new Point(0,3));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true, false), new Point(0,0));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH, false, false), new Point(0,2));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH, false, true), new Point(3,4));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST,false, true), new Point(4,3));
+        map.addToken(new BlueMirror(Orientation.SLASH_MIRROR, false), new Point(4,4));
+        map.addToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false), new Point(2,2));
+        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, true), new Point(3,3));
+        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR, false), new Point(2,3));
+        map.addToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true), new Point(0,1));
+        map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, false), new Point(1,3));
         map.addToken(new WhiteObstacle(), new Point(4,0));
         map.addToken(new WhiteObstacle(), new Point(1,2));
 
@@ -74,10 +74,10 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
     public void map2()
     {
-        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(1,3));
-        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(2,3));
-        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(3,3));
-        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(4,3));
+        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR, false), new Point(1,3));
+        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false), new Point(2,3));
+        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR, false), new Point(3,3));
+        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false), new Point(4,3));
     }
 
     @Override
