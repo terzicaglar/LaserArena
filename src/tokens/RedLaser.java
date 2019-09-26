@@ -29,6 +29,7 @@ public class RedLaser extends Token {
         this.orientation = orientation;
         this.isLocationFixed = false;
         this.isOrientationFixed = false;
+        construct();
         /*possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.GENERATOR_ON_WEST);
         possibleOrientations.add(Orientation.GENERATOR_ON_EAST);

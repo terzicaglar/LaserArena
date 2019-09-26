@@ -37,6 +37,7 @@ public class PurpleTarget extends Token {
         this.isLocationFixed = false;
         this.isOrientationFixed = false;
         isMandatoryTarget = false;
+        construct();
        /* possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.TARGET_ON_SOUTH);
         possibleOrientations.add(Orientation.TARGET_ON_WEST);
