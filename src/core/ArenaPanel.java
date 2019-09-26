@@ -5,13 +5,10 @@ package core;
 
 import tokens.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
 
 public class ArenaPanel extends JPanel implements MouseListener {
 	int x, y, clickCount, numberOfTokenClasses = 6;
@@ -199,7 +196,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
     public void mousePressed(MouseEvent e) {
         //Left click changes the orientation of token
         if(t != null && e.getButton() == MouseEvent.BUTTON1){
-            if(!t.isFixed())
+            if(!t.isOrientationFixed())
             {
                 t.nextOrientation();
                 repaint();
@@ -208,45 +205,52 @@ public class ArenaPanel extends JPanel implements MouseListener {
         //Middle click deletes token
         else if(t != null && e.getButton() == MouseEvent.BUTTON2)
         {
-            GameMap.removeTokenLocatedinXY(x,y);
-            t = null;
-            repaint();
+            if(!t.isLocationFixed())
+            {
+                GameMap.removeTokenLocatedinXY(x,y);
+                t = null;
+                repaint();
+            }
+
         }
         //Right click changes token
         else if(e.getButton() == MouseEvent.BUTTON3){
-            Token newToken = null;
-            System.out.println("clickCount: " + clickCount);
-            switch(clickCount%(numberOfTokenClasses+1))
+            if(t == null || !t.isLocationFixed())
             {
-                case 0:
-                    newToken = new BlueMirror(Orientation.SLASH_MIRROR, false); //TODO: these new tokens are added as isFixed=false, it will be corrected
-                    break;
-                case 1:
-                    newToken = new GreenMirror(Orientation.SLASH_MIRROR, false);
-                    break;
-                case 2:
-                    newToken = new PurpleTarget(Orientation.TARGET_ON_SOUTH, false, false);
-                    break;
-                case 3:
-                    newToken = new RedLaser(Orientation.GENERATOR_ON_SOUTH, false);
-                    break;
-                case 4:
-                    newToken = new WhiteObstacle();
-                    break;
-                case 5:
-                    newToken = new YellowBridge(Orientation.HORIZONTAL_BRIDGE, false);
-                    break;
-                case 6:
-                    newToken = null;
-                    break;
+                Token newToken = null;
+                System.out.println("clickCount: " + clickCount);
+                switch(clickCount%(numberOfTokenClasses+1))
+                {
+                    case 0:
+                        newToken = new BlueMirror(Orientation.SLASH_MIRROR); //TODO: these new tokens are added as isOrientationFixed=false, it will be corrected
+                        break;
+                    case 1:
+                        newToken = new GreenMirror(Orientation.SLASH_MIRROR);
+                        break;
+                    case 2:
+                        newToken = new PurpleTarget(Orientation.TARGET_ON_SOUTH);
+                        break;
+                    case 3:
+                        newToken = new RedLaser(Orientation.GENERATOR_ON_SOUTH);
+                        break;
+                    case 4:
+                        newToken = new WhiteObstacle();
+                        break;
+                    case 5:
+                        newToken = new YellowBridge(Orientation.HORIZONTAL_BRIDGE);
+                        break;
+                    case 6:
+                        newToken = null;
+                        break;
+                }
+                if(newToken != null)
+                    GameMap.addToken(newToken, new Point(x,y));
+                else
+                    GameMap.removeTokenLocatedinXY(x,y);
+                t = newToken;
+                clickCount++;
+                repaint();
             }
-            if(newToken != null)
-                GameMap.addToken(newToken, new Point(x,y));
-            else
-                GameMap.removeTokenLocatedinXY(x,y);
-            t = newToken;
-            clickCount++;
-            repaint();
         }
         //TODO: Right click will enable user to change the token or create one.
     }

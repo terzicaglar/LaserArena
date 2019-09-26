@@ -14,12 +14,27 @@ import java.util.ArrayList;
 
 public class RedLaser extends Token {
 
-    public RedLaser(Orientation orientation, boolean isFixed)
+    public RedLaser(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
     {
         super();
-        this.isFixed = isFixed;
+        this.isLocationFixed = isLocationFixed;
+        this.isOrientationFixed = isOrientationFixed;
         this.orientation = orientation;
         construct();
+    }
+
+    public RedLaser(Orientation orientation)
+    {
+        super();
+        this.orientation = orientation;
+        this.isLocationFixed = false;
+        this.isOrientationFixed = false;
+        construct();
+        /*possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.GENERATOR_ON_WEST);
+        possibleOrientations.add(Orientation.GENERATOR_ON_EAST);
+        possibleOrientations.add(Orientation.GENERATOR_ON_NORTH);
+        possibleOrientations.add(Orientation.GENERATOR_ON_SOUTH);*/
     }
 
     @Override
@@ -64,16 +79,6 @@ public class RedLaser extends Token {
             yPoints[2] = 0;
         }
         g.fillPolygon(xPoints, yPoints, 3);
-    }
-
-    public RedLaser()
-    {
-        super();
-        possibleOrientations = new ArrayList<Orientation>();
-        possibleOrientations.add(Orientation.GENERATOR_ON_WEST);
-        possibleOrientations.add(Orientation.GENERATOR_ON_EAST);
-        possibleOrientations.add(Orientation.GENERATOR_ON_NORTH);
-        possibleOrientations.add(Orientation.GENERATOR_ON_SOUTH);
     }
 
     public String toIconString() {

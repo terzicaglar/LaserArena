@@ -26,7 +26,9 @@ public abstract class Token {
 
 	private boolean isPassed = false; //checks if a beam passes on this token
 
-	protected boolean isFixed = false; //denotes if the orientation of the token can be changed by clicking
+	protected boolean isOrientationFixed = false; //denotes if the orientation of the token can be changed by clicking
+
+	protected boolean isLocationFixed = false; //denotes if the location of the token can be changed by clicking
 
 	public Token()
 	{
@@ -48,12 +50,20 @@ public abstract class Token {
 		construct();
 	}
 
-	public boolean isFixed() {
-		return isFixed;
+	public boolean isLocationFixed() {
+		return isLocationFixed;
 	}
 
-	public void setFixed(boolean fixed) {
-		isFixed = fixed;
+	public void setLocationFixed(boolean locationFixed) {
+		isLocationFixed = locationFixed;
+	}
+
+	public boolean isOrientationFixed() {
+		return isOrientationFixed;
+	}
+
+	public void setOrientationFixed(boolean orientationFixed) {
+		isOrientationFixed = orientationFixed;
 	}
 
 	public void setPassed(boolean passed) {

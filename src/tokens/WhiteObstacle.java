@@ -13,15 +13,22 @@ import java.util.ArrayList;
 
 public class WhiteObstacle extends Token {
 
-    public WhiteObstacle()
+    public WhiteObstacle(boolean isLocationFixed)
     {
         super();
-        this.orientation = Orientation.NONE;
+        this.isLocationFixed = isLocationFixed;
+        /*this.orientation = Orientation.NONE;
         possibleOrientations = new ArrayList<Orientation>();
-        possibleOrientations.add(Orientation.NONE);
+        possibleOrientations.add(Orientation.NONE);*/
         construct();
     }
 
+    public WhiteObstacle()
+    {
+        super();
+        this.isLocationFixed = false;
+        construct();
+    }
 
     public String toIconString() {
         return "" + this.getClass().getSimpleName().charAt(0);
