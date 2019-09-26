@@ -116,6 +116,7 @@ public class GameMap {
 					Token t = getTokenLocatedInPoint(beam.getLocation());
 					if(t != null)
 					{
+						//TODO null exception code below t.getSide(beam.getDirection().getOppositeDirection()).action(beam);
 						beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
 						t.setPassed(true);
 					}
