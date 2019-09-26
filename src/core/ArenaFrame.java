@@ -19,7 +19,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
     {
         super(title);
         map = new GameMap(width, height, noOftargets);
-        //map1();
+        map1();
         initMap();
         button1 = new JButton("refresh");
         this.setLayout(new GridLayout(map.getHeight()+1, map.getWidth()));
