@@ -32,7 +32,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
         setResizable(false);
 
     }
-
+    //
     private void createPanels() {
         panels = new ArenaPanel[width][height];
 
