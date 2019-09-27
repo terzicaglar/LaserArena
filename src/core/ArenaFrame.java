@@ -67,8 +67,8 @@ public class ArenaFrame extends JFrame implements ActionListener {
         map.addToken(new GreenMirror(Orientation.SLASH_MIRROR, false, true), new Point(2,3));
         map.addToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true, true), new Point(0,1));
         map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, false, true), new Point(1,3));
-        map.addToken(new WhiteObstacle(), new Point(4,0));
-        map.addToken(new WhiteObstacle(), new Point(1,2));
+        map.addToken(new WhiteObstacle(true), new Point(4,0));
+        map.addToken(new WhiteObstacle(true), new Point(1,2));
 
     }
 

@@ -50,6 +50,15 @@ public abstract class Token {
 		construct();
 	}
 
+	public void paintIfLocationFixed(Graphics g, int width, int height)
+	{
+		Color c = g.getColor();
+		g.setColor(Color.BLACK);
+		if(!isOrientationFixed)
+			g.drawString("?", width/4 , height/4);
+		g.setColor(c);
+	}
+
 	public boolean isLocationFixed() {
 		return isLocationFixed;
 	}

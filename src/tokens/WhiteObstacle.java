@@ -17,6 +17,8 @@ public class WhiteObstacle extends Token {
     {
         super();
         this.isLocationFixed = isLocationFixed;
+        this.orientation = Orientation.NONE;
+        this.isOrientationFixed = true;
         /*this.orientation = Orientation.NONE;
         possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.NONE);*/
@@ -27,6 +29,8 @@ public class WhiteObstacle extends Token {
     {
         super();
         this.isLocationFixed = false;
+        this.orientation = Orientation.NONE;
+        this.isOrientationFixed = true;
         construct();
     }
 
