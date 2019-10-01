@@ -15,9 +15,11 @@ public class GameMap {
 	private static int width, height;
 	private int noOfTargets;
 	private static Token[][] tokens;
+	private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
 	private static ArrayList<LaserBeam> beams;
 	public GameMap(int width, int height)
 	{
+		waitingTokens = new ArrayList<>();
 		beams = new ArrayList<>(4);
 		this.setWidth(width);
 		this.setHeight(height);
@@ -26,6 +28,7 @@ public class GameMap {
 
 	public GameMap(int width, int height, int noOfTargets)
 	{
+		waitingTokens = new ArrayList<>();
 		beams = new ArrayList<>(4);
 		this.noOfTargets = noOfTargets;
 		this.setWidth(width);
@@ -73,6 +76,16 @@ public class GameMap {
 		}
 		else
 			return false;
+	}
+
+	public static boolean addWaitingToken(Token token)
+	{
+		return waitingTokens.add(token);
+	}
+
+	public static boolean removeWaitingToken(Token token)
+	{
+		return waitingTokens.remove(token);
 	}
 
 	public void moveBeamsUntilNotMovable()
