@@ -49,6 +49,10 @@ public class GameMap {
 		return true;
 	}
 
+	public static ArrayList<Token> getWaitingTokens() {
+		return waitingTokens;
+	}
+
 	public static Token getTokenLocatedInXY(int x, int y)
 	{
 		return tokens[x][y];

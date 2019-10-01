@@ -220,34 +220,19 @@ public class ArenaPanel extends JPanel implements MouseListener {
             {
                 Token newToken = null;
                 System.out.println("clickCount: " + clickCount);
-                switch(clickCount%(numberOfTokenClasses+1))
-                {
-                    case 0:
-                        newToken = new BlueMirror(Orientation.SLASH_MIRROR); //TODO: these new tokens are added as isOrientationFixed=false, it will be corrected
-                        break;
-                    case 1:
-                        newToken = new GreenMirror(Orientation.SLASH_MIRROR);
-                        break;
-                    case 2:
-                        newToken = new PurpleTarget(Orientation.TARGET_ON_SOUTH);
-                        break;
-                    case 3:
-                        newToken = new RedLaser(Orientation.GENERATOR_ON_SOUTH);
-                        break;
-                    case 4:
-                        newToken = new WhiteObstacle();
-                        break;
-                    case 5:
-                        newToken = new YellowBridge(Orientation.HORIZONTAL_BRIDGE);
-                        break;
-                    case 6:
-                        newToken = null;
-                        break;
-                }
-                if(newToken != null)
-                    GameMap.addToken(newToken, new Point(x,y));
+                int waitingTokensSize = GameMap.getWaitingTokens().size();
+                if(clickCount%(waitingTokensSize+1) == waitingTokensSize)
+                    newToken = null;
                 else
+                    newToken = GameMap.getWaitingTokens().get(clickCount%(waitingTokensSize+1));
+
+                if(newToken != null) {
+                    GameMap.addToken(newToken, new Point(x, y));
+                }
+                else{
                     GameMap.removeTokenLocatedinXY(x,y);
+                }
+
                 t = newToken;
                 clickCount++;
                 repaint();
