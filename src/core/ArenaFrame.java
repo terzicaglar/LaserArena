@@ -72,6 +72,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
         map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true, false, false));
         map.addWaitingToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, false));
         map.addWaitingToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true, false));
+        //map.addWaitingToken(null);
 
     }
 

@@ -87,6 +87,11 @@ public class GameMap {
 		return waitingTokens.add(token);
 	}
 
+	public static void addWaitingToken(int location, Token token)
+	{
+		waitingTokens.add(location, token);
+	}
+
 	public static boolean removeWaitingToken(Token token)
 	{
 		return waitingTokens.remove(token);
