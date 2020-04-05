@@ -170,8 +170,10 @@ public class ArenaPanel extends JPanel implements MouseListener {
                                         new int[]{prev_line_y2 - midHeight / 4, prev_line_y2 - midHeight / 4, prev_line_y2 + midHeight / 4, prev_line_y2 + midHeight / 4},
                                         4);
                             }
-                            else
+                            else {
+                                g2d.setColor(Color.BLACK);
                                 g2d.drawString("X", prev_line_x2, prev_line_y2);
+                            }
                         }
 
 
