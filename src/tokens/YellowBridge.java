@@ -12,11 +12,25 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class YellowBridge extends Token{
+    public YellowBridge(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
+    {
+        super();
+        this.isLocationFixed = isLocationFixed;
+        this.isOrientationFixed = isOrientationFixed;
+        this.orientation = orientation;
+        construct();
+    }
+
     public YellowBridge(Orientation orientation)
     {
         super();
         this.orientation = orientation;
+        this.isLocationFixed = false;
+        this.isOrientationFixed = false;
         construct();
+        /*possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.VERTICAL_BRIDGE);
+        possibleOrientations.add(Orientation.HORIZONTAL_BRIDGE);*/
     }
 
     @Override
@@ -26,14 +40,6 @@ public class YellowBridge extends Token{
             g.drawLine(width/2,0, width/2, height);
         else if(orientation == Orientation.HORIZONTAL_BRIDGE)
             g.drawLine(0, height/2, width, height/2);
-    }
-
-    public YellowBridge()
-    {
-        super();
-        possibleOrientations = new ArrayList<Orientation>();
-        possibleOrientations.add(Orientation.VERTICAL_BRIDGE);
-        possibleOrientations.add(Orientation.HORIZONTAL_BRIDGE);
     }
 
     public String toIconString() {

@@ -13,12 +13,24 @@ import java.util.ArrayList;
 
 public class WhiteObstacle extends Token {
 
+    public WhiteObstacle(boolean isLocationFixed)
+    {
+        super();
+        this.isLocationFixed = isLocationFixed;
+        this.orientation = Orientation.NONE;
+        this.isOrientationFixed = true;
+        /*this.orientation = Orientation.NONE;
+        possibleOrientations = new ArrayList<Orientation>();
+        possibleOrientations.add(Orientation.NONE);*/
+        construct();
+    }
+
     public WhiteObstacle()
     {
         super();
+        this.isLocationFixed = false;
         this.orientation = Orientation.NONE;
-        possibleOrientations = new ArrayList<Orientation>();
-        possibleOrientations.add(Orientation.NONE);
+        this.isOrientationFixed = true;
         construct();
     }
 

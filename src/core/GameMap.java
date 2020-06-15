@@ -12,11 +12,15 @@ import java.util.ArrayList;
  */
 public class GameMap {
 	private static final int MAX_LOOP = 1000;
-	private int width, height, noOfTargets;
+	private static int width, height;
+	private int noOfTargets;
 	private static Token[][] tokens;
-	private static ArrayList<LaserBeam> beams = new ArrayList<>(4);;
+	private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
+	private static ArrayList<LaserBeam> beams;
 	public GameMap(int width, int height)
 	{
+		waitingTokens = new ArrayList<>();
+		beams = new ArrayList<>(4);
 		this.setWidth(width);
 		this.setHeight(height);
 		tokens = new Token[width][height];
@@ -24,12 +28,31 @@ public class GameMap {
 
 	public GameMap(int width, int height, int noOfTargets)
 	{
+		waitingTokens = new ArrayList<>();
+		beams = new ArrayList<>(4);
 		this.noOfTargets = noOfTargets;
 		this.setWidth(width);
 		this.setHeight(height);
 		tokens = new Token[width][height];
 	}
-	
+
+	public static boolean isAllTokensPassed()
+	{
+		for (int i = 0; i < tokens.length; i++) {
+			for (int j = 0; j < tokens[i].length; j++) {
+				if(tokens[i][j] != null && !(tokens[i][j] instanceof RedLaser) && !tokens[i][j].isPassed()) {
+					System.out.println(i + "," + j + " not passed");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public static ArrayList<Token> getWaitingTokens() {
+		return waitingTokens;
+	}
+
 	public static Token getTokenLocatedInXY(int x, int y)
 	{
 		return tokens[x][y];
@@ -40,24 +63,58 @@ public class GameMap {
 		return tokens[(int)p.getX()][(int)p.getY()];
 	}
 
-	public boolean addToken(Token token, Point point)
+	public static void removeTokenLocatedinXY(int x, int y)
+	{
+		tokens[x][y] = null;
+	}
+
+	public static boolean addToken(Token token, Point point)
 	{
 		if(point.getY() < height && point.getY() >= 0
 			&& point.getX() < width && point.getX() >= 0)
 		{
 			tokens[(int) point.getX()][(int) point.getY()] = token;
-			if(token instanceof RedLaser)
-				addLaserBeam(new LaserBeam(point, ((RedLaser) token).getGeneratedLaserDirection()));
+			/*if(token instanceof RedLaser)
+				addLaserBeam(new LaserBeam(point, ((RedLaser) token).getGeneratedLaserDirection()));*/
 			return true;
 		}
 		else
 			return false;
 	}
 
+	public static boolean addWaitingToken(Token token)
+	{
+		return waitingTokens.add(token);
+	}
+
+	public static boolean removeWaitingToken(Token token)
+	{
+		return waitingTokens.remove(token);
+	}
+
 	public void moveBeamsUntilNotMovable()
 	{
-		//TODO: not completed
-		System.out.println("init beam:" + beams.get(0));
+		for (int i = 0; i < tokens.length; i++) {
+			for (int j = 0; j < tokens[i].length; j++) {
+				if(tokens[i][j] != null)
+					tokens[i][j].setPassed(false);
+			}
+		}
+
+
+		beams = new ArrayList<>(4);
+
+		for (int i = 0; i < tokens.length; i++) {
+			for (int j = 0; j < tokens[i].length; j++) {
+				if( tokens[i][j] instanceof RedLaser)
+				{
+					addLaserBeam(new LaserBeam(new Point(i,j), ((RedLaser) tokens[i][j]).getGeneratedLaserDirection()));
+					//System.out.println("RL loc: " + i + "," + j);
+				}
+			}
+		}
+		if(beams.size() > 0)
+			System.out.println("init beam:" + beams.get(0));
 		LaserBeam beam;
 		int i;
 		for(int k = 0; k < beams.size(); k++)
@@ -76,7 +133,9 @@ public class GameMap {
 					Token t = getTokenLocatedInPoint(beam.getLocation());
 					if(t != null)
 					{
+						//TODO null exception code below t.getSide(beam.getDirection().getOppositeDirection()).action(beam);
 						beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
+						t.setPassed(true);
 					}
 
 				}
@@ -167,5 +226,18 @@ public class GameMap {
 
 	public static boolean addLaserBeam(LaserBeam l) {
 		return beams.add(l);
+	}
+
+	public void print(){
+		String str = "";
+		Token t;
+		for (int i = 0; i < tokens.length; i++) {
+			for (int j = 0; j < tokens[i].length; j++) {
+				t = tokens[i][j];
+				if(t != null)
+					System.out.println(t.toIconString() + " " + i + "," + j);
+			}
+
+		}
 	}
 }

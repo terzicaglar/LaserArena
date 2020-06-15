@@ -19,31 +19,30 @@ public class PurpleTarget extends Token {
         return isMandatoryTarget;
     }
 
-    boolean isMandatoryTarget;
+    boolean isMandatoryTarget = false;
 
-    public PurpleTarget(Orientation orientation)
+    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget, boolean isOrientationFixed, boolean isLocationFixed)
     {
         super();
-        this.orientation = orientation;
-        isMandatoryTarget = false;
-        construct();
-    }
-
-    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget)
-    {
-        super();
+        this.isLocationFixed = isLocationFixed;
+        this.isOrientationFixed = isOrientationFixed;
         this.orientation = orientation;
         this.isMandatoryTarget = isMandatoryTarget;
         construct();
     }
 
-    public PurpleTarget() {
+    public PurpleTarget(Orientation orientation) {
         super();
-        possibleOrientations = new ArrayList<Orientation>();
+        this.orientation = orientation;
+        this.isLocationFixed = false;
+        this.isOrientationFixed = false;
+        isMandatoryTarget = false;
+        construct();
+       /* possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.TARGET_ON_SOUTH);
         possibleOrientations.add(Orientation.TARGET_ON_WEST);
         possibleOrientations.add(Orientation.TARGET_ON_EAST);
-        possibleOrientations.add(Orientation.TARGET_ON_NORTH);
+        possibleOrientations.add(Orientation.TARGET_ON_NORTH);*/
     }
 
     public String toIconString() {

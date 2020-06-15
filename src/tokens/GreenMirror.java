@@ -7,28 +7,32 @@ package tokens;
 
 import core.Direction;
 import core.Orientation;
-import sides.BackSlashReflectorSide;
 import sides.BackSlashReflectorTransparentSide;
-import sides.SlashReflectorSide;
 import sides.SlashReflectorTransparentSide;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class GreenMirror extends Token{
-    public GreenMirror(Orientation orientation)
+    public GreenMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
     {
         super();
+        this.isLocationFixed = isLocationFixed;
+        this.isOrientationFixed = isOrientationFixed;
         this.orientation = orientation;
         construct();
     }
 
-    public GreenMirror()
+    public GreenMirror(Orientation orientation)
     {
         super();
-        possibleOrientations = new ArrayList<Orientation>();
+        this.orientation = orientation;
+        this.isLocationFixed = false;
+        this.isOrientationFixed = false;
+        construct();
+        /*possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.SLASH_MIRROR);
-        possibleOrientations.add(Orientation.BACKSLASH_MIRROR);
+        possibleOrientations.add(Orientation.BACKSLASH_MIRROR);*/
     }
 
     @Override

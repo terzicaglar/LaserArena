@@ -13,19 +13,25 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class BlueMirror extends Token{
-    public BlueMirror(Orientation orientation)
+    public BlueMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
     {
         super();
+        this.isLocationFixed = isLocationFixed;
+        this.isOrientationFixed = isOrientationFixed;
         this.orientation = orientation;
         construct();
     }
 
-    public BlueMirror()
+    public BlueMirror(Orientation orientation)
     {
         super();
-        possibleOrientations = new ArrayList<Orientation>();
+        this.orientation = orientation;
+        this.isLocationFixed = false;
+        this.isOrientationFixed = false;
+        construct();
+        /*possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.SLASH_MIRROR);
-        possibleOrientations.add(Orientation.BACKSLASH_MIRROR);
+        possibleOrientations.add(Orientation.BACKSLASH_MIRROR);*/
     }
 
     @Override
