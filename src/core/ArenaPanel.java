@@ -11,9 +11,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class ArenaPanel extends JPanel implements MouseListener {
-	int x, y, clickCount, numberOfTokenClasses = 6;
+	int x, y, clickCount, numberOfTokenClasses = 6, prevLocation = -1;
 	GameMap map;
-    Token t;
+    Token t, prevToken;
     JPopupMenu popup;
 
 	public ArenaPanel(int x, int y) {
@@ -170,8 +170,10 @@ public class ArenaPanel extends JPanel implements MouseListener {
                                         new int[]{prev_line_y2 - midHeight / 4, prev_line_y2 - midHeight / 4, prev_line_y2 + midHeight / 4, prev_line_y2 + midHeight / 4},
                                         4);
                             }
-                            else
+                            else {
+                                g2d.setColor(Color.BLACK);
                                 g2d.drawString("X", prev_line_x2, prev_line_y2);
+                            }
                         }
 
 
@@ -209,6 +211,8 @@ public class ArenaPanel extends JPanel implements MouseListener {
             if(!t.isLocationFixed())
             {
                 GameMap.removeTokenLocatedinXY(x,y);
+                GameMap.addWaitingToken(t);
+                prevToken = null;
                 t = null;
                 repaint();
             }
@@ -221,23 +225,36 @@ public class ArenaPanel extends JPanel implements MouseListener {
                 Token newToken = null;
                 System.out.println("clickCount: " + clickCount);
                 int waitingTokensSize = GameMap.getWaitingTokens().size();
-                if(clickCount%(waitingTokensSize+1) == waitingTokensSize)
+                int location = 0;
+                if( waitingTokensSize !=0)
+                    location = clickCount%(waitingTokensSize);
+                System.out.println("waitingTokensSize: " + waitingTokensSize);
+                /*if(clickCount%(waitingTokensSize+1) == waitingTokensSize)
                     newToken = null;
-                else
-                    newToken = GameMap.getWaitingTokens().get(clickCount%(waitingTokensSize+1));
+                else*/
+                if(GameMap.getWaitingTokens().size() > 0) {
+                    newToken = GameMap.getWaitingTokens().get(location);
 
-                if(newToken != null) {
-                    GameMap.addToken(newToken, new Point(x, y));
-                }
-                else{
-                    GameMap.removeTokenLocatedinXY(x,y);
-                }
 
-                t = newToken;
-                clickCount++;
-                repaint();
+                    if (prevToken != null)
+                        GameMap.addWaitingToken(location, prevToken);
+
+                    if (newToken != null) {
+                        GameMap.addToken(newToken, new Point(x, y));
+                        GameMap.removeWaitingToken(newToken);
+                    } else {
+                        GameMap.removeTokenLocatedinXY(x, y);
+                    }
+
+                    prevToken = newToken;
+                    prevLocation = location;
+                    t = newToken;
+                    clickCount++;
+                    repaint();
+                }
             }
         }
+        System.out.println("waiting tokens: " + GameMap.getWaitingTokens());
         //TODO: Right click will enable user to change the token or create one.
     }
 

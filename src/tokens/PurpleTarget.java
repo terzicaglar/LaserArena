@@ -107,7 +107,32 @@ public class PurpleTarget extends Token {
             xPoints[2] = width;
             yPoints[2] = 0;
         }
+
         g.fillPolygon(xPoints, yPoints, 3);
+        if(isMandatoryTarget)
+        {
+            int triangleXPoints[], triangleYPoints[];
+            triangleXPoints = new int[3];
+            triangleYPoints = new int[3];
+            //draw a little red triangle if the target is mandatory target
+            g.setColor(Color.RED);
+            Point midPoint1 = findMidPoint(xPoints[0], yPoints[0], xPoints[2], yPoints[2]);
+            Point midPoint2 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[1], yPoints[1]);
+            Point midPoint3 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[0], yPoints[0]);
+            Point midPoint4 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[2], yPoints[2]);
+            triangleXPoints[0] = midPoint3.x;
+            triangleYPoints[0] = midPoint3.y;
+            triangleXPoints[1] = midPoint4.x;
+            triangleYPoints[1] = midPoint4.y;
+            triangleXPoints[2] = midPoint2.x;
+            triangleYPoints[2] = midPoint2.y;
+            g.fillPolygon(triangleXPoints, triangleYPoints, 3);
+        }
+    }
+
+    private Point findMidPoint(int x1, int y1, int x2, int y2)
+    {
+        return new Point((x1+x2)/2, (y1+y2)/2);
     }
 
     protected void construct()
