@@ -38,7 +38,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
         for (int i = 0; i < panels.length; i++) {
             for (int j = 0; j < panels[i].length; j++) {
-                panels[j][i] = new ArenaPanel(j, i);
+                panels[j][i] = new ArenaPanel(this, j, i);
                 //panels[j][i].setToolTipText(j + "," + i);
                 panels[j][i].setBorder(BorderFactory.createLineBorder(Color.black));
                 this.getContentPane().add(panels[j][i]);
@@ -46,7 +46,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
         }
     }
 
-    public void initMap()
+    private void initMap()
     {
         map.moveBeamsUntilNotMovable();
         //map.print();
@@ -54,7 +54,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
         createPanels();
     }
 
-    public void map1()
+    private void map1()
     {
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(0,3));
         map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true, false, true), new Point(0,0));
@@ -78,7 +78,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
     }
 
-    public void map2()
+    private void map2()
     {
         map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(1,3));
         map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(2,3));
@@ -90,9 +90,14 @@ public class ArenaFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == button1)
         {
-            //TODO: RedLaser orientation change works but mirror etc. orientation change does not work
-            initMap();
-            this.repaint();
+            refresh();
         }
     }
+
+    protected void refresh(){
+        initMap();
+        this.repaint();
+    }
+
+
 }

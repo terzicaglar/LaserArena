@@ -15,14 +15,16 @@ public class ArenaPanel extends JPanel implements MouseListener {
 	GameMap map;
     Token t, prevToken;
     JPopupMenu popup;
+    ArenaFrame arenaFrame;
 
-	public ArenaPanel(int x, int y) {
+	public ArenaPanel(ArenaFrame arenaFrame, int x, int y) {
 		super();
 		clickCount = 0;
         t = GameMap.getTokenLocatedInXY(x,y);
 		this.x = x;
 		this.y = y;
 		this.addMouseListener(this);
+		this.arenaFrame = arenaFrame;
 	}
 
 	@Override
@@ -202,7 +204,6 @@ public class ArenaPanel extends JPanel implements MouseListener {
             if(!t.isOrientationFixed())
             {
                 t.nextOrientation();
-                repaint();
             }
         }
         //Middle click deletes token
@@ -214,7 +215,6 @@ public class ArenaPanel extends JPanel implements MouseListener {
                 GameMap.addWaitingToken(t);
                 prevToken = null;
                 t = null;
-                repaint();
             }
 
         }
@@ -250,11 +250,13 @@ public class ArenaPanel extends JPanel implements MouseListener {
                     prevLocation = location;
                     t = newToken;
                     clickCount++;
-                    repaint();
                 }
             }
         }
+
         System.out.println("waiting tokens: " + GameMap.getWaitingTokens());
+        repaint();
+        arenaFrame.refresh();
         //TODO: Right click will enable user to change the token or create one.
     }
 
