@@ -162,9 +162,8 @@ public class ArenaPanel extends JPanel implements MouseListener {
                         }
 
 
-                        if(prev_line_x2 != -1 && prev_line_y2 != -1) //if there is a current movable line, i.e., it is NOT stucked, hit or out of bounds, etc.
+                        if(prev_line_x2 != -1 && prev_line_y2 != -1) //prevDirection is stucked, hit or out of bounds
                         {
-                            //TODO: Add different shapes for mandatory target and random target (?)
                             //draws a green half rectangle if target is hit
                             if(pwd.getDirection() == Direction.TARGET_HIT || pwd.getDirection() == Direction.MANDATORY_TARGET_HIT) {
                                 g2d.setColor(Color.GREEN);
@@ -172,9 +171,12 @@ public class ArenaPanel extends JPanel implements MouseListener {
                                         new int[]{prev_line_y2 - midHeight / 4, prev_line_y2 - midHeight / 4, prev_line_y2 + midHeight / 4, prev_line_y2 + midHeight / 4},
                                         4);
                             }
-                            else {
+                            else { //draws a black half rectangle if stucked
                                 g2d.setColor(Color.BLACK);
-                                g2d.drawString("X", prev_line_x2, prev_line_y2);
+                                //g2d.drawString("X", prev_line_x2, prev_line_y2);
+                                g2d.fillPolygon(new int[]{prev_line_x2 - midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 - midWidth / 4},
+                                        new int[]{prev_line_y2 - midHeight / 4, prev_line_y2 - midHeight / 4, prev_line_y2 + midHeight / 4, prev_line_y2 + midHeight / 4},
+                                        4);
                             }
                         }
 

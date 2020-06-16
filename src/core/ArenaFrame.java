@@ -69,6 +69,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
         map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, false, true), new Point(1,3));
         //map.addToken(new WhiteObstacle(true), new Point(4,0));
         map.addToken(new WhiteObstacle(true), new Point(1,2));
+        map.addWaitingToken(new BlackHole());
         map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true, false, false));
         map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true, false, false));
         map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,false, true, false));
@@ -80,10 +81,8 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
     private void map2()
     {
-        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(1,3));
-        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(2,3));
-        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR), new Point(3,3));
-        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR), new Point(4,3));
+        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(2,2));
+        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true, false, false));
     }
 
     @Override
