@@ -13,6 +13,11 @@ import java.util.ArrayList;
 public class GameMap {
 	private static final int MAX_LOOP = 1000;
 	private static int width, height;
+
+	public void setNoOfTargets(int noOfTargets) {
+		this.noOfTargets = noOfTargets;
+	}
+
 	private int noOfTargets;
 	private static Token[][] tokens;
 	private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
@@ -176,6 +181,7 @@ public class GameMap {
 
 	public boolean checkIfAllWantedTargetsHit()
 	{
+		//TODO: In the original game, in addition to all targets hit, it checks if all tokens are used, we should check that too
 		//TODO: not tested
 		int noOfMandatoryTargetsHit = 0;
 		int noOfRandomTargetsHit = 0;

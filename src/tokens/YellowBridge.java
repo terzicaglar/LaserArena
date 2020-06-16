@@ -8,7 +8,11 @@ import core.Orientation;
 import sides.StuckableSide;
 import sides.TransparentSide;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class YellowBridge extends Token{
@@ -35,11 +39,11 @@ public class YellowBridge extends Token{
 
     @Override
     public void paintToken(Graphics g, int width, int height) {
-        g.setColor(Color.YELLOW);
-        if(orientation == Orientation.VERTICAL_BRIDGE)
-            g.drawLine(width/2,0, width/2, height);
-        else if(orientation == Orientation.HORIZONTAL_BRIDGE)
-            g.drawLine(0, height/2, width, height/2);
+//        g.setColor(Color.YELLOW);
+//        if(orientation == Orientation.VERTICAL_BRIDGE)
+//            g.drawLine(width/2,0, width/2, height);
+//        else if(orientation == Orientation.HORIZONTAL_BRIDGE)
+//            g.drawLine(0, height/2, width, height/2);
     }
 
     public String toIconString() {
@@ -56,7 +60,7 @@ public class YellowBridge extends Token{
 
     protected void construct()
     {
-
+        createImageName();
         switch(orientation)
         {
             case VERTICAL_BRIDGE:

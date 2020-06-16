@@ -137,6 +137,9 @@ public class PurpleTarget extends Token {
 
     protected void construct()
     {
+        createImageName();
+        if(isMandatoryTarget)
+            imageName += "-M";
         //TODO: Mandatory Target will be added
         switch(orientation)
         {

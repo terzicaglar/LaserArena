@@ -58,6 +58,7 @@ public class BlueMirror extends Token{
 
     protected void construct()
     {
+        createImageName();
         switch(orientation)
         {
             case SLASH_MIRROR:

@@ -59,7 +59,9 @@ public class ArenaPanel extends JPanel implements MouseListener {
             text = "";
         else
         {
-            t.paintToken(g2d, getWidth(), getHeight());
+            //t.paintToken is no longer used, t.drawTokenImage is used now
+            //t.paintToken(g2d, getWidth(), getHeight());
+            t.drawTokenImage(g2d, getWidth(), getHeight());
             t.paintIfLocationFixed(g2d, getWidth(), getHeight());
             text = GameMap.getTokenLocatedInXY(x,y).toIconString();
         }

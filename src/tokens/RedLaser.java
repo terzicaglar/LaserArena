@@ -99,6 +99,7 @@ public class RedLaser extends Token {
 
     protected void construct()
     {
+        createImageName();
         switch(orientation)
         {
             case GENERATOR_ON_WEST: //LaserGenerator on WEST

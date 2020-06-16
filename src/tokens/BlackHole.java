@@ -38,6 +38,7 @@ public class BlackHole extends Token {
 
     @Override
     protected void construct() {
+        createImageName();
         sides.put(Direction.NORTH, new StuckableSide());
         sides.put(Direction.WEST, new StuckableSide());
         sides.put(Direction.EAST, new StuckableSide());
