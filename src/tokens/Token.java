@@ -73,7 +73,6 @@ public abstract class Token {
 	{
 		BufferedImage img = null;
 		try {
-			System.out.println(imageName);
 			img = ImageIO.read(new File("img/" + imageName + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();

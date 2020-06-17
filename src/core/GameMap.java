@@ -194,7 +194,7 @@ public class GameMap {
 		}
 
 		return (noOfMandatoryTargetsHit >= getWantedMandatoryTargets() &&
-				(noOfMandatoryTargetsHit + noOfRandomTargetsHit) >= noOfTargets);
+				(noOfMandatoryTargetsHit + noOfRandomTargetsHit) == noOfTargets);
 	}
 
 	private boolean isOutOfBounds(Point p)

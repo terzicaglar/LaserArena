@@ -20,13 +20,10 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
         super(title);
         map = new GameMap(width, height, noOftargets);
-        map1();
-        initMap();
+        map4();
         button1 = new JButton("refresh");
-        //this.setLayout(new GridLayout(map.getHeight(), map.getWidth()));
-        //TODO:refresh button will be deleted
-        add(button1);
-        this.setLayout(new GridLayout(map.getHeight()+1, map.getWidth()));
+        initMap();
+
 
         button1.addActionListener(this);
         setSize(500,500);
@@ -39,18 +36,21 @@ public class ArenaFrame extends JFrame implements ActionListener {
     private void createPanels() {
 
         panels = new ArenaPanel[width][height];
-
+        this.getContentPane().removeAll();
         for (int i = 0; i < panels.length; i++) {
             for (int j = 0; j < panels[i].length; j++) {
                 panels[j][i] = new ArenaPanel(this, j, i);
                 //panels[j][i].setToolTipText(j + "," + i);
                 panels[j][i].setBorder(BorderFactory.createLineBorder(Color.black));
-                //TODO: code below adds new panels everytime this method is called, and it can be seen after minimizing window
                 this.getContentPane().add(panels[j][i]);
             }
         }
 
-        //System.out.println("done");
+        //TODO:refresh button will be deleted
+        //add(button1);
+        //this.setLayout(new GridLayout(map.getHeight(), map.getWidth()));
+        this.setLayout(new GridLayout(map.getHeight(), map.getWidth()));
+        this.setVisible(true);
     }
 
     private void initMap()
@@ -107,6 +107,22 @@ public class ArenaFrame extends JFrame implements ActionListener {
         map.addWaitingToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, false));
         map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
         map.setNoOfTargets(3);
+    }
+
+    private void map4()
+    {
+        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(1,2));
+        map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, true, true), new Point(2,1));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST,false, false, true), new Point(2,0));
+        map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST,false, false, true), new Point(0,4));
+        map.addToken(new BlueMirror(Orientation.SLASH_MIRROR, false, true), new Point(4,2));
+
+        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,false, false, false));
+        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,false, false, false));
+        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,false, false, false));
+        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
+        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
+        map.setNoOfTargets(2);
     }
 
     @Override
