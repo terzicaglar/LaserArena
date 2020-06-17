@@ -1,6 +1,6 @@
 /**
  * Generates a laser beam in the facing direction at the beginning. If an incoming laser hits it from any side,
- * it becomes stucked.
+ * it becomes stuck.
  */
 package tokens;
 
@@ -10,7 +10,6 @@ import core.Orientation;
 import sides.*;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class RedLaser extends Token {
 
@@ -40,7 +39,8 @@ public class RedLaser extends Token {
     @Override
     public void paintToken(Graphics g, int width, int height) {
         g.setColor(Color.RED);
-        int xPoints[], yPoints[];
+        int[] xPoints;
+        int[] yPoints;
         xPoints = new int[3];
         yPoints = new int[3];
         if(orientation == Orientation.GENERATOR_ON_EAST){

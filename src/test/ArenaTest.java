@@ -15,31 +15,31 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ArenaTest {
-    LaserBeam beam;
-    GameMap map;
+class ArenaTest {
+    private LaserBeam beam;
+    private GameMap map;
     @BeforeEach
-    public void initEach()
+    void initEach()
     {
         beam = new LaserBeam(new Point(2,1), Direction.EAST);
         map = new GameMap(5,5);
     }
 
     @Test
-    public void BackSlashBlueMirrorCreationTest(){
+    void BackSlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.BACKSLASH_MIRROR); //Backslash
         assertTrue(blueMirror.getSide(Direction.WEST).action(beam) == Direction.SOUTH);
 
     }
 
     @Test
-    public void SlashBlueMirrorCreationTest(){
+    void SlashBlueMirrorCreationTest(){
         Token blueMirror = new BlueMirror(Orientation.SLASH_MIRROR); //SLASH
         assertTrue(blueMirror.getSide(Direction.WEST).action(beam) == Direction.NORTH);
     }
 
     @Test
-    public void YellowBridgeCreationTest(){
+    void YellowBridgeCreationTest(){
         Token yellowBridge = new YellowBridge(Orientation.VERTICAL_BRIDGE); //"|" Bridge
 
         //TODO code below will be modified for LaserBeam parameter given to action method
@@ -59,16 +59,16 @@ public class ArenaTest {
     }
 
     @Test
-    public void RedLaserCreationTest(){
+    void RedLaserCreationTest(){
         Token generator1 = new RedLaser(Orientation.GENERATOR_ON_WEST);
         Token generator2 = new RedLaser(Orientation.GENERATOR_ON_NORTH);
 
-        assertTrue(generator1.getSide(Direction.WEST).action(beam) == Direction.STUCKED);
-        assertTrue(generator2.getSide(Direction.WEST).action(beam) == Direction.STUCKED);
+        assertTrue(generator1.getSide(Direction.WEST).action(beam) == Direction.STUCK);
+        assertTrue(generator2.getSide(Direction.WEST).action(beam) == Direction.STUCK);
     }
 
     @Test
-    public void CreateLaserAndHitAToken(){
+    void CreateLaserAndHitAToken(){
         LaserBeam beam = new LaserBeam(new Point(1,1), Direction.EAST);
 
         beam.move();
@@ -89,7 +89,7 @@ public class ArenaTest {
 
     /*
     @Test
-    public void CreateLaserAndHitATokenUsingmoveUntilHitATokenOrOutOfBounds(){
+    public void CreateLaserAndHitATokenUsingMoveUntilHitATokenOrOutOfBounds(){
         //LaserBeam beam = new LaserBeam(new Point(1,1), Direction.EAST);
         //TODO: not completed
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST),new Point(1,1));
@@ -106,7 +106,7 @@ public class ArenaTest {
     }
     */
 
-    public void GameMapWithGreenAndPurpleTokens()
+    void GameMapWithGreenAndPurpleTokens()
     {
         Token greenMirror = new GreenMirror(Orientation.BACKSLASH_MIRROR);
         Token target1 = new PurpleTarget(Orientation.TARGET_ON_WEST);
@@ -123,7 +123,7 @@ public class ArenaTest {
     }
 
     @Test
-    public void GameMapWitAllTokens()
+    void GameMapWitAllTokens()
     {
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST), new Point(0,3));
         map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST), new Point(0,0));
@@ -144,7 +144,7 @@ public class ArenaTest {
     }
 
     @Test
-    public void checkMoveBeamsUntilNotMovable()
+    void checkMoveBeamsUntilNotMovable()
     {
        /* GameMapWithGreenAndPurpleTokens();
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST),new Point(1,1));

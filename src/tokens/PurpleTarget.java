@@ -1,7 +1,7 @@
 /**
  * Multi-functional and the most crucial token in the game. It is a composition of mirror, stuckable, and target.
- * Mirror side reflects in the same way with BlueMirror. If Target is hit, beam is stucked ath there and lights the
- * Target. Aim of this game is hitting "labeled" Targets. If laser hits the empty edge, it becomes stucked, as well.
+ * Mirror side reflects in the same way with BlueMirror. If Target is hit, beam is stuck ath there and lights the
+ * Target. Aim of this game is hitting "labeled" Targets. If laser hits the empty edge, it becomes stuck, as well.
  */
 
 package tokens;
@@ -12,14 +12,13 @@ import core.Orientation;
 import sides.*;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class PurpleTarget extends Token {
     public boolean isMandatoryTarget() {
         return isMandatoryTarget;
     }
 
-    boolean isMandatoryTarget = false;
+    private boolean isMandatoryTarget = false;
 
     public PurpleTarget(Orientation orientation, boolean isMandatoryTarget, boolean isOrientationFixed, boolean isLocationFixed)
     {
@@ -64,7 +63,8 @@ public class PurpleTarget extends Token {
     @Override
     public void paintToken(Graphics g, int width, int height) {
         g.setColor(Color.MAGENTA);
-        int xPoints[], yPoints[];
+        int[] xPoints;
+        int[] yPoints;
         xPoints = new int[3];
         yPoints = new int[3];
         if(orientation == Orientation.TARGET_ON_WEST)
@@ -111,7 +111,8 @@ public class PurpleTarget extends Token {
         g.fillPolygon(xPoints, yPoints, 3);
         if(isMandatoryTarget)
         {
-            int triangleXPoints[], triangleYPoints[];
+            int[] triangleXPoints;
+            int[] triangleYPoints;
             triangleXPoints = new int[3];
             triangleYPoints = new int[3];
             //draw a little red triangle if the target is mandatory target

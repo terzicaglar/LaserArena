@@ -66,12 +66,12 @@ public class GameMap {
 		return tokens[x][y];
 	}
 
-	public static Token getTokenLocatedInPoint(Point p)
+	private static Token getTokenLocatedInPoint(Point p)
 	{
 		return tokens[(int)p.getX()][(int)p.getY()];
 	}
 
-	public static void removeTokenLocatedinXY(int x, int y)
+	public static void removeTokenLocatedInXY(int x, int y)
 	{
 		tokens[x][y] = null;
 	}
@@ -182,7 +182,7 @@ public class GameMap {
 	private int getWantedMandatoryTargets()
 	{
 		int noOfWantedMandatoryTargets = 0;
-		for(Token token_arr[]: tokens)
+		for(Token[] token_arr : tokens)
 		{
 			for(Token t: token_arr)
 			{
@@ -223,7 +223,7 @@ public class GameMap {
 		return width;
 	}
 
-	public void setWidth(int width) {
+	private void setWidth(int width) {
 		this.width = width;
 	}
 
@@ -231,7 +231,7 @@ public class GameMap {
 		return height;
 	}
 
-	public void setHeight(int height) {
+	private void setHeight(int height) {
 		this.height = height;
 	}
 
@@ -251,8 +251,8 @@ public class GameMap {
 		GameMap.tokens = tokens;
 	}
 
-	public static boolean addLaserBeam(LaserBeam l) {
-		return beams.add(l);
+	public static void addLaserBeam(LaserBeam l) {
+		beams.add(l);
 	}
 
 	public void print(){

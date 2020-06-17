@@ -11,7 +11,6 @@ import sides.BackSlashReflectorTransparentSide;
 import sides.SlashReflectorTransparentSide;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class GreenMirror extends Token{
     public GreenMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)

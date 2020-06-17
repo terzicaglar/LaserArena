@@ -5,7 +5,6 @@ package tokens;
 import core.Direction;
 import core.Orientation;
 import sides.StuckableSide;
-import sides.TransparentSide;
 
 import java.awt.*;
 

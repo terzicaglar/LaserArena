@@ -9,7 +9,6 @@ import core.Orientation;
 import sides.TransparentSide;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class WhiteObstacle extends Token {
 

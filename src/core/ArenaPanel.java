@@ -10,12 +10,12 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class ArenaPanel extends JPanel implements MouseListener {
-	int x, y, /*clickCount,*/ numberOfTokenClasses = 6, prevLocation = -1;
-	GameMap map;
-    Token t, prevToken;
-    JPopupMenu popup;
-    ArenaFrame arenaFrame;
+class ArenaPanel extends JPanel implements MouseListener {
+	private int x;
+    private int y; /*clickCount,*/
+    private Token t;
+    private Token prevToken;
+    private ArenaFrame arenaFrame;
 
 	public ArenaPanel(ArenaFrame arenaFrame, int x, int y) {
 		super();
@@ -67,12 +67,9 @@ public class ArenaPanel extends JPanel implements MouseListener {
         }
         g2d.setColor(Color.BLACK);
 
-
-
-        FontMetrics fm = g2d.getFontMetrics();
         int beamNo = 0, line_x2 = 0, line_y2 = 0, prev_line_x2 = 0, prev_line_y2 = 0;
         Direction prevDirection= null;
-        Color colors[] = {Color.RED,  Color.DARK_GRAY, Color.MAGENTA, Color.CYAN, Color.BLUE, Color.GREEN};
+        Color[] colors = {Color.RED, Color.DARK_GRAY, Color.MAGENTA, Color.CYAN, Color.BLUE, Color.GREEN};
 
         Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         g2d.setStroke(dashed);
@@ -136,10 +133,10 @@ public class ArenaPanel extends JPanel implements MouseListener {
 
                         if(prev_line_x2 != -1 && prev_line_y2 != -1) //if there is a previous line, i.e., not newly created
                             g2d.drawLine(midWidth, midHeight, prev_line_x2, prev_line_y2);
-                        if(line_x2 != -1 && line_y2 != -1) //if there is a current movable line, i.e., it is NOT stucked, hit or out of bounds, etc.
+                        if(line_x2 != -1 && line_y2 != -1) //if there is a current movable line, i.e., it is NOT stuck, hit or out of bounds, etc.
                             g2d.drawLine(getWidth() / 2, getHeight() / 2, line_x2, line_y2);
                     }
-                    else //it is stucked, hit or out of bounds, etc.
+                    else //it is stuck, hit or out of bounds, etc.
                     {
                         prev_line_x2 = prev_line_y2 = -1;
                         if(prevDirection == Direction.EAST)
@@ -164,7 +161,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
                         }
 
 
-                        if(prev_line_x2 != -1 && prev_line_y2 != -1) //prevDirection is stucked, hit or out of bounds
+                        if(prev_line_x2 != -1 && prev_line_y2 != -1) //prevDirection is stuck, hit or out of bounds
                         {
                             //draws a green half rectangle if target is hit
                             if(pwd.getDirection() == Direction.TARGET_HIT || pwd.getDirection() == Direction.MANDATORY_TARGET_HIT) {
@@ -173,7 +170,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
                                         new int[]{prev_line_y2 - midHeight / 4, prev_line_y2 - midHeight / 4, prev_line_y2 + midHeight / 4, prev_line_y2 + midHeight / 4},
                                         4);
                             }
-                            else { //draws a black half rectangle if stucked
+                            else { //draws a black half rectangle if stuck
                                 g2d.setColor(Color.BLACK);
                                 //g2d.drawString("X", prev_line_x2, prev_line_y2);
                                 g2d.fillPolygon(new int[]{prev_line_x2 - midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 - midWidth / 4},
@@ -215,7 +212,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
         {
             if(!t.isLocationFixed())
             {
-                GameMap.removeTokenLocatedinXY(x,y);
+                GameMap.removeTokenLocatedInXY(x,y);
                 GameMap.addWaitingToken(t);
                 prevToken = null;
                 t = null;
@@ -257,11 +254,10 @@ public class ArenaPanel extends JPanel implements MouseListener {
                         GameMap.addToken(newToken, new Point(x, y));
                         GameMap.removeWaitingToken(newToken);
                     } else {
-                        GameMap.removeTokenLocatedinXY(x, y);
+                        GameMap.removeTokenLocatedInXY(x, y);
                     }
 
                     prevToken = newToken;
-                    prevLocation = location;
                     t = newToken;
                     //clickCount++;
                 }

@@ -21,7 +21,7 @@ public enum Orientation {
     TARGET_ON_SOUTH,
     NONE;
 
-    Orientation next;
+    private Orientation next;
 
     static{
         SLASH_MIRROR.next = BACKSLASH_MIRROR;

@@ -4,23 +4,24 @@ import tokens.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class ArenaFrame extends JFrame{
+class ArenaFrame extends JFrame{
 
-    static GameMap map;
-    int width = 5, height = 5, noOftargets = 1, waitingListCols = 8;
-    ArenaPanel[][] panels;
-    JPanel rowPanels[], waitingPanel;
-    JPanel waitingTokens[];
-    LaserBeam lb;
+    private static GameMap map;
+    private int width = 5;
+    private int height = 5;
+    private int noOfTargets = 1;
+    private int waitingListCols = 8;
+    private ArenaPanel[][] panels;
+    private JPanel[] rowPanels;
+    private JPanel waitingPanel;
+    private JPanel[] waitingTokens;
 
     public ArenaFrame(String title)
     {
 
         super(title);
-        map = new GameMap(width, height, noOftargets);
+        map = new GameMap(width, height, noOfTargets);
         rowPanels = new JPanel[map.getHeight()];
         for(int i = 0; i < rowPanels.length; i++){
             rowPanels[i] = new JPanel();
@@ -148,7 +149,7 @@ public class ArenaFrame extends JFrame{
     }
 
 
-    protected void refresh(){
+    void refresh(){
         initMap();
         this.repaint();
     }

@@ -3,7 +3,7 @@
  */
 package core;
 
-//TODO: Direction may be divided into two enums. Other enum may include status info like TARGET_HIT, STUCKED, OUT+OF_BOUNDS
+//TODO: Direction may be divided into two enums. Other enum may include status info like TARGET_HIT, STUCK, OUT+OF_BOUNDS
 public enum Direction {
 	NORTH,
 	EAST, 
@@ -11,7 +11,7 @@ public enum Direction {
 	WEST,
 	TARGET_HIT,
 	MANDATORY_TARGET_HIT,
-	STUCKED,
+	STUCK,
 	OUT_OF_BOUNDS; //used for Laser Beam out of Map
 
 	private Direction opposite, backSlash, slash;
@@ -39,7 +39,7 @@ public enum Direction {
 		WEST.movable = true;
 		TARGET_HIT.movable = false;
 		MANDATORY_TARGET_HIT.movable =  false;
-		STUCKED.movable = false;
+		STUCK.movable = false;
 		OUT_OF_BOUNDS.movable = false;
 	}
 

@@ -4,7 +4,7 @@ import tokens.Token;
 
 import javax.swing.*;
 
-public class WaitingListPanel extends JPanel {
+class WaitingListPanel extends JPanel {
 
     public WaitingListPanel(Token token) {
         super();

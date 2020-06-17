@@ -10,10 +10,10 @@ public class LaserBeam {
 	private Direction direction;
 	private Point location;
 	private ArrayList<PointWithDirection> pathHistory;
-	private boolean isStuck;
+
 	
 	public LaserBeam(Point location, Direction direction) {
-		isStuck = false;
+
 		this.direction = direction;
 		this.location = location;
 		pathHistory = new ArrayList<PointWithDirection>();

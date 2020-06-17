@@ -1,5 +1,5 @@
 /**
- * Beam can pass in two opposing directions only (depends on the position of this token), otherwise beam is stucked.
+ * Beam can pass in two opposing directions only (depends on the position of this token), otherwise beam is stuck.
  */
 package tokens;
 
@@ -8,12 +8,7 @@ import core.Orientation;
 import sides.StuckableSide;
 import sides.TransparentSide;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class YellowBridge extends Token{
     public YellowBridge(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
