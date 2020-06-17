@@ -21,10 +21,17 @@ public class GameMap {
 	private int noOfTargets;
 	private static Token[][] tokens;
 	private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
+
+	public static ArrayList<Boolean> getIsWaitingTokenActive() {
+		return isWaitingTokenActive;
+	}
+
+	private static ArrayList<Boolean> isWaitingTokenActive; //true if not added to the map, false if it is on the map
 	private static ArrayList<LaserBeam> beams;
 	public GameMap(int width, int height)
 	{
 		waitingTokens = new ArrayList<>();
+		isWaitingTokenActive = new ArrayList<>();
 		beams = new ArrayList<>(4);
 		this.setWidth(width);
 		this.setHeight(height);
@@ -33,12 +40,8 @@ public class GameMap {
 
 	public GameMap(int width, int height, int noOfTargets)
 	{
-		waitingTokens = new ArrayList<>();
-		beams = new ArrayList<>(4);
+		this(width, height);
 		this.noOfTargets = noOfTargets;
-		this.setWidth(width);
-		this.setHeight(height);
-		tokens = new Token[width][height];
 	}
 
 	public static boolean isAllTokensPassed()
@@ -87,19 +90,37 @@ public class GameMap {
 			return false;
 	}
 
-	public static boolean addWaitingToken(Token token)
+	public static void addWaitingToken(Token token)
 	{
-		return waitingTokens.add(token);
+		int loc = waitingTokens.indexOf(token);
+		if(loc == -1) //new Token
+		{
+			waitingTokens.add(token);
+			isWaitingTokenActive.add(true);
+		}
+		else //current Token that needs to be reactivated
+		{
+			isWaitingTokenActive.set(loc, true);
+		}
 	}
 
-	public static void addWaitingToken(int location, Token token)
-	{
-		waitingTokens.add(location, token);
-	}
+	//TODO: addWaitingToken(int location, Token token) will be deleted
+//	public static void addWaitingToken(int location, Token token)
+//	{
+//		waitingTokens.add(location, token);
+//	}
 
-	public static boolean removeWaitingToken(Token token)
+	public static void removeWaitingToken(Token token)
 	{
-		return waitingTokens.remove(token);
+		int loc = waitingTokens.indexOf(token);
+		if(loc == -1)
+		{
+			throw new IllegalArgumentException();
+		}
+		else
+		{
+			isWaitingTokenActive.set(loc, false);
+		}
 	}
 
 	public void moveBeamsUntilNotMovable()

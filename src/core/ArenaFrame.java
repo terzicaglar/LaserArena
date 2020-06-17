@@ -14,7 +14,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
     int width = 5, height = 5, noOftargets = 1, waitingListCols = 8;
     ArenaPanel[][] panels;
     JPanel rowPanels[], waitingPanel;
-    JButton waitingButtons[];
+    JPanel waitingTokens[];
     LaserBeam lb;
 
     public ArenaFrame(String title)
@@ -26,21 +26,22 @@ public class ArenaFrame extends JFrame implements ActionListener {
         for(int i = 0; i < rowPanels.length; i++){
             rowPanels[i] = new JPanel();
         }
-        map4();
+        map2();
         button1 = new JButton("refresh");
 
         waitingPanel = new JPanel();
-        waitingButtons = new JButton[waitingListCols];
-        for(int j = 0; j < waitingButtons.length; j++)
+        waitingTokens = new JPanel[waitingListCols];
+        for(int j = 0; j < waitingTokens.length; j++)
         {
-            waitingButtons[j] = new JButton("x" + j);
-            waitingPanel.add(waitingButtons[j]);
+            waitingTokens[j] = new JPanel();
+            waitingTokens[j].setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+            waitingPanel.add(waitingTokens[j]);
         }
         waitingPanel.setLayout(new GridLayout(1,waitingListCols));
         this.add(waitingPanel);
 
         initMap();
-
+        createPanels();
         this.setLayout(new GridLayout(map.getHeight()+1,1));
 
         button1.addActionListener(this);
@@ -54,17 +55,12 @@ public class ArenaFrame extends JFrame implements ActionListener {
     private void createPanels() {
 
         panels = new ArenaPanel[map.getWidth()][map.getHeight()];
-        //this.getContentPane().removeAll();
-        for(int i = 0; i < rowPanels.length; i++)
-        {
-            rowPanels[i].removeAll();
-        }
 
         for (int i = 0; i < panels.length; i++) {
             for (int j = 0; j < panels[i].length; j++) {
                 panels[j][i] = new ArenaPanel(this, j, i);
-                panels[j][i].setToolTipText(j + "," + i);
-                panels[j][i].setBorder(BorderFactory.createLineBorder(Color.black));
+                //panels[j][i].setToolTipText(j + "," + i);
+                panels[j][i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 //this.getContentPane().add(panels[j][i]);
                 rowPanels[i].add(panels[j][i]);
             }
@@ -88,7 +84,7 @@ public class ArenaFrame extends JFrame implements ActionListener {
         map.moveBeamsUntilNotMovable();
         //map.print();
         System.out.println("map.checkIfAllWantedTargetsHit(): " + map.checkIfAllWantedTargetsHit());
-        createPanels();
+
     }
 
     private void map1()
@@ -120,6 +116,9 @@ public class ArenaFrame extends JFrame implements ActionListener {
     {
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(2,2));
         map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true, false, false));
+        map.addWaitingToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, false));
+        map.addWaitingToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true, false));
+        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
     }
 
     private void map3()

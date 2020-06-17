@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class ArenaPanel extends JPanel implements MouseListener {
-	int x, y, clickCount, numberOfTokenClasses = 6, prevLocation = -1;
+	int x, y, /*clickCount,*/ numberOfTokenClasses = 6, prevLocation = -1;
 	GameMap map;
     Token t, prevToken;
     JPopupMenu popup;
@@ -19,7 +19,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
 
 	public ArenaPanel(ArenaFrame arenaFrame, int x, int y) {
 		super();
-		clickCount = 0;
+		//clickCount = 0;
         t = GameMap.getTokenLocatedInXY(x,y);
 		this.x = x;
 		this.y = y;
@@ -213,6 +213,7 @@ public class ArenaPanel extends JPanel implements MouseListener {
         //Middle click deletes token
         else if(t != null && e.getButton() == MouseEvent.BUTTON2)
         {
+            //TODO: Bug: WaitingList's order changes everytime a token is deleted and then re-added, we can solve it with a 2D Array, where second dimension holds if token is placed on the map or not
             if(!t.isLocationFixed())
             {
                 GameMap.removeTokenLocatedinXY(x,y);
@@ -224,24 +225,37 @@ public class ArenaPanel extends JPanel implements MouseListener {
         }
         //Right click changes token
         else if(e.getButton() == MouseEvent.BUTTON3){
+            //TODO: If you press right click N (N>1) times, you lose the first N-1 token from waiting list,
+            // the reason behind this is -most probably- we delete all panels when repaint ArenaFrame, therefore we lost
+            // previous tokens in this ArenaPanel
             if(t == null || !t.isLocationFixed())
             {
                 Token newToken = null;
-                System.out.println("clickCount: " + clickCount);
+                //System.out.println("clickCount: " + clickCount);
                 int waitingTokensSize = GameMap.getWaitingTokens().size();
-                int location = 0;
-                if( waitingTokensSize !=0)
-                    location = clickCount%(waitingTokensSize);
+                int location = -1;
+//                if( waitingTokensSize !=0)
+//                    location = clickCount%(waitingTokensSize);
                 System.out.println("waitingTokensSize: " + waitingTokensSize);
                 /*if(clickCount%(waitingTokensSize+1) == waitingTokensSize)
                     newToken = null;
                 else*/
-                if(GameMap.getWaitingTokens().size() > 0) {
+
+                for(int i = 0; i < waitingTokensSize; i++)
+                {
+                    if(GameMap.getIsWaitingTokenActive().get(i))
+                    {
+                        location = i;
+                        break;
+                    }
+                }
+
+                if(location >= 0) {
                     newToken = GameMap.getWaitingTokens().get(location);
 
 
                     if (prevToken != null)
-                        GameMap.addWaitingToken(location, prevToken);
+                        GameMap.addWaitingToken(prevToken);
 
                     if (newToken != null) {
                         GameMap.addToken(newToken, new Point(x, y));
@@ -253,12 +267,13 @@ public class ArenaPanel extends JPanel implements MouseListener {
                     prevToken = newToken;
                     prevLocation = location;
                     t = newToken;
-                    clickCount++;
+                    //clickCount++;
                 }
             }
         }
 
-        System.out.println("waiting tokens: " + GameMap.getWaitingTokens());
+        System.out.println("\twaiting tokens: " + GameMap.getWaitingTokens());
+        System.out.println("\tis tokens active: " + GameMap.getIsWaitingTokenActive());
         repaint();
         arenaFrame.refresh();
         //TODO: Right click will enable user to change the token or create one.
