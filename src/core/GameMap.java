@@ -104,11 +104,6 @@ public class GameMap {
 		}
 	}
 
-	//TODO: addWaitingToken(int location, Token token) will be deleted
-//	public static void addWaitingToken(int location, Token token)
-//	{
-//		waitingTokens.add(location, token);
-//	}
 
 	public static void removeWaitingToken(Token token)
 	{

@@ -7,9 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ArenaFrame extends JFrame implements ActionListener {
+public class ArenaFrame extends JFrame{
 
-    private JButton button1;
     static GameMap map;
     int width = 5, height = 5, noOftargets = 1, waitingListCols = 8;
     ArenaPanel[][] panels;
@@ -27,7 +26,6 @@ public class ArenaFrame extends JFrame implements ActionListener {
             rowPanels[i] = new JPanel();
         }
         map2();
-        button1 = new JButton("refresh");
 
         waitingPanel = new JPanel();
         waitingTokens = new JPanel[waitingListCols];
@@ -44,7 +42,6 @@ public class ArenaFrame extends JFrame implements ActionListener {
         createPanels();
         this.setLayout(new GridLayout(map.getHeight()+1,1));
 
-        button1.addActionListener(this);
         setSize(500,500);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,10 +69,6 @@ public class ArenaFrame extends JFrame implements ActionListener {
             this.add(rowPanels[i]);
         }
 
-        //TODO:refresh button will be deleted
-        //add(button1);
-        //this.setLayout(new GridLayout(map.getHeight(), map.getWidth()));
-        //this.setLayout(new GridLayout(map.getHeight(), map.getWidth()));
         this.setVisible(true);
     }
 
@@ -154,13 +147,6 @@ public class ArenaFrame extends JFrame implements ActionListener {
         map.setNoOfTargets(2);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == button1)
-        {
-            refresh();
-        }
-    }
 
     protected void refresh(){
         initMap();

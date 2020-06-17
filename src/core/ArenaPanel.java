@@ -213,7 +213,6 @@ public class ArenaPanel extends JPanel implements MouseListener {
         //Middle click deletes token
         else if(t != null && e.getButton() == MouseEvent.BUTTON2)
         {
-            //TODO: Bug: WaitingList's order changes everytime a token is deleted and then re-added, we can solve it with a 2D Array, where second dimension holds if token is placed on the map or not
             if(!t.isLocationFixed())
             {
                 GameMap.removeTokenLocatedinXY(x,y);
@@ -225,9 +224,6 @@ public class ArenaPanel extends JPanel implements MouseListener {
         }
         //Right click changes token
         else if(e.getButton() == MouseEvent.BUTTON3){
-            //TODO: If you press right click N (N>1) times, you lose the first N-1 token from waiting list,
-            // the reason behind this is -most probably- we delete all panels when repaint ArenaFrame, therefore we lost
-            // previous tokens in this ArenaPanel
             if(t == null || !t.isLocationFixed())
             {
                 Token newToken = null;
@@ -276,7 +272,6 @@ public class ArenaPanel extends JPanel implements MouseListener {
         System.out.println("\tis tokens active: " + GameMap.getIsWaitingTokenActive());
         repaint();
         arenaFrame.refresh();
-        //TODO: Right click will enable user to change the token or create one.
     }
 
     @Override
