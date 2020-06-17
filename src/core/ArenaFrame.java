@@ -11,8 +11,10 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
     private JButton button1;
     static GameMap map;
-    int width = 5, height = 5, noOftargets = 1;
+    int width = 5, height = 5, noOftargets = 1, waitingListCols = 8;
     ArenaPanel[][] panels;
+    JPanel rowPanels[], waitingPanel;
+    JButton waitingButtons[];
     LaserBeam lb;
 
     public ArenaFrame(String title)
@@ -20,10 +22,26 @@ public class ArenaFrame extends JFrame implements ActionListener {
 
         super(title);
         map = new GameMap(width, height, noOftargets);
+        rowPanels = new JPanel[map.getHeight()];
+        for(int i = 0; i < rowPanels.length; i++){
+            rowPanels[i] = new JPanel();
+        }
         map4();
         button1 = new JButton("refresh");
+
+        waitingPanel = new JPanel();
+        waitingButtons = new JButton[waitingListCols];
+        for(int j = 0; j < waitingButtons.length; j++)
+        {
+            waitingButtons[j] = new JButton("x" + j);
+            waitingPanel.add(waitingButtons[j]);
+        }
+        waitingPanel.setLayout(new GridLayout(1,waitingListCols));
+        this.add(waitingPanel);
+
         initMap();
 
+        this.setLayout(new GridLayout(map.getHeight()+1,1));
 
         button1.addActionListener(this);
         setSize(500,500);
@@ -35,21 +53,33 @@ public class ArenaFrame extends JFrame implements ActionListener {
     //
     private void createPanels() {
 
-        panels = new ArenaPanel[width][height];
-        this.getContentPane().removeAll();
+        panels = new ArenaPanel[map.getWidth()][map.getHeight()];
+        //this.getContentPane().removeAll();
+        for(int i = 0; i < rowPanels.length; i++)
+        {
+            rowPanels[i].removeAll();
+        }
+
         for (int i = 0; i < panels.length; i++) {
             for (int j = 0; j < panels[i].length; j++) {
                 panels[j][i] = new ArenaPanel(this, j, i);
-                //panels[j][i].setToolTipText(j + "," + i);
+                panels[j][i].setToolTipText(j + "," + i);
                 panels[j][i].setBorder(BorderFactory.createLineBorder(Color.black));
-                this.getContentPane().add(panels[j][i]);
+                //this.getContentPane().add(panels[j][i]);
+                rowPanels[i].add(panels[j][i]);
             }
+        }
+
+        for(int i = 0; i < rowPanels.length; i++)
+        {
+            rowPanels[i].setLayout(new GridLayout(0,map.getWidth()));
+            this.add(rowPanels[i]);
         }
 
         //TODO:refresh button will be deleted
         //add(button1);
         //this.setLayout(new GridLayout(map.getHeight(), map.getWidth()));
-        this.setLayout(new GridLayout(map.getHeight(), map.getWidth()));
+        //this.setLayout(new GridLayout(map.getHeight(), map.getWidth()));
         this.setVisible(true);
     }
 
