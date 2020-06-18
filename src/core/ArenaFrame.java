@@ -27,18 +27,29 @@ class ArenaFrame extends JFrame{
         map2();
 
         upperPanel = new JPanel();
-        waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size()];
+        waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size()+1]; //plus one for noOfTargets Panel
         for(int i = 0; i < waitingTokenPanels.length; i++)
         {
-            waitingTokenPanels[i] = new WaitingListPanel(GameMap.getWaitingTokens().get(i));
-            waitingTokenPanels[i].setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+            if(i < GameMap.getWaitingTokens().size()) //for waiting tokens
+            {
+                waitingTokenPanels[i] = new WaitingListPanel(GameMap.getWaitingTokens().get(i));
+                //waitingTokenPanels[i].setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+            }
+            else //for noOfTargets
+            {
+                if( map.getNoOfTargets() > 0 && map.getNoOfTargets() < 6)
+                    waitingTokenPanels[i] = new WaitingListPanel(map.getNoOfTargets());
+                else
+                    throw new IllegalArgumentException("Number of targets must be between 1 and 5");
+            }
             upperPanel.add(waitingTokenPanels[i]);
         }
 
-        noOfTargetsPanel = new JPanel();
-        noOfTargetsPanel.add(new JLabel("" + map.getNoOfTargets()));
-        noOfTargetsPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
-        upperPanel.add(noOfTargetsPanel);
+//        noOfTargetsPanel = new JPanel();
+//        noOfTargetsPanel.add(new JLabel("" + map.getNoOfTargets()));
+//        noOfTargetsPanel.setBackground(Color.LIGHT_GRAY);
+//        //noOfTargetsPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+//        upperPanel.add(noOfTargetsPanel);
 
         upperPanel.setLayout(new GridLayout(1, waitingTokenPanels.length+1));
         this.add(upperPanel);
@@ -112,18 +123,18 @@ class ArenaFrame extends JFrame{
 
     private void map2()
     {
-        //map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(2,2));
+        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(2,2));
 
-        map.addWaitingToken(new RedLaser());
+        //map.addWaitingToken(new RedLaser());
         map.addWaitingToken(new PurpleTarget());
         map.addWaitingToken(new PurpleTarget(true));
-        map.addWaitingToken(new PurpleTarget(false));
+        //map.addWaitingToken(new PurpleTarget(false));
         map.addWaitingToken(new BlueMirror());
         map.addWaitingToken(new YellowBridge());
         map.addWaitingToken(new GreenMirror());
-        map.addWaitingToken(new GreenMirror());
+        //map.addWaitingToken(new GreenMirror());
         map.addWaitingToken(new WhiteObstacle());
-        map.setNoOfTargets(5);
+        map.setNoOfTargets(1);
     }
 
     private void map3()

@@ -11,10 +11,21 @@ import java.io.IOException;
 
 class WaitingListPanel extends JPanel {
     private Token t;
+    int noOfTargets;
     public WaitingListPanel(Token t) {
         super();
+        noOfTargets = -1;
         this.t = t;
+        this.setBackground(Color.LIGHT_GRAY);
         //repaint();
+    }
+
+    public WaitingListPanel(int noOfTargets)
+    {
+        super();
+        this.noOfTargets = noOfTargets;
+        t = null;
+        this.setBackground(Color.LIGHT_GRAY);
     }
 
     @Override
@@ -23,10 +34,21 @@ class WaitingListPanel extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g.create();
         String imgName = "";
-        if(GameMap.isTokenActive(t))
-            imgName = t.getWaitingTokenImageName();
+        if (t != null)
+        {
+            if (GameMap.isTokenActive(t))
+                imgName = t.getWaitingTokenImageName();
+            else
+                imgName = t.getGrayedWaitingTokenImageName();
+        }
+        else if(noOfTargets > 0)
+        {
+            imgName = "" + noOfTargets;
+        }
         else
-            imgName = t.getGrayedWaitingTokenImageName();
+        {
+            throw  new IllegalArgumentException();
+        }
 
         BufferedImage img = null;
         try {
@@ -34,7 +56,9 @@ class WaitingListPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        int minSide = Math.min(getWidth(),getHeight());
+        int sideSize = (int) (minSide * 0.9);
+        g.drawImage(img, (getWidth() - sideSize)/2, (getHeight() - sideSize)/2, sideSize, sideSize,  null);
 
         g2d.dispose();
     }
