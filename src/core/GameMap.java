@@ -243,9 +243,13 @@ public class GameMap {
 		return noOfWantedMandatoryTargets;
 	}
 
-	public boolean checkIfAllWantedTargetsHit()
+	//checksIfAllWantedTargetsHitAndAllTokensArePassed
+	public boolean isGameFinished()
 	{
-		//TODO: In the original game, in addition to all targets hit, it checks if all tokens are used, we should check that too
+		if(getActiveTokensCount() > 0)
+			return false;
+		if(!isAllTokensPassed())
+			return false;
 		//TODO: not tested
 		int noOfMandatoryTargetsHit = 0;
 		int noOfRandomTargetsHit = 0;
@@ -257,7 +261,7 @@ public class GameMap {
 				noOfMandatoryTargetsHit++;
 		}
 
-		return (noOfMandatoryTargetsHit >= getWantedMandatoryTargets() &&
+		return (noOfMandatoryTargetsHit == getWantedMandatoryTargets() &&
 				(noOfMandatoryTargetsHit + noOfRandomTargetsHit) == noOfTargets);
 	}
 

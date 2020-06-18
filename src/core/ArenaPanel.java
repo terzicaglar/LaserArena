@@ -24,7 +24,7 @@ class ArenaPanel extends JPanel implements MouseListener {
 
     public ArenaPanel(ArenaFrame arenaFrame, int x, int y) {
         super();
-        //clickCount = 0;
+        clickCount = 0;
         t = GameMap.getTokenLocatedInXY(x, y);
         this.x = x;
         this.y = y;
@@ -186,6 +186,7 @@ class ArenaPanel extends JPanel implements MouseListener {
                 GameMap.addWaitingToken(t);
                 prevToken = null;
                 t = null;
+                clickCount = 0;
             }
 
         }

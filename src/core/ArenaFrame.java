@@ -24,7 +24,7 @@ class ArenaFrame extends JFrame{
         for(int i = 0; i < rowPanels.length; i++){
             rowPanels[i] = new JPanel();
         }
-        map1();
+        map2();
 
         upperPanel = new JPanel();
         waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size()+1]; //plus one for noOfTargets Panel
@@ -92,7 +92,7 @@ class ArenaFrame extends JFrame{
     {
         map.moveBeamsUntilNotMovable();
         //map.print();
-        System.out.println("map.checkIfAllWantedTargetsHit(): " + map.checkIfAllWantedTargetsHit());
+        System.out.println("map.isGameFinished(): " + map.isGameFinished());
 
     }
     //TODO: All waiting tokens are !orientationFixed (all images in the waiting list are Question Marked), we can fix this later if needed. in the original game they are all Question Mark
@@ -105,7 +105,7 @@ class ArenaFrame extends JFrame{
         map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST,false, true, true), new Point(4,3));
         map.addToken(new BlueMirror(Orientation.SLASH_MIRROR, false, true), new Point(4,4));
         map.addToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, true), new Point(2,2));
-        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, true, true), new Point(3,3));
+        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, true), new Point(3,3));
         map.addToken(new GreenMirror(Orientation.SLASH_MIRROR, false, true), new Point(2,3));
         map.addToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true, true), new Point(0,1));
         map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, false, true), new Point(1,3));
