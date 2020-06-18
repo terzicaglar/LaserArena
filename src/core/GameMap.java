@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * GameMap of the game, where tokens are placed and laser(s) pass.
  */
 public class GameMap {
+	public static final String IMG_FOLDER = "img/", IMG_TYPE=".png";
 	private static final int MAX_LOOP = 1000;
 	private static int width, height;
 
@@ -102,6 +103,18 @@ public class GameMap {
 		}
 	}
 
+	public static boolean isTokenActive(Token t)
+	{
+		int index = waitingTokens.indexOf(t);
+		if(index >= 0)
+		{
+			return isWaitingTokenActive.get(index);
+		}
+		else
+		{
+			throw new IllegalArgumentException();
+		}
+	}
 
 	public static void removeWaitingToken(Token token)
 	{

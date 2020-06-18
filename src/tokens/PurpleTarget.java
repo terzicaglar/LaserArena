@@ -44,6 +44,22 @@ public class PurpleTarget extends Token {
         possibleOrientations.add(Orientation.TARGET_ON_NORTH);*/
     }
 
+    public PurpleTarget()
+    {
+        super();
+        this.orientation = Orientation.TARGET_ON_SOUTH;
+        isMandatoryTarget = false;
+        construct();
+    }
+
+    public PurpleTarget(boolean isMandatoryTarget)
+    {
+        super();
+        this.orientation = Orientation.TARGET_ON_SOUTH;
+        this.isMandatoryTarget = isMandatoryTarget;
+        construct();
+    }
+
     public String toIconString() {
         switch(orientation) {
             case TARGET_ON_WEST:
@@ -60,81 +76,28 @@ public class PurpleTarget extends Token {
 
     }
 
-    @Override
-    public void paintToken(Graphics g, int width, int height) {
-        g.setColor(Color.MAGENTA);
-        int[] xPoints;
-        int[] yPoints;
-        xPoints = new int[3];
-        yPoints = new int[3];
-        if(orientation == Orientation.TARGET_ON_WEST)
-        {
-            g.drawLine(0, height, width, 0);
-            xPoints[0] = 0;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = 0;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.TARGET_ON_EAST)
-        {
-            g.drawLine(0, height, width, 0);
-            xPoints[0] = width;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.TARGET_ON_SOUTH)
-        {
-            g.drawLine(0,0, width, height);
-            xPoints[0] = 0;
-            yPoints[0] = height;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.TARGET_ON_NORTH)
-        {
-            g.drawLine(0,0, width, height);
-            xPoints[0] = 0;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = 0;
-        }
-
-        g.fillPolygon(xPoints, yPoints, 3);
-        if(isMandatoryTarget)
-        {
-            int[] triangleXPoints;
-            int[] triangleYPoints;
-            triangleXPoints = new int[3];
-            triangleYPoints = new int[3];
-            //draw a little red triangle if the target is mandatory target
-            g.setColor(Color.RED);
-            Point midPoint1 = findMidPoint(xPoints[0], yPoints[0], xPoints[2], yPoints[2]);
-            Point midPoint2 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[1], yPoints[1]);
-            Point midPoint3 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[0], yPoints[0]);
-            Point midPoint4 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[2], yPoints[2]);
-            triangleXPoints[0] = midPoint3.x;
-            triangleYPoints[0] = midPoint3.y;
-            triangleXPoints[1] = midPoint4.x;
-            triangleYPoints[1] = midPoint4.y;
-            triangleXPoints[2] = midPoint2.x;
-            triangleYPoints[2] = midPoint2.y;
-            g.fillPolygon(triangleXPoints, triangleYPoints, 3);
-        }
-    }
-
     private Point findMidPoint(int x1, int y1, int x2, int y2)
     {
         return new Point((x1+x2)/2, (y1+y2)/2);
     }
+
+    @Override
+    public String getWaitingTokenImageName()
+    {
+        if(isMandatoryTarget)
+            return this.getClass().getSimpleName() + "Mandatory_Random";
+        else
+            return this.getClass().getSimpleName() + "_Random";
+    }
+    @Override
+    public String getGrayedWaitingTokenImageName()
+    {
+        if(isMandatoryTarget)
+            return "GrayMandatory_Random";
+        else
+            return "Gray_Random";
+    }
+
 
     protected void construct()
     {

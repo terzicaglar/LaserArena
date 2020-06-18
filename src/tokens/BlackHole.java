@@ -1,12 +1,10 @@
-
+//TODO:Is not used right now, no image etc.
 
 package tokens;
 
 import core.Direction;
 import core.Orientation;
 import sides.StuckableSide;
-
-import java.awt.*;
 
 public class BlackHole extends Token {
 
@@ -44,9 +42,4 @@ public class BlackHole extends Token {
         sides.put(Direction.SOUTH, new StuckableSide());
     }
 
-    @Override
-    public void paintToken(Graphics g, int width, int height) {
-        g.setColor(Color.DARK_GRAY);
-        g.fillOval(0, 0, width, height);
-    }
 }

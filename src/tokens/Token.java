@@ -40,6 +40,8 @@ public abstract class Token {
 
 	Token()
 	{
+		isOrientationFixed = false;
+		isLocationFixed = false;
 		sides = new HashMap<>(4);
 	}
 
@@ -57,7 +59,7 @@ public abstract class Token {
 		this.orientation = orientation.nextOrientation();
 		construct();
 	}
-
+	//TODO: Method name seems inappropriate and painting should be done in Panel, g2d parameter should not be passed
 	public void paintIfLocationFixed(Graphics g, int width, int height)
 	{
 		Color c = g.getColor();
@@ -67,26 +69,18 @@ public abstract class Token {
 		g.setColor(c);
 	}
 
-	//TODO: for empty cells, we can use blank cell images and delete drawn lines
-	public void drawTokenImage(Graphics g, int width, int height)
+	public String getTokenImageName()
 	{
-		drawImage(g, width, height, imageName);
+		return imageName;
 	}
 
-	public void drawWaitingTokenImage(Graphics g, int width, int height)
+	public String getWaitingTokenImageName()
 	{
-		drawImage(g, width, height, this.getClass().getSimpleName() + "_Random");
+		return this.getClass().getSimpleName() + "_Random";
 	}
-
-	public void drawImage(Graphics g, int width, int height, String imageSource)
+	public String getGrayedWaitingTokenImageName()
 	{
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new File("img/" + imageSource + ".png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		g.drawImage(img, 0, 0, width, height, null);
+		return "Gray_Random";
 	}
 
 	void createImageName()
@@ -124,7 +118,4 @@ public abstract class Token {
 	abstract public String toIconString();
 
 	abstract protected void construct();
-
-	//TODO: paintToken() will be deleted, we now use drawTokenImage()
-	abstract public void paintToken(Graphics g, int width, int height);
 }

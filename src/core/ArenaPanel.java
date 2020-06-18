@@ -5,10 +5,14 @@ package core;
 
 import tokens.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 class ArenaPanel extends JPanel implements MouseListener {
     private int x;
@@ -16,6 +20,7 @@ class ArenaPanel extends JPanel implements MouseListener {
     private Token t;
     private Token prevToken;
     private ArenaFrame arenaFrame;
+
 
     public ArenaPanel(ArenaFrame arenaFrame, int x, int y) {
         super();
@@ -30,22 +35,6 @@ class ArenaPanel extends JPanel implements MouseListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        /*Image image = null;
-        try {
-            image = ImageIO.read(new File("img/slash_blue_tr.png"));
-            image = image.getScaledInstance(getWidth(), getHeight(), 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int iWidth2 = image.getWidth(this)/2;
-        int iHeight2 = image.getHeight(this)/2;
-        //int xImage = this.getParent().midWidth - iWidth2;
-        //int yImage   = this.getParent().midHeight - iHeight2;
-        g.drawImage(image,x,y,this);
-
-         */
-
         //System.out.println("IsAllTokensPassed: " + GameMap.isAllTokensPassed());
 
         int midWidth = getWidth() / 2;
@@ -54,16 +43,33 @@ class ArenaPanel extends JPanel implements MouseListener {
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setStroke(new BasicStroke(3));
 
-        String text;
+        String imgName = "", text;
+
         if (t == null)
-            text = "";
+        {
+            imgName = "EmptyCell";
+        }
         else {
+
             //t.paintToken is no longer used, t.drawTokenImage is used now
             //t.paintToken(g2d, getWidth(), getHeight());
-            t.drawTokenImage(g2d, getWidth(), getHeight());
+            //TODO:Drawing in token, i.e., passing g2d as parameter seems wrong, we should paint it here without passing g2d as an argument as done in if(t==null)
+
+            //t.drawTokenImage(g2d, getWidth(), getHeight());
+            imgName = t.getTokenImageName();
+
             t.paintIfLocationFixed(g2d, getWidth(), getHeight());
             text = GameMap.getTokenLocatedInXY(x, y).toIconString();
         }
+
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File(GameMap.IMG_FOLDER + imgName + GameMap.IMG_TYPE));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+
         g2d.setColor(Color.BLACK);
 
         int beamNo = 0, line_x2 = 0, line_y2 = 0, prev_line_x2 = 0, prev_line_y2 = 0;

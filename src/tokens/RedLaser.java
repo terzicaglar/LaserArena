@@ -9,8 +9,6 @@ import core.Direction;
 import core.Orientation;
 import sides.*;
 
-import java.awt.*;
-
 public class RedLaser extends Token {
 
     public RedLaser(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
@@ -36,49 +34,11 @@ public class RedLaser extends Token {
         possibleOrientations.add(Orientation.GENERATOR_ON_SOUTH);*/
     }
 
-    @Override
-    public void paintToken(Graphics g, int width, int height) {
-        g.setColor(Color.RED);
-        int[] xPoints;
-        int[] yPoints;
-        xPoints = new int[3];
-        yPoints = new int[3];
-        if(orientation == Orientation.GENERATOR_ON_EAST){
-            xPoints[0] = 0;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = 0;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.GENERATOR_ON_WEST)
-        {
-            xPoints[0] = width;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.GENERATOR_ON_NORTH)
-        {
-            xPoints[0] = 0;
-            yPoints[0] = height;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.GENERATOR_ON_SOUTH)
-        {
-            xPoints[0] = 0;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = 0;
-        }
-        g.fillPolygon(xPoints, yPoints, 3);
+    public RedLaser()
+    {
+        super();
+        this.orientation = Orientation.GENERATOR_ON_SOUTH;
+        construct();
     }
 
     public String toIconString() {

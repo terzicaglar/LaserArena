@@ -10,8 +10,6 @@ import core.Orientation;
 import sides.BackSlashReflectorTransparentSide;
 import sides.SlashReflectorTransparentSide;
 
-import java.awt.*;
-
 public class GreenMirror extends Token{
     public GreenMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
     {
@@ -34,13 +32,11 @@ public class GreenMirror extends Token{
         possibleOrientations.add(Orientation.BACKSLASH_MIRROR);*/
     }
 
-    @Override
-    public void paintToken(Graphics g, int width, int height) {
-        g.setColor(Color.GREEN);
-        if(orientation == Orientation.BACKSLASH_MIRROR)
-            g.drawLine(0,0, width, height);
-        else if(orientation == Orientation.SLASH_MIRROR)
-            g.drawLine(0, height, width, 0);
+    public GreenMirror()
+    {
+        super();
+        this.orientation = Orientation.SLASH_MIRROR;
+        construct();
     }
 
     public String toIconString() {

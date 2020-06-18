@@ -62,7 +62,7 @@ class ArenaFrame extends JFrame{
             for (int j = 0; j < panels[i].length; j++) {
                 panels[j][i] = new ArenaPanel(this, j, i);
                 //panels[j][i].setToolTipText(j + "," + i);
-                panels[j][i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                //panels[j][i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 //this.getContentPane().add(panels[j][i]);
                 rowPanels[i].add(panels[j][i]);
             }
@@ -112,12 +112,17 @@ class ArenaFrame extends JFrame{
 
     private void map2()
     {
-        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(2,2));
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST,true, false, false));
-        map.addWaitingToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, false));
-        map.addWaitingToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true, false));
-        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
-        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
+        //map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(2,2));
+
+        map.addWaitingToken(new RedLaser());
+        map.addWaitingToken(new PurpleTarget());
+        map.addWaitingToken(new PurpleTarget(true));
+        map.addWaitingToken(new PurpleTarget(false));
+        map.addWaitingToken(new BlueMirror());
+        map.addWaitingToken(new YellowBridge());
+        map.addWaitingToken(new GreenMirror());
+        map.addWaitingToken(new GreenMirror());
+        map.addWaitingToken(new WhiteObstacle());
         map.setNoOfTargets(5);
     }
 
