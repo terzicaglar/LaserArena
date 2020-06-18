@@ -24,7 +24,7 @@ class ArenaFrame extends JFrame{
         for(int i = 0; i < rowPanels.length; i++){
             rowPanels[i] = new JPanel();
         }
-        map2();
+        map1();
 
         upperPanel = new JPanel();
         waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size()+1]; //plus one for noOfTargets Panel
@@ -95,7 +95,7 @@ class ArenaFrame extends JFrame{
         System.out.println("map.checkIfAllWantedTargetsHit(): " + map.checkIfAllWantedTargetsHit());
 
     }
-
+    //TODO: All waiting tokens are !orientationFixed (all images in the waiting list are Question Marked), we can fix this later if needed. in the original game they are all Question Mark
     private void map1()
     {
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(0,3));

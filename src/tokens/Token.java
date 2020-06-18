@@ -59,19 +59,14 @@ public abstract class Token {
 		this.orientation = orientation.nextOrientation();
 		construct();
 	}
-	//TODO: Method name seems inappropriate and painting should be done in Panel, g2d parameter should not be passed
-	public void paintIfLocationFixed(Graphics g, int width, int height)
-	{
-		Color c = g.getColor();
-		g.setColor(Color.BLACK);
-		if(!isOrientationFixed)
-			g.drawString("?", width/4 , height/4);
-		g.setColor(c);
-	}
+
 
 	public String getTokenImageName()
 	{
-		return imageName;
+		if(isOrientationFixed)
+			return imageName;
+		else
+			return imageName + "-Q";
 	}
 
 	public String getWaitingTokenImageName()

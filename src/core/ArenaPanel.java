@@ -50,15 +50,9 @@ class ArenaPanel extends JPanel implements MouseListener {
             imgName = "EmptyCell";
         }
         else {
-
-            //t.paintToken is no longer used, t.drawTokenImage is used now
-            //t.paintToken(g2d, getWidth(), getHeight());
-            //TODO:Drawing in token, i.e., passing g2d as parameter seems wrong, we should paint it here without passing g2d as an argument as done in if(t==null)
-
-            //t.drawTokenImage(g2d, getWidth(), getHeight());
             imgName = t.getTokenImageName();
 
-            t.paintIfLocationFixed(g2d, getWidth(), getHeight());
+            //t.paintIfOrientationNotFixed(g2d, getWidth(), getHeight());
             text = GameMap.getTokenLocatedInXY(x, y).toIconString();
         }
 
@@ -199,16 +193,8 @@ class ArenaPanel extends JPanel implements MouseListener {
         else if (e.getButton() == MouseEvent.BUTTON3) {
             if (t == null || !t.isLocationFixed()) {
                 Token newToken = null;
-                //System.out.println("clickCount: " + clickCount);
                 int activeTokensSize = GameMap.getActiveTokensCount();
-
-//                if( waitingTokensSize !=0)
-//                    location = clickCount%(waitingTokensSize);
                 System.out.println("activeTokensSize: " + activeTokensSize);
-                /*if(clickCount%(waitingTokensSize+1) == waitingTokensSize)
-                    newToken = null;
-                else*/
-
 
                 if (activeTokensSize > 0) { //more than one item on waiting list
                     if (prevToken != null)
@@ -229,7 +215,6 @@ class ArenaPanel extends JPanel implements MouseListener {
                 }
             }
         }
-
         System.out.println("\twaiting tokens: " + GameMap.getWaitingTokens());
         System.out.println("\tis tokens active: " + GameMap.getIsWaitingTokenActive());
         repaint();
