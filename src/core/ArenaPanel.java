@@ -11,23 +11,23 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 class ArenaPanel extends JPanel implements MouseListener {
-	private int x;
-    private int y; /*clickCount,*/
+    private int x;
+    private int y, clickCount;
     private Token t;
     private Token prevToken;
     private ArenaFrame arenaFrame;
 
-	public ArenaPanel(ArenaFrame arenaFrame, int x, int y) {
-		super();
-		//clickCount = 0;
-        t = GameMap.getTokenLocatedInXY(x,y);
-		this.x = x;
-		this.y = y;
-		this.addMouseListener(this);
-		this.arenaFrame = arenaFrame;
-	}
+    public ArenaPanel(ArenaFrame arenaFrame, int x, int y) {
+        super();
+        //clickCount = 0;
+        t = GameMap.getTokenLocatedInXY(x, y);
+        this.x = x;
+        this.y = y;
+        this.addMouseListener(this);
+        this.arenaFrame = arenaFrame;
+    }
 
-	@Override
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -48,63 +48,52 @@ class ArenaPanel extends JPanel implements MouseListener {
 
         //System.out.println("IsAllTokensPassed: " + GameMap.isAllTokensPassed());
 
-        int midWidth = getWidth()/2;
-        int midHeight = getHeight()/2;
+        int midWidth = getWidth() / 2;
+        int midHeight = getHeight() / 2;
 
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setStroke(new BasicStroke(3));
 
         String text;
-        if( t == null)
+        if (t == null)
             text = "";
-        else
-        {
+        else {
             //t.paintToken is no longer used, t.drawTokenImage is used now
             //t.paintToken(g2d, getWidth(), getHeight());
             t.drawTokenImage(g2d, getWidth(), getHeight());
             t.paintIfLocationFixed(g2d, getWidth(), getHeight());
-            text = GameMap.getTokenLocatedInXY(x,y).toIconString();
+            text = GameMap.getTokenLocatedInXY(x, y).toIconString();
         }
         g2d.setColor(Color.BLACK);
 
         int beamNo = 0, line_x2 = 0, line_y2 = 0, prev_line_x2 = 0, prev_line_y2 = 0;
-        Direction prevDirection= null;
+        Direction prevDirection = null;
         Color[] colors = {Color.RED, Color.DARK_GRAY, Color.MAGENTA, Color.CYAN, Color.BLUE, Color.GREEN};
 
         Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         g2d.setStroke(dashed);
 
-        for(LaserBeam beam: GameMap.getBeams())
-        {
+        for (LaserBeam beam : GameMap.getBeams()) {
             //TODO: Refactor code below
             //Draw LaserBeam
-            for(PointWithDirection pwd: beam.getPathHistory())
-            {
-                if(x == (int)pwd.getPoint().getX() && y == (int)pwd.getPoint().getY())
-                {
+            for (PointWithDirection pwd : beam.getPathHistory()) {
+                if (x == (int) pwd.getPoint().getX() && y == (int) pwd.getPoint().getY()) {
                     //text += " " + beamNo + pwd.getDirection().toString().substring(0,2);
                     g2d.setColor(colors[beamNo]);
                     prev_line_x2 = prev_line_y2 = line_y2 = line_x2 = -1;
                     //System.out.println(pwd.getDirection());
-                    if(pwd.getDirection().isMovable()) {
+                    if (pwd.getDirection().isMovable()) {
 
-                        if(prevDirection == Direction.EAST)
-                        {
+                        if (prevDirection == Direction.EAST) {
                             prev_line_x2 = 0;
                             prev_line_y2 = midHeight;
-                        }
-                        else if(prevDirection == Direction.WEST)
-                        {
+                        } else if (prevDirection == Direction.WEST) {
                             prev_line_x2 = getWidth();
                             prev_line_y2 = midHeight;
-                        }
-                        else if(prevDirection == Direction.NORTH)
-                        {
+                        } else if (prevDirection == Direction.NORTH) {
                             prev_line_x2 = midWidth;
                             prev_line_y2 = getHeight();
-                        }
-                        else if(prevDirection == Direction.SOUTH)
-                        {
+                        } else if (prevDirection == Direction.SOUTH) {
                             prev_line_x2 = midWidth;
                             prev_line_y2 = 0;
                         }
@@ -113,64 +102,49 @@ class ArenaPanel extends JPanel implements MouseListener {
                         if (pwd.getDirection() == Direction.EAST) {
                             line_x2 = getWidth();
                             line_y2 = getHeight() / 2;
-                        }
-                        else if(pwd.getDirection() == Direction.WEST)
-                        {
+                        } else if (pwd.getDirection() == Direction.WEST) {
                             line_x2 = 0;
                             line_y2 = midHeight;
-                        }
-                        else if(pwd.getDirection() == Direction.NORTH)
-                        {
+                        } else if (pwd.getDirection() == Direction.NORTH) {
                             line_x2 = midWidth;
                             line_y2 = 0;
-                        }
-                        else if(pwd.getDirection() == Direction.SOUTH)
-                        {
+                        } else if (pwd.getDirection() == Direction.SOUTH) {
                             line_x2 = midWidth;
                             line_y2 = getHeight();
                         }
 
 
-                        if(prev_line_x2 != -1 && prev_line_y2 != -1) //if there is a previous line, i.e., not newly created
+                        if (prev_line_x2 != -1 && prev_line_y2 != -1) //if there is a previous line, i.e., not newly created
                             g2d.drawLine(midWidth, midHeight, prev_line_x2, prev_line_y2);
-                        if(line_x2 != -1 && line_y2 != -1) //if there is a current movable line, i.e., it is NOT stuck, hit or out of bounds, etc.
+                        if (line_x2 != -1 && line_y2 != -1) //if there is a current movable line, i.e., it is NOT stuck, hit or out of bounds, etc.
                             g2d.drawLine(getWidth() / 2, getHeight() / 2, line_x2, line_y2);
-                    }
-                    else //it is stuck, hit or out of bounds, etc.
+                    } else //it is stuck, hit or out of bounds, etc.
                     {
                         prev_line_x2 = prev_line_y2 = -1;
-                        if(prevDirection == Direction.EAST)
-                        {
+                        if (prevDirection == Direction.EAST) {
                             prev_line_x2 = 0;
                             prev_line_y2 = midHeight;
-                        }
-                        else if(prevDirection == Direction.WEST)
-                        {
+                        } else if (prevDirection == Direction.WEST) {
                             prev_line_x2 = getWidth();
                             prev_line_y2 = midHeight;
-                        }
-                        else if(prevDirection == Direction.NORTH)
-                        {
+                        } else if (prevDirection == Direction.NORTH) {
                             prev_line_x2 = midWidth;
                             prev_line_y2 = getHeight();
-                        }
-                        else if(prevDirection == Direction.SOUTH)
-                        {
+                        } else if (prevDirection == Direction.SOUTH) {
                             prev_line_x2 = midWidth;
                             prev_line_y2 = 0;
                         }
 
 
-                        if(prev_line_x2 != -1 && prev_line_y2 != -1) //prevDirection is stuck, hit or out of bounds
+                        if (prev_line_x2 != -1 && prev_line_y2 != -1) //prevDirection is stuck, hit or out of bounds
                         {
                             //draws a green half rectangle if target is hit
-                            if(pwd.getDirection() == Direction.TARGET_HIT || pwd.getDirection() == Direction.MANDATORY_TARGET_HIT) {
+                            if (pwd.getDirection() == Direction.TARGET_HIT || pwd.getDirection() == Direction.MANDATORY_TARGET_HIT) {
                                 g2d.setColor(Color.GREEN);
                                 g2d.fillPolygon(new int[]{prev_line_x2 - midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 - midWidth / 4},
                                         new int[]{prev_line_y2 - midHeight / 4, prev_line_y2 - midHeight / 4, prev_line_y2 + midHeight / 4, prev_line_y2 + midHeight / 4},
                                         4);
-                            }
-                            else { //draws a black half rectangle if stuck
+                            } else { //draws a black half rectangle if stuck
                                 g2d.setColor(Color.BLACK);
                                 //g2d.drawString("X", prev_line_x2, prev_line_y2);
                                 g2d.fillPolygon(new int[]{prev_line_x2 - midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 - midWidth / 4},
@@ -178,7 +152,6 @@ class ArenaPanel extends JPanel implements MouseListener {
                                         4);
                             }
                         }
-
 
 
                     }
@@ -201,18 +174,15 @@ class ArenaPanel extends JPanel implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         //Left click changes the orientation of token
-        if(t != null && e.getButton() == MouseEvent.BUTTON1){
-            if(!t.isOrientationFixed())
-            {
+        if (t != null && e.getButton() == MouseEvent.BUTTON1) {
+            if (!t.isOrientationFixed()) {
                 t.nextOrientation();
             }
         }
         //Middle click deletes token
-        else if(t != null && e.getButton() == MouseEvent.BUTTON2)
-        {
-            if(!t.isLocationFixed())
-            {
-                GameMap.removeTokenLocatedInXY(x,y);
+        else if (t != null && e.getButton() == MouseEvent.BUTTON2) {
+            if (!t.isLocationFixed()) {
+                GameMap.removeTokenLocatedInXY(x, y);
                 GameMap.addWaitingToken(t);
                 prevToken = null;
                 t = null;
@@ -220,35 +190,25 @@ class ArenaPanel extends JPanel implements MouseListener {
 
         }
         //Right click changes token
-        else if(e.getButton() == MouseEvent.BUTTON3){
-            if(t == null || !t.isLocationFixed())
-            {
+        else if (e.getButton() == MouseEvent.BUTTON3) {
+            if (t == null || !t.isLocationFixed()) {
                 Token newToken = null;
                 //System.out.println("clickCount: " + clickCount);
-                int waitingTokensSize = GameMap.getWaitingTokens().size();
-                int location = -1;
+                int activeTokensSize = GameMap.getActiveTokensCount();
+
 //                if( waitingTokensSize !=0)
 //                    location = clickCount%(waitingTokensSize);
-                System.out.println("waitingTokensSize: " + waitingTokensSize);
+                System.out.println("activeTokensSize: " + activeTokensSize);
                 /*if(clickCount%(waitingTokensSize+1) == waitingTokensSize)
                     newToken = null;
                 else*/
 
-                for(int i = 0; i < waitingTokensSize; i++)
-                {
-                    if(GameMap.getIsWaitingTokenActive().get(i))
-                    {
-                        location = i;
-                        break;
-                    }
-                }
 
-                if(location >= 0) {
-                    newToken = GameMap.getWaitingTokens().get(location);
-
-
+                if (activeTokensSize > 0) { //more than one item on waiting list
                     if (prevToken != null)
                         GameMap.addWaitingToken(prevToken);
+
+                    newToken = GameMap.getNthActiveToken(clickCount);
 
                     if (newToken != null) {
                         GameMap.addToken(newToken, new Point(x, y));
@@ -259,7 +219,7 @@ class ArenaPanel extends JPanel implements MouseListener {
 
                     prevToken = newToken;
                     t = newToken;
-                    //clickCount++;
+                    clickCount++;
                 }
             }
         }

@@ -70,9 +70,19 @@ public abstract class Token {
 	//TODO: for empty cells, we can use blank cell images and delete drawn lines
 	public void drawTokenImage(Graphics g, int width, int height)
 	{
+		drawImage(g, width, height, imageName);
+	}
+
+	public void drawWaitingTokenImage(Graphics g, int width, int height)
+	{
+		drawImage(g, width, height, this.getClass().getSimpleName() + "_Random");
+	}
+
+	public void drawImage(Graphics g, int width, int height, String imageSource)
+	{
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("img/" + imageName + ".png"));
+			img = ImageIO.read(new File("img/" + imageSource + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

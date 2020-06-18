@@ -10,34 +10,38 @@ class ArenaFrame extends JFrame{
     private static GameMap map;
     private int width = 5;
     private int height = 5;
-    private int noOfTargets = 1;
-    private int waitingListCols = 8;
     private ArenaPanel[][] panels;
     private JPanel[] rowPanels;
-    private JPanel waitingPanel;
-    private JPanel[] waitingTokens;
+    private JPanel upperPanel, noOfTargetsPanel;
+    private JPanel[] waitingTokenPanels;
 
     public ArenaFrame(String title)
     {
 
         super(title);
-        map = new GameMap(width, height, noOfTargets);
+        map = new GameMap(width, height);
         rowPanels = new JPanel[map.getHeight()];
         for(int i = 0; i < rowPanels.length; i++){
             rowPanels[i] = new JPanel();
         }
         map2();
 
-        waitingPanel = new JPanel();
-        waitingTokens = new JPanel[waitingListCols];
-        for(int j = 0; j < waitingTokens.length; j++)
+        upperPanel = new JPanel();
+        waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size()];
+        for(int i = 0; i < waitingTokenPanels.length; i++)
         {
-            waitingTokens[j] = new JPanel();
-            waitingTokens[j].setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
-            waitingPanel.add(waitingTokens[j]);
+            waitingTokenPanels[i] = new WaitingListPanel(GameMap.getWaitingTokens().get(i));
+            waitingTokenPanels[i].setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+            upperPanel.add(waitingTokenPanels[i]);
         }
-        waitingPanel.setLayout(new GridLayout(1,waitingListCols));
-        this.add(waitingPanel);
+
+        noOfTargetsPanel = new JPanel();
+        noOfTargetsPanel.add(new JLabel("" + map.getNoOfTargets()));
+        noOfTargetsPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        upperPanel.add(noOfTargetsPanel);
+
+        upperPanel.setLayout(new GridLayout(1, waitingTokenPanels.length+1));
+        this.add(upperPanel);
 
         initMap();
         createPanels();
@@ -113,6 +117,8 @@ class ArenaFrame extends JFrame{
         map.addWaitingToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, false));
         map.addWaitingToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true, false));
         map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
+        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
+        map.setNoOfTargets(5);
     }
 
     private void map3()

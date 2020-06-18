@@ -18,7 +18,11 @@ public class GameMap {
 		this.noOfTargets = noOfTargets;
 	}
 
-	private int noOfTargets;
+	public int getNoOfTargets() {
+		return noOfTargets;
+	}
+
+	private int noOfTargets=1;
 	private static Token[][] tokens;
 	private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
 
@@ -36,12 +40,6 @@ public class GameMap {
 		this.setWidth(width);
 		this.setHeight(height);
 		tokens = new Token[width][height];
-	}
-
-	public GameMap(int width, int height, int noOfTargets)
-	{
-		this(width, height);
-		this.noOfTargets = noOfTargets;
 	}
 
 	public static boolean isAllTokensPassed()
@@ -116,6 +114,43 @@ public class GameMap {
 		{
 			isWaitingTokenActive.set(loc, false);
 		}
+	}
+
+	public static Token getNthActiveToken(int n)
+	{
+		return waitingTokens.get(getLocationOfNthActiveToken(n));
+	}
+
+	public static int getActiveTokensCount() {
+		int activeTokensCount = 0;
+
+		for(boolean bool: isWaitingTokenActive)
+		{
+			if(bool)
+				activeTokensCount++;
+		}
+
+		return activeTokensCount;
+	}
+
+	public static int getLocationOfNthActiveToken(int n)
+	{
+		int index = -1;
+
+		n = n % getActiveTokensCount();
+
+		for(int i = 0; i < isWaitingTokenActive.size(); i++)
+		{
+			if(isWaitingTokenActive.get(i))
+			{
+				index++;
+				if(index == n)
+					return i; //location of nth active token
+			}
+
+		}
+		return -1;
+
 	}
 
 	public void moveBeamsUntilNotMovable()
