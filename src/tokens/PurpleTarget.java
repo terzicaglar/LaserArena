@@ -30,25 +30,29 @@ public class PurpleTarget extends Token {
         construct();
     }
 
+    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget) {
+        super();
+        this.orientation = orientation;
+        this.isLocationFixed = false;
+        this.isOrientationFixed = true;
+        this.isMandatoryTarget = isMandatoryTarget;
+        construct();
+    }
+
     public PurpleTarget(Orientation orientation) {
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
-        this.isOrientationFixed = false;
+        this.isOrientationFixed = true;
         isMandatoryTarget = false;
         construct();
-       /* possibleOrientations = new ArrayList<Orientation>();
-        possibleOrientations.add(Orientation.TARGET_ON_SOUTH);
-        possibleOrientations.add(Orientation.TARGET_ON_WEST);
-        possibleOrientations.add(Orientation.TARGET_ON_EAST);
-        possibleOrientations.add(Orientation.TARGET_ON_NORTH);*/
     }
 
     public PurpleTarget()
     {
         super();
         this.orientation = Orientation.TARGET_ON_SOUTH;
-        isMandatoryTarget = false;
+        this.isMandatoryTarget = false;
         construct();
     }
 

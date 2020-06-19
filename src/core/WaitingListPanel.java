@@ -52,12 +52,12 @@ class WaitingListPanel extends JPanel {
 
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(GameMap.IMG_FOLDER + imgName + GameMap.IMG_TYPE));
+            img = ImageIO.read(new File(GameMap.IMG_FOLDER + imgName + GameMap.IMG_EXTENSION));
         } catch (IOException e) {
             e.printStackTrace();
         }
         int minSide = Math.min(getWidth(),getHeight());
-        int sideSize = (int) (minSide * 0.9);
+        int sideSize = (int) (minSide * 0.95);
         g.drawImage(img, (getWidth() - sideSize)/2, (getHeight() - sideSize)/2, sideSize, sideSize,  null);
 
         g2d.dispose();

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * GameMap of the game, where tokens are placed and laser(s) pass.
  */
 public class GameMap {
-	public static final String IMG_FOLDER = "img/", IMG_TYPE=".png";
+	public static final String IMG_FOLDER = "img/", IMG_EXTENSION =".png";
 	private static final int MAX_LOOP = 1000;
 	private static int width, height;
 
@@ -187,8 +187,8 @@ public class GameMap {
 				}
 			}
 		}
-		if(beams.size() > 0)
-			System.out.println("init beam:" + beams.get(0));
+//		if(beams.size() > 0)
+//			System.out.println("init beam:" + beams.get(0));
 		LaserBeam beam;
 		int i;
 		for(int k = 0; k < beams.size(); k++)

@@ -25,11 +25,8 @@ public class GreenMirror extends Token{
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
-        this.isOrientationFixed = false;
+        this.isOrientationFixed = true;
         construct();
-        /*possibleOrientations = new ArrayList<Orientation>();
-        possibleOrientations.add(Orientation.SLASH_MIRROR);
-        possibleOrientations.add(Orientation.BACKSLASH_MIRROR);*/
     }
 
     public GreenMirror()

@@ -23,11 +23,8 @@ public class YellowBridge extends Token{
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
-        this.isOrientationFixed = false;
+        this.isOrientationFixed = true;
         construct();
-        /*possibleOrientations = new ArrayList<Orientation>();
-        possibleOrientations.add(Orientation.VERTICAL_BRIDGE);
-        possibleOrientations.add(Orientation.HORIZONTAL_BRIDGE);*/
     }
 
     public YellowBridge()

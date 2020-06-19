@@ -58,11 +58,14 @@ class ArenaPanel extends JPanel implements MouseListener {
 
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(GameMap.IMG_FOLDER + imgName + GameMap.IMG_TYPE));
+            img = ImageIO.read(new File(GameMap.IMG_FOLDER + imgName + GameMap.IMG_EXTENSION));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        int minSide = Math.min(getWidth(),getHeight());
+        int sideSize = (int) (minSide * 0.95);
+        g.drawImage(img, (getWidth() - sideSize)/2, (getHeight() - sideSize)/2, sideSize, sideSize,  null);
+        //g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 
         g2d.setColor(Color.BLACK);
 
@@ -195,7 +198,7 @@ class ArenaPanel extends JPanel implements MouseListener {
             if (t == null || !t.isLocationFixed()) {
                 Token newToken = null;
                 int activeTokensSize = GameMap.getActiveTokensCount();
-                System.out.println("activeTokensSize: " + activeTokensSize);
+                //System.out.println("activeTokensSize: " + activeTokensSize);
 
                 if (activeTokensSize > 0) { //more than one item on waiting list
                     if (prevToken != null)
@@ -216,8 +219,8 @@ class ArenaPanel extends JPanel implements MouseListener {
                 }
             }
         }
-        System.out.println("\twaiting tokens: " + GameMap.getWaitingTokens());
-        System.out.println("\tis tokens active: " + GameMap.getIsWaitingTokenActive());
+        //System.out.println("\twaiting tokens: " + GameMap.getWaitingTokens());
+        //System.out.println("\tis tokens active: " + GameMap.getIsWaitingTokenActive());
         repaint();
         arenaFrame.refresh();
     }

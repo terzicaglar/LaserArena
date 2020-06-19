@@ -26,7 +26,7 @@ public class BlueMirror extends Token{
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
-        this.isOrientationFixed = false;
+        this.isOrientationFixed = true;
         construct();
         /*possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.SLASH_MIRROR);
