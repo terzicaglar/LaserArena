@@ -31,7 +31,9 @@ class WaitingListPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        int noOfTargetsDisplayed = noOfTargets - (GameMap.getNoOfRandomTargetsHit() + GameMap.getNoOfMandatoryTargetsHit());
+        if(noOfTargetsDisplayed < 0)
+            noOfTargetsDisplayed = 0;
         Graphics2D g2d = (Graphics2D) g.create();
         String imgName = "";
         if (t != null)
@@ -41,9 +43,13 @@ class WaitingListPanel extends JPanel {
             else
                 imgName = t.getGrayedWaitingTokenImageName();
         }
-        else if(noOfTargets > 0)
+        else if(noOfTargetsDisplayed == 0 && GameMap.isGameFinished())
         {
-            imgName = "" + noOfTargets;
+            imgName = "0_green";
+        }
+        else if(noOfTargetsDisplayed >= 0)
+        {
+            imgName = "" + noOfTargetsDisplayed;
         }
         else
         {

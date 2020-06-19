@@ -23,7 +23,7 @@ public class GameMap {
 		return noOfTargets;
 	}
 
-	private int noOfTargets=1;
+	private static int noOfTargets=1;
 	private static Token[][] tokens;
 	private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
 
@@ -227,7 +227,7 @@ public class GameMap {
 		//TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
 	}
 
-	private int getWantedMandatoryTargets()
+	private static int getWantedMandatoryTargets()
 	{
 		int noOfWantedMandatoryTargets = 0;
 		for(Token[] token_arr : tokens)
@@ -243,23 +243,38 @@ public class GameMap {
 		return noOfWantedMandatoryTargets;
 	}
 
+	public static int getNoOfRandomTargetsHit()
+	{
+		int noOfRandomTargetsHit = 0;
+		for(LaserBeam beam: beams)
+		{
+			if(beam.getDirection() == Direction.TARGET_HIT)
+				noOfRandomTargetsHit++;
+		}
+		return noOfRandomTargetsHit;
+	}
+
+	public static int getNoOfMandatoryTargetsHit()
+	{
+		int noOfMandatoryTargetsHit = 0;
+		for(LaserBeam beam: beams)
+		{
+			if( beam.getDirection() == Direction.MANDATORY_TARGET_HIT)
+				noOfMandatoryTargetsHit++;
+		}
+		return noOfMandatoryTargetsHit;
+	}
+
 	//checksIfAllWantedTargetsHitAndAllTokensArePassed
-	public boolean isGameFinished()
+	public static boolean isGameFinished()
 	{
 		if(getActiveTokensCount() > 0)
 			return false;
 		if(!isAllTokensPassed())
 			return false;
 		//TODO: not tested
-		int noOfMandatoryTargetsHit = 0;
-		int noOfRandomTargetsHit = 0;
-		for(LaserBeam beam: beams)
-		{
-			if(beam.getDirection() == Direction.TARGET_HIT)
-				noOfRandomTargetsHit++;
-			else if( beam.getDirection() == Direction.MANDATORY_TARGET_HIT)
-				noOfMandatoryTargetsHit++;
-		}
+		int noOfMandatoryTargetsHit = getNoOfMandatoryTargetsHit();
+		int noOfRandomTargetsHit = getNoOfRandomTargetsHit();
 
 		return (noOfMandatoryTargetsHit == getWantedMandatoryTargets() &&
 				(noOfMandatoryTargetsHit + noOfRandomTargetsHit) == noOfTargets);

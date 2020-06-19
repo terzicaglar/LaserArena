@@ -62,6 +62,7 @@ class ArenaFrame extends JFrame{
         createPanels();
         this.setLayout(new GridLayout(map.getHeight()+1,1));
 
+        //TODO:Sizes will be automated not hard-coded
         setSize(500,600);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,6 +101,58 @@ class ArenaFrame extends JFrame{
         System.out.println("map.isGameFinished(): " + map.isGameFinished());
 
     }
+
+    private void createMapFromFile()
+    {
+        map = new GameMap(width, height);
+        String fileName = "levels/bonus/1" + MAP_FILE_EXTENSION;
+        BufferedReader br = null;
+        Token token = null;
+        try {
+            br = new BufferedReader(new FileReader(fileName));
+
+            String line = br.readLine();
+            int rowCount = 0;
+            while(line != null)
+            {
+
+                String[] shortNames = line.split(",");
+                int colCount = 0;
+                for(String shortName: shortNames) {
+                    if (rowCount < height) //tokens inside Map
+                    {
+                        token = getTokenFromShortName(shortName);
+                        if(!shortName.equals(""))
+                        {
+                            token.setLocationFixed(true); //it is located in map, not waitingList
+                            map.addToken(token, new Point(colCount, rowCount));
+
+                        }
+                    }
+                    else if(rowCount == height) //waitingList
+                    {
+                        token = getTokenFromShortName(shortName);
+                        map.addWaitingToken(token);
+                    }
+                    else if(rowCount == height + 1) //noOfTargets
+                    {
+                        map.setNoOfTargets(Integer.parseInt(shortName));
+                    }
+                    colCount ++;
+                }
+
+                line = br.readLine();
+                rowCount++;
+            }
+
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     //TODO: All waiting tokens are !orientationFixed (all images in the waiting list are Question Marked), we can fix this later if needed. in the original game they are all Question Mark
     private void map1()
     {
@@ -179,56 +232,7 @@ class ArenaFrame extends JFrame{
         map.setNoOfTargets(2);
     }
 
-    private void createMapFromFile()
-    {
-        map = new GameMap(width, height);
-        String fileName = "levels/bonus/1" + MAP_FILE_EXTENSION;
-        BufferedReader br = null;
-        Token token = null;
-        try {
-            br = new BufferedReader(new FileReader(fileName));
 
-            String line = br.readLine();
-            int rowCount = 0;
-            while(line != null)
-            {
-
-                String[] shortNames = line.split(",");
-                int colCount = 0;
-                for(String shortName: shortNames) {
-                    if (rowCount < height) //tokens inside Map
-                    {
-                        token = getTokenFromShortName(shortName);
-                        if(!shortName.equals(""))
-                        {
-                            token.setLocationFixed(true); //it is located in map, not waitingList
-                            map.addToken(token, new Point(colCount, rowCount));
-
-                        }
-                    }
-                    else if(rowCount == height) //waitingList
-                    {
-                        token = getTokenFromShortName(shortName);
-                        map.addWaitingToken(token);
-                    }
-                    else if(rowCount == height + 1) //noOfTargets
-                    {
-                        map.setNoOfTargets(Integer.parseInt(shortName));
-                    }
-                    colCount ++;
-                }
-
-                line = br.readLine();
-                rowCount++;
-            }
-
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     public Token getTokenFromShortName(String shortName)
     {
