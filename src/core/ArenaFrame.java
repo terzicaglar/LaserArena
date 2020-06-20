@@ -6,27 +6,32 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 
 //TODO: make comprehensive explanations to all thrown Exceptions
 
-class ArenaFrame extends JFrame implements ActionListener {
+class ArenaFrame extends JFrame implements ActionListener, MouseListener {
+
+    private JLabel levelLabel;
+
     private enum GameState{
         GAME,
         SOLUTION;
     }
 
     private final String G = "g", G_S = "g-s", G_B = "g-b", B = "b", B_S = "b-s", B_B = "b-b", Y = "y", Y_H = "y-h",
-        Y_V = "y-v", R = "r", R_GW = "r-gw", R_GN = "r-gn", R_GS = "r-gs", R_GE = "r-ge", P = "p", P_TW = "p-tw",
-        P_TN = "p-tn", P_TE = "p-te", P_TS = "p-ts", PM = "pm", PM_TW = "pm-tw", PM_TN = "pm-tn", PM_TE = "pm-te",
-        PM_TS = "pm-ts", W = "w"; //shortNames for each Token used for file read/write
-    private final int MAX_WAITING_TOKENS = 5;
+        Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
+        P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
+        PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
+    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 65;
     private final String MAP_FILE_EXTENSION = ".csv";
-    private final String MAP_LEVEL_PATH = "levels/bonus/";
+    private final String MAP_LEVEL_PATH = "levels/";
     private final String SOLUTIONS_FOLDER = "solutions/";
 
     private static GameMap map;
-    private int width = 5, height = 5, currentLevel = 0;
+    private int width = 5, height = 5, currentLevel = 61;
     private ArenaPanel[][] panels;
     private JPanel[] rowPanels;
     private JPanel upperPanel, lowerPanel;
@@ -102,13 +107,23 @@ class ArenaFrame extends JFrame implements ActionListener {
 
     private void createLowerPanel() {
         lowerPanel = new JPanel();
-        JLabel levelLabel = new JLabel("Level " + currentLevel, SwingConstants.CENTER);
+        levelLabel = new JLabel("Level " + currentLevel, SwingConstants.CENTER);
+        levelLabel.addMouseListener(this);
         prevButton = new JButton("<=");
         prevButton.addActionListener(this);
         nextButton = new JButton("=>");
         nextButton.setEnabled(false);
         nextButton.addActionListener(this);
         solutionButton = new JButton();
+
+        if(currentLevel == MAX_LEVEL)
+        {
+            nextButton.setText("MAX LEVEL");
+        }
+        else
+        {
+            nextButton.setText("=>");
+        }
 
         if(gameState == GameState.GAME)
             solutionButton.setText("Go to Solution");
@@ -334,33 +349,33 @@ class ArenaFrame extends JFrame implements ActionListener {
             t = new YellowBridge(Orientation.VERTICAL_BRIDGE);
         else if(shortName.equalsIgnoreCase(R))
             t = new RedLaser();
-        else if(shortName.equalsIgnoreCase(R_GW))
+        else if(shortName.equalsIgnoreCase(R_W))
             t = new RedLaser(Orientation.GENERATOR_ON_WEST);
-        else if(shortName.equalsIgnoreCase(R_GN))
+        else if(shortName.equalsIgnoreCase(R_N))
             t = new RedLaser(Orientation.GENERATOR_ON_NORTH);
-        else if(shortName.equalsIgnoreCase(R_GS))
+        else if(shortName.equalsIgnoreCase(R_S))
             t = new RedLaser(Orientation.GENERATOR_ON_SOUTH);
-        else if(shortName.equalsIgnoreCase(R_GE))
+        else if(shortName.equalsIgnoreCase(R_E))
             t = new RedLaser(Orientation.GENERATOR_ON_EAST);
         else if(shortName.equalsIgnoreCase(P))
             t = new PurpleTarget();
-        else if(shortName.equalsIgnoreCase(P_TW))
+        else if(shortName.equalsIgnoreCase(P_W))
             t = new PurpleTarget(Orientation.TARGET_ON_WEST);
-        else if(shortName.equalsIgnoreCase(P_TN))
+        else if(shortName.equalsIgnoreCase(P_N))
             t = new PurpleTarget(Orientation.TARGET_ON_NORTH);
-        else if(shortName.equalsIgnoreCase(P_TE))
+        else if(shortName.equalsIgnoreCase(P_E))
             t = new PurpleTarget(Orientation.TARGET_ON_EAST);
-        else if(shortName.equalsIgnoreCase(P_TS))
+        else if(shortName.equalsIgnoreCase(P_S))
             t = new PurpleTarget(Orientation.TARGET_ON_SOUTH);
         else if(shortName.equalsIgnoreCase(PM))
             t = new PurpleTarget(true);
-        else if(shortName.equalsIgnoreCase(PM_TW))
+        else if(shortName.equalsIgnoreCase(PM_W))
             t = new PurpleTarget(Orientation.TARGET_ON_WEST, true);
-        else if(shortName.equalsIgnoreCase(PM_TN))
+        else if(shortName.equalsIgnoreCase(PM_N))
             t = new PurpleTarget(Orientation.TARGET_ON_NORTH, true);
-        else if(shortName.equalsIgnoreCase(PM_TE))
+        else if(shortName.equalsIgnoreCase(PM_E))
             t = new PurpleTarget(Orientation.TARGET_ON_EAST, true);
-        else if(shortName.equalsIgnoreCase(PM_TS))
+        else if(shortName.equalsIgnoreCase(PM_S))
             t = new PurpleTarget(Orientation.TARGET_ON_SOUTH, true);
         else if(shortName.equalsIgnoreCase(W))
             t = new WhiteObstacle();
@@ -401,7 +416,7 @@ class ArenaFrame extends JFrame implements ActionListener {
                 }
                 bw.write(line);
             }
-            //TODO: Tokens in waiting list are written with orientation (e.g., pm-tw), if needed it can be converted
+            //TODO: Tokens in waiting list are written with orientation (e.g., pm-w), if needed it can be converted
             //  to simple form by deleting everything after '-'
             line = "";
             for(int i = 0; i < GameMap.getWaitingTokens().size(); i++)
@@ -420,7 +435,7 @@ class ArenaFrame extends JFrame implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        solutionButton.setEnabled(true);
     }
 
     private String getShortNameFromToken(Token t)
@@ -435,33 +450,33 @@ class ArenaFrame extends JFrame implements ActionListener {
         else if(t instanceof GreenMirror && t.getOrientation() == Orientation.SLASH_MIRROR)
             return G_S;
         else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_EAST && ((PurpleTarget) t).isMandatoryTarget())
-            return PM_TE;
+            return PM_E;
         else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_WEST && ((PurpleTarget) t).isMandatoryTarget())
-            return PM_TW;
+            return PM_W;
         else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_NORTH && ((PurpleTarget) t).isMandatoryTarget())
-            return PM_TN;
+            return PM_N;
         else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_SOUTH && ((PurpleTarget) t).isMandatoryTarget())
-            return PM_TS;
+            return PM_S;
         else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_EAST && !((PurpleTarget) t).isMandatoryTarget())
-            return P_TE;
+            return P_E;
         else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_WEST && !((PurpleTarget) t).isMandatoryTarget())
-            return P_TW;
+            return P_W;
         else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_NORTH && !((PurpleTarget) t).isMandatoryTarget())
-            return P_TN;
+            return P_N;
         else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_SOUTH && !((PurpleTarget) t).isMandatoryTarget())
-            return P_TS;
+            return P_S;
         else if(t instanceof YellowBridge && t.getOrientation() == Orientation.HORIZONTAL_BRIDGE)
             return Y_H;
         else if(t instanceof YellowBridge && t.getOrientation() == Orientation.VERTICAL_BRIDGE)
             return Y_V;
         else if(t instanceof RedLaser && t.getOrientation() == Orientation.GENERATOR_ON_WEST)
-            return R_GW;
+            return R_W;
         else if(t instanceof RedLaser && t.getOrientation() == Orientation.GENERATOR_ON_NORTH)
-            return R_GN;
+            return R_N;
         else if(t instanceof RedLaser && t.getOrientation() == Orientation.GENERATOR_ON_SOUTH)
-            return R_GS;
+            return R_S;
         else if(t instanceof RedLaser && t.getOrientation() == Orientation.GENERATOR_ON_EAST)
-            return R_GE;
+            return R_E;
         else if(t instanceof WhiteObstacle)
             return W;
         else
@@ -474,7 +489,8 @@ class ArenaFrame extends JFrame implements ActionListener {
         {
             //TODO: nextButton will be disabled when entered a new level
             writeToSolutionFile();
-            nextButton.setEnabled(true);
+            if(currentLevel < MAX_LEVEL)
+                nextButton.setEnabled(true);
         }
         else
         {
@@ -515,9 +531,43 @@ class ArenaFrame extends JFrame implements ActionListener {
         {
             throw new IllegalArgumentException();
         }
+        refreshAll();
+    }
+
+    public void refreshAll()
+    {
         setCurrentFileNameAccToState();
         createMapFromFile();
         createAllPanels();
         refresh();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(e.getSource() == levelLabel)
+        {
+            gameState = GameState.GAME;
+            refreshAll();
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
