@@ -6,6 +6,7 @@ import core.Direction;
 import core.Orientation;
 import sides.StuckableSide;
 
+//TODO: This class is not used, when decided to be added, should be put in necessary places, like ArenaFrame.getTokenFromShortName()
 public class BlackHole extends Token {
 
     public BlackHole(boolean isLocationFixed)

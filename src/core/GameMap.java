@@ -10,8 +10,12 @@ import java.util.ArrayList;
 /**
  * GameMap of the game, where tokens are placed and laser(s) pass.
  */
+
+//TODO: levels and Solver(this can be an automated server or it can save the solution when the user passes that level)
+
 public class GameMap {
 	public static final String IMG_FOLDER = "img/", IMG_EXTENSION =".png";
+	public static final int MAX_BEAMS = 4;
 	private static final int MAX_LOOP = 1000;
 	private static int width, height;
 
@@ -37,9 +41,17 @@ public class GameMap {
 	{
 		waitingTokens = new ArrayList<>();
 		isWaitingTokenActive = new ArrayList<>();
-		beams = new ArrayList<>(4);
+		beams = new ArrayList<>(MAX_BEAMS);
 		this.setWidth(width);
 		this.setHeight(height);
+		tokens = new Token[width][height];
+	}
+
+	public static void refresh()
+	{
+		waitingTokens = new ArrayList<>();
+		isWaitingTokenActive = new ArrayList<>();
+		beams = new ArrayList<>(MAX_BEAMS);
 		tokens = new Token[width][height];
 	}
 
@@ -219,7 +231,7 @@ public class GameMap {
 			}
 			System.out.println( "final beam(s): " + beam);
 		}
-
+		System.out.print("");
 		/*while(direction.isMovable())
 		{
 			move();

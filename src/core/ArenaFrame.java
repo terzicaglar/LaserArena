@@ -1,35 +1,50 @@
 package core;
 
-import com.sun.org.apache.regexp.internal.RE;
 import tokens.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.StringTokenizer;
 
-class ArenaFrame extends JFrame{
+//TODO: make comprehensive explanations to all thrown Exceptions
+
+class ArenaFrame extends JFrame implements ActionListener {
     private final String MAP_FILE_EXTENSION = ".csv";
 
     private static GameMap map;
-    private int width = 5;
-    private int height = 5;
+    private int width = 5, height = 5, currentLevel = 1;
     private ArenaPanel[][] panels;
     private JPanel[] rowPanels;
-    private JPanel upperPanel, noOfTargetsPanel;
+    private JPanel upperPanel, lowerPanel;
     private JPanel[] waitingTokenPanels;
+    private JButton prevButton, nextButton;
 
     public ArenaFrame(String title)
     {
-
         super(title);
-        map = new GameMap(width, height);
-        rowPanels = new JPanel[map.getHeight()];
-        for(int i = 0; i < rowPanels.length; i++){
-            rowPanels[i] = new JPanel();
-        }
-        map2();
         createMapFromFile();
+        createAllPanels();
+        this.setLayout(new GridLayout(map.getHeight()+2,1));
+
+        //TODO:Sizes will be automated not hard-coded
+        setSize(500,700);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+
+    }
+
+    private void createAllPanels() {
+        this.getContentPane().removeAll(); //very important since panels are not removed when leveled up
+        createUpperPanel();
+        updateMap();
+        createMapPanels();
+        createLowerPanel();
+    }
+
+    private void createUpperPanel() {
         upperPanel = new JPanel();
         waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size()+1]; //plus one for noOfTargets Panel
         for(int i = 0; i < waitingTokenPanels.length; i++)
@@ -48,38 +63,42 @@ class ArenaFrame extends JFrame{
             }
             upperPanel.add(waitingTokenPanels[i]);
         }
-
-//        noOfTargetsPanel = new JPanel();
-//        noOfTargetsPanel.add(new JLabel("" + map.getNoOfTargets()));
-//        noOfTargetsPanel.setBackground(Color.LIGHT_GRAY);
-//        //noOfTargetsPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
-//        upperPanel.add(noOfTargetsPanel);
-
-        upperPanel.setLayout(new GridLayout(1, waitingTokenPanels.length+1));
+        upperPanel.setLayout(new GridLayout(1, waitingTokenPanels.length));
         this.add(upperPanel);
-
-        initMap();
-        createPanels();
-        this.setLayout(new GridLayout(map.getHeight()+1,1));
-
-        //TODO:Sizes will be automated not hard-coded
-        setSize(500,600);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-
     }
+
+    private void createLowerPanel() {
+        lowerPanel = new JPanel();
+        JLabel levelLabel = new JLabel("Level " + currentLevel, SwingConstants.CENTER);
+        prevButton = new JButton("<=");
+        prevButton.addActionListener(this);
+        nextButton = new JButton("=>");
+        nextButton.setEnabled(false);
+        nextButton.addActionListener(this);
+
+        if(currentLevel < 2)
+            prevButton.setEnabled(false);
+
+        lowerPanel.add(prevButton);
+        lowerPanel.add(levelLabel);
+        lowerPanel.add(nextButton);
+
+        lowerPanel.setLayout(new GridLayout(1, lowerPanel.getComponentCount()));
+        this.add(lowerPanel);
+    }
+
     //
-    private void createPanels() {
+    private void createMapPanels() {
+        rowPanels = new JPanel[map.getHeight()];
+        for(int i = 0; i < rowPanels.length; i++){
+            rowPanels[i] = new JPanel();
+        }
 
         panels = new ArenaPanel[map.getWidth()][map.getHeight()];
 
         for (int i = 0; i < panels.length; i++) {
             for (int j = 0; j < panels[i].length; j++) {
                 panels[j][i] = new ArenaPanel(this, j, i);
-                //panels[j][i].setToolTipText(j + "," + i);
-                //panels[j][i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                //this.getContentPane().add(panels[j][i]);
                 rowPanels[i].add(panels[j][i]);
             }
         }
@@ -93,19 +112,19 @@ class ArenaFrame extends JFrame{
         this.setVisible(true);
     }
 
-    private void initMap()
+    private void updateMap()
     {
         map.moveBeamsUntilNotMovable();
-        //map.print();
         //TODO: If map.isGameFinished() returns true we will save the solution to solutions folder for that level
         System.out.println("map.isGameFinished(): " + map.isGameFinished());
-
     }
+
 
     private void createMapFromFile()
     {
+        //GameMap.refresh();
         map = new GameMap(width, height);
-        String fileName = "levels/bonus/1" + MAP_FILE_EXTENSION;
+        String fileName = "levels/bonus/" + currentLevel + MAP_FILE_EXTENSION;
         BufferedReader br = null;
         Token token = null;
         try {
@@ -115,8 +134,16 @@ class ArenaFrame extends JFrame{
             int rowCount = 0;
             while(line != null)
             {
-
+                //TODO:split method skips last two empty columns for input ,,p,, it does not affect us but good to know
                 String[] shortNames = line.split(",");
+
+                if(rowCount < height)
+                {
+                    int noOfCommas = line.length() - line.replace(",", "").length();
+                    if(noOfCommas < width - 1)
+                        throw new IllegalArgumentException("At least one comma is missing in " + fileName + " at line " + rowCount);
+                }
+
                 int colCount = 0;
                 for(String shortName: shortNames) {
                     if (rowCount < height) //tokens inside Map
@@ -140,9 +167,12 @@ class ArenaFrame extends JFrame{
                     }
                     colCount ++;
                 }
-
                 line = br.readLine();
                 rowCount++;
+            }
+            if(rowCount <= height + 1)// one line is missing, probably noOfTargets is missed
+            {
+                throw new IllegalArgumentException("At least one line is missing in " + fileName);
             }
 
             br.close();
@@ -233,7 +263,7 @@ class ArenaFrame extends JFrame{
     }
 
 
-
+    //TODO: This method can be moved to class Token (or its subclasses)
     public Token getTokenFromShortName(String shortName)
     {
         Token t = null;
@@ -287,14 +317,51 @@ class ArenaFrame extends JFrame{
             t = new PurpleTarget(Orientation.TARGET_ON_SOUTH, true);
         else if(shortName.equalsIgnoreCase("w"))
             t = new WhiteObstacle();
-
+        else if(shortName.equalsIgnoreCase("")) //null token, i.e., empty cell
+            return null;
+        if(t == null)
+            throw new IllegalArgumentException("Short name \"" + shortName + "\" is not recognized in given file");
         return t;
     }
 
+    void update()
+    {
+        if(map.isGameFinished())
+        {
+            //TODO: nextButton will be disabled when entered a new level
+            nextButton.setEnabled(true);
+        }
+        else
+        {
+            nextButton.setEnabled(false);
+        }
+    }
+
     void refresh(){
-        initMap();
+        updateMap();
+        update();
         this.repaint();
+        this.setVisible(true);
     }
 
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == nextButton) //next level
+        {
+            currentLevel++;
+
+        }
+        else if(e.getSource() == prevButton) //previous level
+        {
+            currentLevel--;
+        }
+        else
+        {
+            throw new IllegalArgumentException();
+        }
+        createMapFromFile();
+        createAllPanels();
+        refresh();
+    }
 }

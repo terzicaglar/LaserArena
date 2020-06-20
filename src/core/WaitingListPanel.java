@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+//TODO: to be deleted if not used
 class WaitingListPanel extends JPanel {
     private Token t;
     int noOfTargets;
@@ -34,7 +35,6 @@ class WaitingListPanel extends JPanel {
         int noOfTargetsDisplayed = noOfTargets - (GameMap.getNoOfRandomTargetsHit() + GameMap.getNoOfMandatoryTargetsHit());
         if(noOfTargetsDisplayed < 0)
             noOfTargetsDisplayed = 0;
-        Graphics2D g2d = (Graphics2D) g.create();
         String imgName = "";
         if (t != null)
         {
@@ -65,8 +65,6 @@ class WaitingListPanel extends JPanel {
         int minSide = Math.min(getWidth(),getHeight());
         int sideSize = (int) (minSide * 0.95);
         g.drawImage(img, (getWidth() - sideSize)/2, (getHeight() - sideSize)/2, sideSize, sideSize,  null);
-
-        g2d.dispose();
     }
 
 }
