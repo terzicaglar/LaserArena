@@ -11,10 +11,16 @@ import java.io.*;
 //TODO: make comprehensive explanations to all thrown Exceptions
 
 class ArenaFrame extends JFrame implements ActionListener {
+    private final String G = "g", G_S = "g-s", G_B = "g-b", B = "b", B_S = "b-s", B_B = "b-b", Y = "y", Y_H = "y-h",
+        Y_V = "y-v", R = "r", R_GW = "r-gw", R_GN = "r-gn", R_GS = "r-gs", R_GE = "r-ge", P = "p", P_TW = "p-tw",
+        P_TN = "p-tn", P_TE = "p-te", P_TS = "p-ts", PM = "pm", PM_TW = "pm-tw", PM_TN = "pm-tn", PM_TE = "pm-te",
+        PM_TS = "pm-ts", W = "w"; //shortNames for each Token used for file read/write
     private final String MAP_FILE_EXTENSION = ".csv";
+    private final String MAP_LEVEL_PATH = "levels/bonus/";
+    private final String SOLUTIONS_FOLDER = "solutions/";
 
     private static GameMap map;
-    private int width = 5, height = 5, currentLevel = 1;
+    private int width = 5, height = 5, currentLevel = 0;
     private ArenaPanel[][] panels;
     private JPanel[] rowPanels;
     private JPanel upperPanel, lowerPanel;
@@ -116,7 +122,7 @@ class ArenaFrame extends JFrame implements ActionListener {
     {
         map.moveBeamsUntilNotMovable();
         //TODO: If map.isGameFinished() returns true we will save the solution to solutions folder for that level
-        System.out.println("map.isGameFinished(): " + map.isGameFinished());
+        System.out.println("map.isGameFinished(): " + map.isLevelFinished());
     }
 
 
@@ -124,7 +130,7 @@ class ArenaFrame extends JFrame implements ActionListener {
     {
         //GameMap.refresh();
         map = new GameMap(width, height);
-        String fileName = "levels/bonus/" + currentLevel + MAP_FILE_EXTENSION;
+        String fileName = MAP_LEVEL_PATH + currentLevel + MAP_FILE_EXTENSION;
         BufferedReader br = null;
         Token token = null;
         try {
@@ -264,58 +270,58 @@ class ArenaFrame extends JFrame implements ActionListener {
 
 
     //TODO: This method can be moved to class Token (or its subclasses)
-    public Token getTokenFromShortName(String shortName)
+    private Token getTokenFromShortName(String shortName)
     {
         Token t = null;
-        if(shortName.equalsIgnoreCase("g"))
+        if(shortName.equalsIgnoreCase(G))
             t = new GreenMirror();
-        else if(shortName.equalsIgnoreCase("g-s"))
+        else if(shortName.equalsIgnoreCase(G_S))
             t = new GreenMirror(Orientation.SLASH_MIRROR);
-        else if(shortName.equalsIgnoreCase("g-b"))
+        else if(shortName.equalsIgnoreCase(G_B))
             t = new GreenMirror(Orientation.BACKSLASH_MIRROR);
-        else if(shortName.equalsIgnoreCase("b"))
+        else if(shortName.equalsIgnoreCase(B))
             t = new BlueMirror();
-        else if(shortName.equalsIgnoreCase("b-s"))
+        else if(shortName.equalsIgnoreCase(B_S))
             t = new BlueMirror(Orientation.SLASH_MIRROR);
-        else if(shortName.equalsIgnoreCase("b-b"))
+        else if(shortName.equalsIgnoreCase(B_B))
             t = new BlueMirror(Orientation.BACKSLASH_MIRROR);
-        else if(shortName.equalsIgnoreCase("y"))
+        else if(shortName.equalsIgnoreCase(Y))
             t = new YellowBridge();
-        else if(shortName.equalsIgnoreCase("y-h"))
+        else if(shortName.equalsIgnoreCase(Y_H))
             t = new YellowBridge(Orientation.HORIZONTAL_BRIDGE);
-        else if(shortName.equalsIgnoreCase("y-v"))
+        else if(shortName.equalsIgnoreCase(Y_V))
             t = new YellowBridge(Orientation.VERTICAL_BRIDGE);
-        else if(shortName.equalsIgnoreCase("r"))
+        else if(shortName.equalsIgnoreCase(R))
             t = new RedLaser();
-        else if(shortName.equalsIgnoreCase("r-gw"))
+        else if(shortName.equalsIgnoreCase(R_GW))
             t = new RedLaser(Orientation.GENERATOR_ON_WEST);
-        else if(shortName.equalsIgnoreCase("r-gn"))
+        else if(shortName.equalsIgnoreCase(R_GN))
             t = new RedLaser(Orientation.GENERATOR_ON_NORTH);
-        else if(shortName.equalsIgnoreCase("r-gs"))
+        else if(shortName.equalsIgnoreCase(R_GS))
             t = new RedLaser(Orientation.GENERATOR_ON_SOUTH);
-        else if(shortName.equalsIgnoreCase("r-ge"))
+        else if(shortName.equalsIgnoreCase(R_GE))
             t = new RedLaser(Orientation.GENERATOR_ON_EAST);
-        else if(shortName.equalsIgnoreCase("p"))
+        else if(shortName.equalsIgnoreCase(P))
             t = new PurpleTarget();
-        else if(shortName.equalsIgnoreCase("p-tw"))
+        else if(shortName.equalsIgnoreCase(P_TW))
             t = new PurpleTarget(Orientation.TARGET_ON_WEST);
-        else if(shortName.equalsIgnoreCase("p-tn"))
+        else if(shortName.equalsIgnoreCase(P_TN))
             t = new PurpleTarget(Orientation.TARGET_ON_NORTH);
-        else if(shortName.equalsIgnoreCase("p-te"))
+        else if(shortName.equalsIgnoreCase(P_TE))
             t = new PurpleTarget(Orientation.TARGET_ON_EAST);
-        else if(shortName.equalsIgnoreCase("p-ts"))
+        else if(shortName.equalsIgnoreCase(P_TS))
             t = new PurpleTarget(Orientation.TARGET_ON_SOUTH);
-        else if(shortName.equalsIgnoreCase("pm"))
+        else if(shortName.equalsIgnoreCase(PM))
             t = new PurpleTarget(true);
-        else if(shortName.equalsIgnoreCase("pm-tw"))
+        else if(shortName.equalsIgnoreCase(PM_TW))
             t = new PurpleTarget(Orientation.TARGET_ON_WEST, true);
-        else if(shortName.equalsIgnoreCase("pm-tn"))
+        else if(shortName.equalsIgnoreCase(PM_TN))
             t = new PurpleTarget(Orientation.TARGET_ON_NORTH, true);
-        else if(shortName.equalsIgnoreCase("pm-te"))
+        else if(shortName.equalsIgnoreCase(PM_TE))
             t = new PurpleTarget(Orientation.TARGET_ON_EAST, true);
-        else if(shortName.equalsIgnoreCase("pm-ts"))
+        else if(shortName.equalsIgnoreCase(PM_TS))
             t = new PurpleTarget(Orientation.TARGET_ON_SOUTH, true);
-        else if(shortName.equalsIgnoreCase("w"))
+        else if(shortName.equalsIgnoreCase(W))
             t = new WhiteObstacle();
         else if(shortName.equalsIgnoreCase("")) //null token, i.e., empty cell
             return null;
@@ -324,11 +330,109 @@ class ArenaFrame extends JFrame implements ActionListener {
         return t;
     }
 
+    private void writeToSolutionFile()
+    {
+        //TODO: isOrientationFixed is not considered right now, solution shows the final state only
+        //TODO: upper and lower panels have not considered yet
+
+        BufferedWriter bw = null;
+
+        try {
+            bw = new BufferedWriter(new FileWriter(MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION));
+
+            Token t = null;
+            String line = "";
+            for(int i = 0; i < height; i++)
+            {
+                line = "";
+                for(int j = 0; j < width; j++)
+                {
+                    t = GameMap.getTokenLocatedInXY(j, i);
+                    if(t != null)
+                    {
+                        line += getShortNameFromToken(t);
+                    }
+                    if( j != width - 1)
+                        line += ",";
+                    else
+                        line += "\n";
+
+                }
+                bw.write(line);
+            }
+            //TODO: Tokens in waiting list are written with orientation (e.g., pm-tw), if needed it can be converted
+            //  to simple form by deleting everything after '-'
+            line = "";
+            for(int i = 0; i < GameMap.getWaitingTokens().size(); i++)
+            {
+                line += getShortNameFromToken(GameMap.getWaitingTokens().get(i));
+                if(i != GameMap.getWaitingTokens().size() - 1)
+                    line += ",";
+                else
+                    line += "\n";
+            }
+            bw.write(line);
+            line = GameMap.getNoOfTargets() + "\n";
+            bw.write(line);
+
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String getShortNameFromToken(Token t)
+    {
+        //TODO: Below code can be automated
+        if(t instanceof BlueMirror && t.getOrientation() == Orientation.BACKSLASH_MIRROR)
+            return B_B;
+        else if(t instanceof BlueMirror && t.getOrientation() == Orientation.SLASH_MIRROR)
+            return B_S;
+        else if(t instanceof GreenMirror && t.getOrientation() == Orientation.BACKSLASH_MIRROR)
+            return G_B;
+        else if(t instanceof GreenMirror && t.getOrientation() == Orientation.SLASH_MIRROR)
+            return G_S;
+        else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_EAST && ((PurpleTarget) t).isMandatoryTarget())
+            return PM_TE;
+        else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_WEST && ((PurpleTarget) t).isMandatoryTarget())
+            return PM_TW;
+        else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_NORTH && ((PurpleTarget) t).isMandatoryTarget())
+            return PM_TN;
+        else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_SOUTH && ((PurpleTarget) t).isMandatoryTarget())
+            return PM_TS;
+        else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_EAST && !((PurpleTarget) t).isMandatoryTarget())
+            return P_TE;
+        else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_WEST && !((PurpleTarget) t).isMandatoryTarget())
+            return P_TW;
+        else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_NORTH && !((PurpleTarget) t).isMandatoryTarget())
+            return P_TN;
+        else if(t instanceof PurpleTarget && t.getOrientation() == Orientation.TARGET_ON_SOUTH && !((PurpleTarget) t).isMandatoryTarget())
+            return P_TS;
+        else if(t instanceof YellowBridge && t.getOrientation() == Orientation.HORIZONTAL_BRIDGE)
+            return Y_H;
+        else if(t instanceof YellowBridge && t.getOrientation() == Orientation.VERTICAL_BRIDGE)
+            return Y_V;
+        else if(t instanceof RedLaser && t.getOrientation() == Orientation.GENERATOR_ON_WEST)
+            return R_GW;
+        else if(t instanceof RedLaser && t.getOrientation() == Orientation.GENERATOR_ON_NORTH)
+            return R_GN;
+        else if(t instanceof RedLaser && t.getOrientation() == Orientation.GENERATOR_ON_SOUTH)
+            return R_GS;
+        else if(t instanceof RedLaser && t.getOrientation() == Orientation.GENERATOR_ON_EAST)
+            return R_GE;
+        else if(t instanceof WhiteObstacle)
+            return W;
+        else
+            throw new IllegalArgumentException("Token is not recognized");
+    }
+
     void update()
     {
-        if(map.isGameFinished())
+        if(map.isLevelFinished())
         {
             //TODO: nextButton will be disabled when entered a new level
+            writeToSolutionFile();
             nextButton.setEnabled(true);
         }
         else

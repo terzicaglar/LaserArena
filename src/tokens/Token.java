@@ -26,6 +26,11 @@ public abstract class Token {
 
 	//protected Point location; //TODO: Currently, tokens do not have location field, in the future it can be added
 	Map<Direction, Side> sides;
+
+	public Orientation getOrientation() {
+		return orientation;
+	}
+
 	Orientation orientation;
 
 	String imageName;

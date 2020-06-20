@@ -43,7 +43,7 @@ class WaitingListPanel extends JPanel {
             else
                 imgName = t.getGrayedWaitingTokenImageName();
         }
-        else if(noOfTargetsDisplayed == 0 && GameMap.isGameFinished())
+        else if(noOfTargetsDisplayed == 0 && GameMap.isLevelFinished())
         {
             imgName = "0_green";
         }

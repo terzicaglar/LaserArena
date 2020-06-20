@@ -23,7 +23,7 @@ public class GameMap {
 		this.noOfTargets = noOfTargets;
 	}
 
-	public int getNoOfTargets() {
+	public static int getNoOfTargets() {
 		return noOfTargets;
 	}
 
@@ -278,7 +278,7 @@ public class GameMap {
 	}
 
 	//checksIfAllWantedTargetsHitAndAllTokensArePassed
-	public static boolean isGameFinished()
+	public static boolean isLevelFinished()
 	{
 		if(getActiveTokensCount() > 0)
 			return false;
