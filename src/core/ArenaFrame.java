@@ -11,10 +11,16 @@ import java.io.*;
 //TODO: make comprehensive explanations to all thrown Exceptions
 
 class ArenaFrame extends JFrame implements ActionListener {
+    private enum GameState{
+        GAME,
+        SOLUTION;
+    }
+
     private final String G = "g", G_S = "g-s", G_B = "g-b", B = "b", B_S = "b-s", B_B = "b-b", Y = "y", Y_H = "y-h",
         Y_V = "y-v", R = "r", R_GW = "r-gw", R_GN = "r-gn", R_GS = "r-gs", R_GE = "r-ge", P = "p", P_TW = "p-tw",
         P_TN = "p-tn", P_TE = "p-te", P_TS = "p-ts", PM = "pm", PM_TW = "pm-tw", PM_TN = "pm-tn", PM_TE = "pm-te",
         PM_TS = "pm-ts", W = "w"; //shortNames for each Token used for file read/write
+    private final int MAX_WAITING_TOKENS = 5;
     private final String MAP_FILE_EXTENSION = ".csv";
     private final String MAP_LEVEL_PATH = "levels/bonus/";
     private final String SOLUTIONS_FOLDER = "solutions/";
@@ -25,11 +31,14 @@ class ArenaFrame extends JFrame implements ActionListener {
     private JPanel[] rowPanels;
     private JPanel upperPanel, lowerPanel;
     private JPanel[] waitingTokenPanels;
-    private JButton prevButton, nextButton;
+    private JButton prevButton, nextButton, solutionButton;
+    private String currentFileName;
+    private GameState gameState;
 
     public ArenaFrame(String title)
     {
         super(title);
+        gameState = GameState.GAME;
         createMapFromFile();
         createAllPanels();
         this.setLayout(new GridLayout(map.getHeight()+2,1));
@@ -42,6 +51,14 @@ class ArenaFrame extends JFrame implements ActionListener {
 
     }
 
+    private void setCurrentFileNameAccToState()
+    {
+        if(gameState == GameState.GAME)
+            currentFileName = MAP_LEVEL_PATH + currentLevel + MAP_FILE_EXTENSION;
+        else if( gameState == GameState.SOLUTION)
+            currentFileName = MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION;
+    }
+
     private void createAllPanels() {
         this.getContentPane().removeAll(); //very important since panels are not removed when leveled up
         createUpperPanel();
@@ -52,22 +69,32 @@ class ArenaFrame extends JFrame implements ActionListener {
 
     private void createUpperPanel() {
         upperPanel = new JPanel();
+        int panelLength = 0;
         waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size()+1]; //plus one for noOfTargets Panel
-        for(int i = 0; i < waitingTokenPanels.length; i++)
+        if(waitingTokenPanels.length < width)
+            panelLength = width;
+        else
+            panelLength = waitingTokenPanels.length;
+        for(int i = 0; i < panelLength; i++)
         {
             if(i < GameMap.getWaitingTokens().size()) //for waiting tokens
             {
                 waitingTokenPanels[i] = new WaitingListPanel(GameMap.getWaitingTokens().get(i));
-                //waitingTokenPanels[i].setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+                upperPanel.add(waitingTokenPanels[i]);
             }
-            else //for noOfTargets
+            else if(i == panelLength-1)//for noOfTargets
             {
-                if( map.getNoOfTargets() > 0 && map.getNoOfTargets() < 6)
-                    waitingTokenPanels[i] = new WaitingListPanel(map.getNoOfTargets());
+                if( map.getNoOfTargets() > 0 && map.getNoOfTargets() <= MAX_WAITING_TOKENS)
+                    waitingTokenPanels[GameMap.getWaitingTokens().size()] = new WaitingListPanel(map.getNoOfTargets());
                 else
-                    throw new IllegalArgumentException("Number of targets must be between 1 and 5");
+                    throw new IllegalArgumentException("Number of targets must be between 1 and " + MAX_WAITING_TOKENS);
+                upperPanel.add(waitingTokenPanels[GameMap.getWaitingTokens().size()]);
             }
-            upperPanel.add(waitingTokenPanels[i]);
+            else //empty panel
+            {
+                upperPanel.add(new JPanel());
+            }
+
         }
         upperPanel.setLayout(new GridLayout(1, waitingTokenPanels.length));
         this.add(upperPanel);
@@ -81,6 +108,17 @@ class ArenaFrame extends JFrame implements ActionListener {
         nextButton = new JButton("=>");
         nextButton.setEnabled(false);
         nextButton.addActionListener(this);
+        solutionButton = new JButton();
+
+        if(gameState == GameState.GAME)
+            solutionButton.setText("Go to Solution");
+        else if(gameState == GameState.SOLUTION)
+            solutionButton.setText("Return to Game");
+        File solutionFile = new File( MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION);
+        //TODO: Correctness of the solution file is not checked
+        if(!solutionFile.exists())
+            solutionButton.setEnabled(false);
+        solutionButton.addActionListener(this);
 
         if(currentLevel < 2)
             prevButton.setEnabled(false);
@@ -88,6 +126,7 @@ class ArenaFrame extends JFrame implements ActionListener {
         lowerPanel.add(prevButton);
         lowerPanel.add(levelLabel);
         lowerPanel.add(nextButton);
+        lowerPanel.add(solutionButton);
 
         lowerPanel.setLayout(new GridLayout(1, lowerPanel.getComponentCount()));
         this.add(lowerPanel);
@@ -130,11 +169,12 @@ class ArenaFrame extends JFrame implements ActionListener {
     {
         //GameMap.refresh();
         map = new GameMap(width, height);
-        String fileName = MAP_LEVEL_PATH + currentLevel + MAP_FILE_EXTENSION;
+        //String fileName = MAP_LEVEL_PATH + currentLevel + MAP_FILE_EXTENSION;
+        setCurrentFileNameAccToState();
         BufferedReader br = null;
         Token token = null;
         try {
-            br = new BufferedReader(new FileReader(fileName));
+            br = new BufferedReader(new FileReader(currentFileName));
 
             String line = br.readLine();
             int rowCount = 0;
@@ -147,7 +187,7 @@ class ArenaFrame extends JFrame implements ActionListener {
                 {
                     int noOfCommas = line.length() - line.replace(",", "").length();
                     if(noOfCommas < width - 1)
-                        throw new IllegalArgumentException("At least one comma is missing in " + fileName + " at line " + rowCount);
+                        throw new IllegalArgumentException("At least one comma is missing in " + currentFileName + " at line " + rowCount);
                 }
 
                 int colCount = 0;
@@ -178,14 +218,15 @@ class ArenaFrame extends JFrame implements ActionListener {
             }
             if(rowCount <= height + 1)// one line is missing, probably noOfTargets is missed
             {
-                throw new IllegalArgumentException("At least one line is missing in " + fileName);
+                throw new IllegalArgumentException("At least one line is missing in " + currentFileName);
             }
 
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        if(gameState == GameState.SOLUTION)
+            GameMap.setAllWaitingTokensActiveness(false);
 
     }
 
@@ -454,16 +495,27 @@ class ArenaFrame extends JFrame implements ActionListener {
         if(e.getSource() == nextButton) //next level
         {
             currentLevel++;
-
+            gameState = GameState.GAME;
         }
         else if(e.getSource() == prevButton) //previous level
         {
             currentLevel--;
+            gameState = GameState.GAME;
+        }
+        else if(e.getSource() == solutionButton)
+        {
+            if (gameState == GameState.GAME) {
+                gameState = GameState.SOLUTION;
+            }
+            else if (gameState == GameState.SOLUTION) {
+                gameState = GameState.GAME;
+            }
         }
         else
         {
             throw new IllegalArgumentException();
         }
+        setCurrentFileNameAccToState();
         createMapFromFile();
         createAllPanels();
         refresh();

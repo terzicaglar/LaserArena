@@ -277,9 +277,16 @@ public class GameMap {
 		return noOfMandatoryTargetsHit;
 	}
 
+	public static void setAllWaitingTokensActiveness(boolean isActive)
+	{
+		for(int i = 0; i < isWaitingTokenActive.size(); i++)
+			isWaitingTokenActive.set(i, isActive);
+	}
+
 	//checksIfAllWantedTargetsHitAndAllTokensArePassed
 	public static boolean isLevelFinished()
 	{
+		//TODO: When mouse clicked this method is called twice, it should be once
 		if(getActiveTokensCount() > 0)
 			return false;
 		if(!isAllTokensPassed())

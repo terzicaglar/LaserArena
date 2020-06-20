@@ -13,11 +13,12 @@ import java.io.IOException;
 class WaitingListPanel extends JPanel {
     private Token t;
     int noOfTargets;
+
     public WaitingListPanel(Token t) {
         super();
         noOfTargets = -1;
         this.t = t;
-        this.setBackground(Color.LIGHT_GRAY);
+        //this.setBackground(Color.LIGHT_GRAY);
         //repaint();
     }
 
@@ -26,7 +27,7 @@ class WaitingListPanel extends JPanel {
         super();
         this.noOfTargets = noOfTargets;
         t = null;
-        this.setBackground(Color.LIGHT_GRAY);
+        //this.setBackground(Color.LIGHT_GRAY);
     }
 
     @Override
