@@ -11,7 +11,10 @@ import java.awt.event.MouseListener;
 import java.io.*;
 
 //TODO: make comprehensive explanations to all thrown Exceptions
-//TODO: infinite loop laser beam is given in infiniteLoopLaserBeam.png
+//TODO: infinite loop laser beam is given in bugs/infiniteLoopLaserBeam.png we should fix that
+//TODO: another bug is that for infinite laser beams / or something like that, we can hit same target with two different
+//  beams, therefore we should fix that, it can treat an unfinished level as finished
+//  (source: bugs/twoHitsOnSameTarget.png)
 class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private JLabel levelLabel;
@@ -181,8 +184,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private void updateMap()
     {
-        update();
         map.moveBeamsUntilNotMovable();
+        update();
     }
 
 
