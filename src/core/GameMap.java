@@ -36,10 +36,13 @@ public class GameMap {
     }
 
     private static ArrayList<Boolean> isWaitingTokenActive; //true if not added to the map, false if it is on the map
+    private static ArrayList<Token> randomTargetsHit, mandatoryTargetsHit;
     private static ArrayList<LaserBeam> beams;
 
     public GameMap(int width, int height) {
         waitingTokens = new ArrayList<>();
+        randomTargetsHit = new ArrayList<>();
+        mandatoryTargetsHit = new ArrayList<>();
         isWaitingTokenActive = new ArrayList<>();
         beams = new ArrayList<>(MAX_BEAMS);
         this.setWidth(width);
@@ -202,22 +205,28 @@ public class GameMap {
         return noOfWantedMandatoryTargets;
     }
 
+    //TODO:This method is called 4-5 times when a new token is added to the map, fix it if needed
     public static int getNoOfRandomTargetsHit() {
-        int noOfRandomTargetsHit = 0;
-        for (LaserBeam beam : beams) {
-            if (beam.getDirection() == Direction.TARGET_HIT)
-                noOfRandomTargetsHit++;
-        }
-        return noOfRandomTargetsHit;
+        randomTargetsHit = new ArrayList<>();
+        return getTargetsHit(Direction.TARGET_HIT, randomTargetsHit);
     }
 
     public static int getNoOfMandatoryTargetsHit() {
-        int noOfMandatoryTargetsHit = 0;
+        mandatoryTargetsHit = new ArrayList<>();
+        return getTargetsHit(Direction.MANDATORY_TARGET_HIT, mandatoryTargetsHit);
+    }
+
+    public static int getTargetsHit(Direction direction, ArrayList list)
+    {
+        Token hitToken;
         for (LaserBeam beam : beams) {
-            if (beam.getDirection() == Direction.MANDATORY_TARGET_HIT)
-                noOfMandatoryTargetsHit++;
+            if (beam.getDirection() ==  direction){
+                hitToken = getTokenLocatedInXY((int)beam.getLocation().getX(), (int)beam.getLocation().getY());
+                if(!list.contains(hitToken))
+                    list.add(hitToken);
+            }
         }
-        return noOfMandatoryTargetsHit;
+        return list.size();
     }
 
     public static void setAllWaitingTokensActiveness(boolean isActive) {
