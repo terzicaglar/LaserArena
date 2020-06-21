@@ -9,8 +9,7 @@ import sides.StuckableSide;
 //TODO: This class is not used, when decided to be added, should be put in necessary places, like ArenaFrame.getTokenFromShortName()
 public class BlackHole extends Token {
 
-    public BlackHole(boolean isLocationFixed)
-    {
+    public BlackHole(boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.orientation = Orientation.NONE;
@@ -21,8 +20,7 @@ public class BlackHole extends Token {
         construct();
     }
 
-    public BlackHole()
-    {
+    public BlackHole() {
         super();
         this.isLocationFixed = false;
         this.orientation = Orientation.NONE;

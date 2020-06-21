@@ -45,11 +45,9 @@ class ArenaPanel extends JPanel implements MouseListener {
 
         String imgName = "", text;
 
-        if (t == null)
-        {
+        if (t == null) {
             imgName = "EmptyCell";
-        }
-        else {
+        } else {
             imgName = t.getTokenImageName();
 
             //t.paintIfOrientationNotFixed(g2d, getWidth(), getHeight());
@@ -62,9 +60,9 @@ class ArenaPanel extends JPanel implements MouseListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int minSide = Math.min(getWidth(),getHeight());
+        int minSide = Math.min(getWidth(), getHeight());
         int sideSize = (int) (minSide * 0.95);
-        g.drawImage(img, (getWidth() - sideSize)/2, (getHeight() - sideSize)/2, sideSize, sideSize,  null);
+        g.drawImage(img, (getWidth() - sideSize) / 2, (getHeight() - sideSize) / 2, sideSize, sideSize, null);
         //g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 
         g2d.setColor(Color.BLACK);

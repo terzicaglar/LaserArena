@@ -14,343 +14,283 @@ import java.util.ArrayList;
 //TODO: levels and Solver(this can be an automated server or it can save the solution when the user passes that level)
 
 public class GameMap {
-	public static final String IMG_FOLDER = "img/", IMG_EXTENSION =".png";
-	public static final int MAX_BEAMS = 10;
-	private static final int MAX_LOOP = 1000;
-	private static int width, height;
+    public static final String IMG_FOLDER = "img/", IMG_EXTENSION = ".png";
+    public static final int MAX_BEAMS = 10;
+    private static final int MAX_LOOP = 1000;
+    private static int width, height;
 
-	public void setNoOfTargets(int noOfTargets) {
-		this.noOfTargets = noOfTargets;
-	}
+    public void setNoOfTargets(int noOfTargets) {
+        this.noOfTargets = noOfTargets;
+    }
 
-	public static int getNoOfTargets() {
-		return noOfTargets;
-	}
+    public static int getNoOfTargets() {
+        return noOfTargets;
+    }
 
-	private static int noOfTargets=1;
-	private static Token[][] tokens;
-	private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
+    private static int noOfTargets = 1;
+    private static Token[][] tokens;
+    private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
 
-	public static ArrayList<Boolean> getIsWaitingTokenActive() {
-		return isWaitingTokenActive;
-	}
+    public static ArrayList<Boolean> getIsWaitingTokenActive() {
+        return isWaitingTokenActive;
+    }
 
-	private static ArrayList<Boolean> isWaitingTokenActive; //true if not added to the map, false if it is on the map
-	private static ArrayList<LaserBeam> beams;
-	public GameMap(int width, int height)
-	{
-		waitingTokens = new ArrayList<>();
-		isWaitingTokenActive = new ArrayList<>();
-		beams = new ArrayList<>(MAX_BEAMS);
-		this.setWidth(width);
-		this.setHeight(height);
-		tokens = new Token[width][height];
-	}
+    private static ArrayList<Boolean> isWaitingTokenActive; //true if not added to the map, false if it is on the map
+    private static ArrayList<LaserBeam> beams;
 
-	public static void refresh()
-	{
-		waitingTokens = new ArrayList<>();
-		isWaitingTokenActive = new ArrayList<>();
-		beams = new ArrayList<>(MAX_BEAMS);
-		tokens = new Token[width][height];
-	}
+    public GameMap(int width, int height) {
+        waitingTokens = new ArrayList<>();
+        isWaitingTokenActive = new ArrayList<>();
+        beams = new ArrayList<>(MAX_BEAMS);
+        this.setWidth(width);
+        this.setHeight(height);
+        tokens = new Token[width][height];
+    }
 
-	public static boolean isAllTokensPassed()
-	{
-		for (int i = 0; i < tokens.length; i++) {
-			for (int j = 0; j < tokens[i].length; j++) {
-				if(tokens[i][j] != null && !(tokens[i][j] instanceof RedLaser) && !tokens[i][j].isPassed()) {
-					//System.out.println(i + "," + j + " not passed");
-					return false;
-				}
-			}
-		}
-		return true;
-	}
 
-	public static ArrayList<Token> getWaitingTokens() {
-		return waitingTokens;
-	}
+    public static boolean isAllTokensPassed() {
+        for (int i = 0; i < tokens.length; i++) {
+            for (int j = 0; j < tokens[i].length; j++) {
+                if (tokens[i][j] != null && !(tokens[i][j] instanceof RedLaser) && !tokens[i][j].isPassed()) {
+                    //System.out.println(i + "," + j + " not passed");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
-	public static Token getTokenLocatedInXY(int x, int y)
-	{
-		return tokens[x][y];
-	}
+    public static ArrayList<Token> getWaitingTokens() {
+        return waitingTokens;
+    }
 
-	private static Token getTokenLocatedInPoint(Point p)
-	{
-		return tokens[(int)p.getX()][(int)p.getY()];
-	}
+    public static Token getTokenLocatedInXY(int x, int y) {
+        return tokens[x][y];
+    }
 
-	public static void removeTokenLocatedInXY(int x, int y)
-	{
-		tokens[x][y] = null;
-	}
+    private static Token getTokenLocatedInPoint(Point p) {
+        return tokens[(int) p.getX()][(int) p.getY()];
+    }
 
-	public static boolean addToken(Token token, Point point)
-	{
-		if(point.getY() < height && point.getY() >= 0
-			&& point.getX() < width && point.getX() >= 0)
-		{
-			tokens[(int) point.getX()][(int) point.getY()] = token;
+    public static void removeTokenLocatedInXY(int x, int y) {
+        tokens[x][y] = null;
+    }
+
+    public static boolean addToken(Token token, Point point) {
+        if (point.getY() < height && point.getY() >= 0
+                && point.getX() < width && point.getX() >= 0) {
+            tokens[(int) point.getX()][(int) point.getY()] = token;
 			/*if(token instanceof RedLaser)
 				addLaserBeam(new LaserBeam(point, ((RedLaser) token).getGeneratedLaserDirection()));*/
-			return true;
-		}
-		else
-			return false;
-	}
+            return true;
+        } else
+            return false;
+    }
 
-	public static void addWaitingToken(Token token)
-	{
-		int loc = waitingTokens.indexOf(token);
-		if(loc == -1) //new Token
-		{
-			waitingTokens.add(token);
-			isWaitingTokenActive.add(true);
-		}
-		else //current Token that needs to be reactivated
-		{
-			isWaitingTokenActive.set(loc, true);
-		}
-	}
+    public static void addWaitingToken(Token token) {
+        int loc = waitingTokens.indexOf(token);
+        if (loc == -1) //new Token
+        {
+            waitingTokens.add(token);
+            isWaitingTokenActive.add(true);
+        } else //current Token that needs to be reactivated
+        {
+            isWaitingTokenActive.set(loc, true);
+        }
+    }
 
-	public static boolean isTokenActive(Token t)
-	{
-		int index = waitingTokens.indexOf(t);
-		if(index >= 0)
-		{
-			return isWaitingTokenActive.get(index);
-		}
-		else
-		{
-			throw new IllegalArgumentException();
-		}
-	}
+    public static boolean isTokenActive(Token t) {
+        int index = waitingTokens.indexOf(t);
+        if (index >= 0) {
+            return isWaitingTokenActive.get(index);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
 
-	public static void removeWaitingToken(Token token)
-	{
-		int loc = waitingTokens.indexOf(token);
-		if(loc == -1)
-		{
-			throw new IllegalArgumentException();
-		}
-		else
-		{
-			isWaitingTokenActive.set(loc, false);
-		}
-	}
+    public static void removeWaitingToken(Token token) {
+        int loc = waitingTokens.indexOf(token);
+        if (loc == -1) {
+            throw new IllegalArgumentException();
+        } else {
+            isWaitingTokenActive.set(loc, false);
+        }
+    }
 
-	public static Token getNthActiveToken(int n)
-	{
-		return waitingTokens.get(getLocationOfNthActiveToken(n));
-	}
+    public static Token getNthActiveToken(int n) {
+        return waitingTokens.get(getLocationOfNthActiveToken(n));
+    }
 
-	public static int getActiveTokensCount() {
-		int activeTokensCount = 0;
+    public static int getActiveTokensCount() {
+        int activeTokensCount = 0;
 
-		for(boolean bool: isWaitingTokenActive)
-		{
-			if(bool)
-				activeTokensCount++;
-		}
+        for (boolean bool : isWaitingTokenActive) {
+            if (bool)
+                activeTokensCount++;
+        }
 
-		return activeTokensCount;
-	}
+        return activeTokensCount;
+    }
 
-	public static int getLocationOfNthActiveToken(int n)
-	{
-		int index = -1;
+    public static int getLocationOfNthActiveToken(int n) {
+        int index = -1;
 
-		n = n % getActiveTokensCount();
+        n = n % getActiveTokensCount();
 
-		for(int i = 0; i < isWaitingTokenActive.size(); i++)
-		{
-			if(isWaitingTokenActive.get(i))
-			{
-				index++;
-				if(index == n)
-					return i; //location of nth active token
-			}
+        for (int i = 0; i < isWaitingTokenActive.size(); i++) {
+            if (isWaitingTokenActive.get(i)) {
+                index++;
+                if (index == n)
+                    return i; //location of nth active token
+            }
 
-		}
-		return -1;
+        }
+        return -1;
 
-	}
+    }
 
-	public void moveBeamsUntilNotMovable()
-	{
-		for (int i = 0; i < tokens.length; i++) {
-			for (int j = 0; j < tokens[i].length; j++) {
-				if(tokens[i][j] != null)
-					tokens[i][j].setPassed(false);
-			}
-		}
+    public void moveBeamsUntilNotMovable() {
+        for (int i = 0; i < tokens.length; i++) {
+            for (int j = 0; j < tokens[i].length; j++) {
+                if (tokens[i][j] != null)
+                    tokens[i][j].setPassed(false);
+            }
+        }
+        beams = new ArrayList<>(4);
+        for (int i = 0; i < tokens.length; i++) {
+            for (int j = 0; j < tokens[i].length; j++) {
+                if (tokens[i][j] instanceof RedLaser) {
+                    addLaserBeam(new LaserBeam(new Point(i, j), ((RedLaser) tokens[i][j]).getGeneratedLaserDirection()));
+                }
+            }
+        }
+        LaserBeam beam;
+        int i;
+        for (int k = 0; k < beams.size(); k++) {
+            beam = beams.get(k);
+            i = 0;
+            while (beam.getDirection().isMovable() && i < MAX_LOOP) {
+                beam.move();
+                if (isOutOfBounds(beam.getLocation())) {
+                    beam.setDirection(Direction.OUT_OF_BOUNDS);
+                } else {
+                    Token t = getTokenLocatedInPoint(beam.getLocation());
+                    if (t != null) {
+                        //TODO null exception code below t.getSide(beam.getDirection().getOppositeDirection()).action(beam);
+                        beam.setDirection(t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
+                        t.setPassed(true);
+                    }
+                }
+                i++;
+                beam.updatePath();
+            }
+            System.out.println("final beam(s): " + beam);
+        }
+        System.out.println();
+        //TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
+    }
 
+    private static int getWantedMandatoryTargets() {
+        int noOfWantedMandatoryTargets = 0;
+        for (Token[] token_arr : tokens) {
+            for (Token t : token_arr) {
+                if (t instanceof PurpleTarget && ((PurpleTarget) t).isMandatoryTarget()) {
+                    noOfWantedMandatoryTargets++;
+                }
+            }
+        }
+        return noOfWantedMandatoryTargets;
+    }
 
-		beams = new ArrayList<>(4);
+    public static int getNoOfRandomTargetsHit() {
+        int noOfRandomTargetsHit = 0;
+        for (LaserBeam beam : beams) {
+            if (beam.getDirection() == Direction.TARGET_HIT)
+                noOfRandomTargetsHit++;
+        }
+        return noOfRandomTargetsHit;
+    }
 
-		for (int i = 0; i < tokens.length; i++) {
-			for (int j = 0; j < tokens[i].length; j++) {
-				if( tokens[i][j] instanceof RedLaser)
-				{
-					addLaserBeam(new LaserBeam(new Point(i,j), ((RedLaser) tokens[i][j]).getGeneratedLaserDirection()));
-					//System.out.println("RL loc: " + i + "," + j);
-				}
-			}
-		}
-//		if(beams.size() > 0)
-//			System.out.println("init beam:" + beams.get(0));
-		LaserBeam beam;
-		int i;
-		for(int k = 0; k < beams.size(); k++)
-		{
-			beam = beams.get(k);
-			i = 0;
-			while(beam.getDirection().isMovable() && i < MAX_LOOP )
-			{
-				beam.move();
-				if(isOutOfBounds(beam.getLocation()))
-				{
-					beam.setDirection(Direction.OUT_OF_BOUNDS);
-				}
-				else
-				{
-					Token t = getTokenLocatedInPoint(beam.getLocation());
-					if(t != null)
-					{
-						//TODO null exception code below t.getSide(beam.getDirection().getOppositeDirection()).action(beam);
-						beam.setDirection( t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
-						t.setPassed(true);
-					}
+    public static int getNoOfMandatoryTargetsHit() {
+        int noOfMandatoryTargetsHit = 0;
+        for (LaserBeam beam : beams) {
+            if (beam.getDirection() == Direction.MANDATORY_TARGET_HIT)
+                noOfMandatoryTargetsHit++;
+        }
+        return noOfMandatoryTargetsHit;
+    }
 
-				}
-				i++;
-				beam.updatePath();
+    public static void setAllWaitingTokensActiveness(boolean isActive) {
+        for (int i = 0; i < isWaitingTokenActive.size(); i++)
+            isWaitingTokenActive.set(i, isActive);
+    }
 
-			}
-			System.out.println( "final beam(s): " + beam);
-		}
-		System.out.println();
-		/*while(direction.isMovable())
-		{
-			move();
-		}*/
-		//TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
-	}
+    //checksIfAllWantedTargetsHitAndAllTokensArePassed
+    public static boolean isLevelFinished() {
+        //TODO: When mouse clicked this method is called twice, it should be once
+        if (getActiveTokensCount() > 0)
+            return false;
+        if (!isAllTokensPassed())
+            return false;
+        //TODO: not tested
+        int noOfMandatoryTargetsHit = getNoOfMandatoryTargetsHit();
+        int noOfRandomTargetsHit = getNoOfRandomTargetsHit();
 
-	private static int getWantedMandatoryTargets()
-	{
-		int noOfWantedMandatoryTargets = 0;
-		for(Token[] token_arr : tokens)
-		{
-			for(Token t: token_arr)
-			{
-				if(t instanceof PurpleTarget && ((PurpleTarget) t).isMandatoryTarget())
-				{
-					noOfWantedMandatoryTargets++;
-				}
-			}
-		}
-		return noOfWantedMandatoryTargets;
-	}
+        return (noOfMandatoryTargetsHit == getWantedMandatoryTargets() &&
+                (noOfMandatoryTargetsHit + noOfRandomTargetsHit) == noOfTargets);
+    }
 
-	public static int getNoOfRandomTargetsHit()
-	{
-		int noOfRandomTargetsHit = 0;
-		for(LaserBeam beam: beams)
-		{
-			if(beam.getDirection() == Direction.TARGET_HIT)
-				noOfRandomTargetsHit++;
-		}
-		return noOfRandomTargetsHit;
-	}
+    private boolean isOutOfBounds(Point p) {
+        return (p.getX() >= width || p.getY() >= height
+                || p.getX() < 0 || p.getY() < 0);
+    }
 
-	public static int getNoOfMandatoryTargetsHit()
-	{
-		int noOfMandatoryTargetsHit = 0;
-		for(LaserBeam beam: beams)
-		{
-			if( beam.getDirection() == Direction.MANDATORY_TARGET_HIT)
-				noOfMandatoryTargetsHit++;
-		}
-		return noOfMandatoryTargetsHit;
-	}
+    public int getWidth() {
+        return width;
+    }
 
-	public static void setAllWaitingTokensActiveness(boolean isActive)
-	{
-		for(int i = 0; i < isWaitingTokenActive.size(); i++)
-			isWaitingTokenActive.set(i, isActive);
-	}
+    private void setWidth(int width) {
+        this.width = width;
+    }
 
-	//checksIfAllWantedTargetsHitAndAllTokensArePassed
-	public static boolean isLevelFinished()
-	{
-		//TODO: When mouse clicked this method is called twice, it should be once
-		if(getActiveTokensCount() > 0)
-			return false;
-		if(!isAllTokensPassed())
-			return false;
-		//TODO: not tested
-		int noOfMandatoryTargetsHit = getNoOfMandatoryTargetsHit();
-		int noOfRandomTargetsHit = getNoOfRandomTargetsHit();
+    public int getHeight() {
+        return height;
+    }
 
-		return (noOfMandatoryTargetsHit == getWantedMandatoryTargets() &&
-				(noOfMandatoryTargetsHit + noOfRandomTargetsHit) == noOfTargets);
-	}
+    private void setHeight(int height) {
+        this.height = height;
+    }
 
-	private boolean isOutOfBounds(Point p)
-	{
-		return (p.getX() >= width || p.getY() >= height
-					|| p.getX() < 0 || p.getY() < 0);
-	}
+    public static ArrayList<LaserBeam> getBeams() {
+        return beams;
+    }
 
-	public int getWidth() {
-		return width;
-	}
+    public static void setBeams(ArrayList<LaserBeam> beams) {
+        GameMap.beams = beams;
+    }
 
-	private void setWidth(int width) {
-		this.width = width;
-	}
+    public static Token[][] getTokens() {
+        return tokens;
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public static void setTokens(Token[][] tokens) {
+        GameMap.tokens = tokens;
+    }
 
-	private void setHeight(int height) {
-		this.height = height;
-	}
+    public static void addLaserBeam(LaserBeam l) {
+        beams.add(l);
+    }
 
-	public static ArrayList<LaserBeam> getBeams() {
-		return beams;
-	}
+    public void print() {
+        String str = "";
+        Token t;
+        for (int i = 0; i < tokens.length; i++) {
+            for (int j = 0; j < tokens[i].length; j++) {
+                t = tokens[i][j];
+                if (t != null)
+                    System.out.println(t.toIconString() + " " + i + "," + j);
+            }
 
-	public static void setBeams(ArrayList<LaserBeam> beams) {
-		GameMap.beams = beams;
-	}
-
-	public static Token[][] getTokens() {
-		return tokens;
-	}
-
-	public static void setTokens(Token[][] tokens) {
-		GameMap.tokens = tokens;
-	}
-
-	public static void addLaserBeam(LaserBeam l) {
-		beams.add(l);
-	}
-
-	public void print(){
-		String str = "";
-		Token t;
-		for (int i = 0; i < tokens.length; i++) {
-			for (int j = 0; j < tokens[i].length; j++) {
-				t = tokens[i][j];
-				if(t != null)
-					System.out.println(t.toIconString() + " " + i + "," + j);
-			}
-
-		}
-	}
+        }
+    }
 }

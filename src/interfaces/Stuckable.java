@@ -8,8 +8,7 @@ package interfaces;
 import core.Direction;
 
 public interface Stuckable {
-    default Direction stuck()
-    {
+    default Direction stuck() {
         return Direction.STUCK;
     }
 }

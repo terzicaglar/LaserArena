@@ -8,9 +8,8 @@ import core.Orientation;
 import sides.StuckableSide;
 import sides.TransparentSide;
 
-public class YellowBridge extends Token{
-    public YellowBridge(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
-    {
+public class YellowBridge extends Token {
+    public YellowBridge(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.isOrientationFixed = isOrientationFixed;
@@ -18,8 +17,7 @@ public class YellowBridge extends Token{
         construct();
     }
 
-    public YellowBridge(Orientation orientation)
-    {
+    public YellowBridge(Orientation orientation) {
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
@@ -27,15 +25,14 @@ public class YellowBridge extends Token{
         construct();
     }
 
-    public YellowBridge()
-    {
+    public YellowBridge() {
         super();
         this.orientation = Orientation.HORIZONTAL_BRIDGE;
         construct();
     }
 
     public String toIconString() {
-        switch(orientation) {
+        switch (orientation) {
             case HORIZONTAL_BRIDGE:
                 return this.getClass().getSimpleName().charAt(0) + " --";
             case VERTICAL_BRIDGE:
@@ -46,11 +43,9 @@ public class YellowBridge extends Token{
 
     }
 
-    protected void construct()
-    {
+    protected void construct() {
         createImageName();
-        switch(orientation)
-        {
+        switch (orientation) {
             case VERTICAL_BRIDGE:
                 //Vertical Bridge "|"
                 sides.put(Direction.SOUTH, new StuckableSide());

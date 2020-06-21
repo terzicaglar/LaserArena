@@ -9,8 +9,7 @@ import core.Direction;
 
 public interface Transparent {
 
-    default Direction pass(Direction directionOfBeam)
-    {
+    default Direction pass(Direction directionOfBeam) {
         return directionOfBeam;
     }
 

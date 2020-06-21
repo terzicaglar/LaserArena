@@ -10,9 +10,8 @@ import core.Orientation;
 import sides.BackSlashReflectorTransparentSide;
 import sides.SlashReflectorTransparentSide;
 
-public class GreenMirror extends Token{
-    public GreenMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
-    {
+public class GreenMirror extends Token {
+    public GreenMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.isOrientationFixed = isOrientationFixed;
@@ -20,8 +19,7 @@ public class GreenMirror extends Token{
         construct();
     }
 
-    public GreenMirror(Orientation orientation)
-    {
+    public GreenMirror(Orientation orientation) {
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
@@ -29,15 +27,14 @@ public class GreenMirror extends Token{
         construct();
     }
 
-    public GreenMirror()
-    {
+    public GreenMirror() {
         super();
         this.orientation = Orientation.SLASH_MIRROR;
         construct();
     }
 
     public String toIconString() {
-        switch(orientation) {
+        switch (orientation) {
             case SLASH_MIRROR:
                 return this.getClass().getSimpleName().charAt(0) + " /";
             case BACKSLASH_MIRROR:
@@ -48,11 +45,9 @@ public class GreenMirror extends Token{
 
     }
 
-    protected void construct()
-    {
+    protected void construct() {
         createImageName();
-        switch(orientation)
-        {
+        switch (orientation) {
             case SLASH_MIRROR:
                 //Slash Type Mirror "/"
                 sides.put(Direction.NORTH, new SlashReflectorTransparentSide());

@@ -9,11 +9,10 @@ import core.Orientation;
 import sides.BackSlashReflectorSide;
 import sides.SlashReflectorSide;
 
-public class BlueMirror extends Token{
+public class BlueMirror extends Token {
 
 
-    public BlueMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
-    {
+    public BlueMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.isOrientationFixed = isOrientationFixed;
@@ -21,8 +20,7 @@ public class BlueMirror extends Token{
         construct();
     }
 
-    public BlueMirror(Orientation orientation)
-    {
+    public BlueMirror(Orientation orientation) {
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
@@ -33,8 +31,7 @@ public class BlueMirror extends Token{
         possibleOrientations.add(Orientation.BACKSLASH_MIRROR);*/
     }
 
-    public BlueMirror()
-    {
+    public BlueMirror() {
         super();
         this.orientation = Orientation.SLASH_MIRROR;
         construct();
@@ -42,7 +39,7 @@ public class BlueMirror extends Token{
 
     @Override
     public String toIconString() {
-        switch(orientation) {
+        switch (orientation) {
             case SLASH_MIRROR:
                 return this.getClass().getSimpleName().charAt(0) + " /";
             case BACKSLASH_MIRROR:
@@ -53,11 +50,9 @@ public class BlueMirror extends Token{
 
     }
 
-    protected void construct()
-    {
+    protected void construct() {
         createImageName();
-        switch(orientation)
-        {
+        switch (orientation) {
             case SLASH_MIRROR:
                 //Slash Type Mirror "/"
                 sides.put(Direction.NORTH, new SlashReflectorSide());
@@ -77,7 +72,6 @@ public class BlueMirror extends Token{
                 throw new IllegalArgumentException();
         }
     }
-
 
 
 }

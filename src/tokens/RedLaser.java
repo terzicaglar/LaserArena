@@ -11,8 +11,7 @@ import sides.*;
 
 public class RedLaser extends Token {
 
-    public RedLaser(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
-    {
+    public RedLaser(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.isOrientationFixed = isOrientationFixed;
@@ -20,8 +19,7 @@ public class RedLaser extends Token {
         construct();
     }
 
-    public RedLaser(Orientation orientation)
-    {
+    public RedLaser(Orientation orientation) {
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
@@ -34,15 +32,14 @@ public class RedLaser extends Token {
         possibleOrientations.add(Orientation.GENERATOR_ON_SOUTH);*/
     }
 
-    public RedLaser()
-    {
+    public RedLaser() {
         super();
         this.orientation = Orientation.GENERATOR_ON_SOUTH;
         construct();
     }
 
     public String toIconString() {
-        switch(orientation) {
+        switch (orientation) {
             case GENERATOR_ON_WEST:
                 return this.getClass().getSimpleName().charAt(0) + " W";
             case GENERATOR_ON_NORTH:
@@ -57,11 +54,9 @@ public class RedLaser extends Token {
 
     }
 
-    protected void construct()
-    {
+    protected void construct() {
         createImageName();
-        switch(orientation)
-        {
+        switch (orientation) {
             case GENERATOR_ON_WEST: //LaserGenerator on WEST
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new StuckableSide());
@@ -92,10 +87,8 @@ public class RedLaser extends Token {
         }
     }
 
-    public Direction getGeneratedLaserDirection()
-    {
-        switch(orientation)
-        {
+    public Direction getGeneratedLaserDirection() {
+        switch (orientation) {
             case GENERATOR_ON_WEST: //LaserGenerator on WEST
                 return Direction.WEST;
             case GENERATOR_ON_NORTH: //LaserGenerator on NORTH

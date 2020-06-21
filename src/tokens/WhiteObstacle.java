@@ -10,8 +10,7 @@ import sides.TransparentSide;
 
 public class WhiteObstacle extends Token {
 
-    public WhiteObstacle(boolean isLocationFixed)
-    {
+    public WhiteObstacle(boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.orientation = Orientation.NONE;
@@ -22,8 +21,7 @@ public class WhiteObstacle extends Token {
         construct();
     }
 
-    public WhiteObstacle()
-    {
+    public WhiteObstacle() {
         super();
         this.isLocationFixed = false;
         this.orientation = Orientation.NONE;
@@ -37,8 +35,7 @@ public class WhiteObstacle extends Token {
     }
 
 
-    protected void construct()
-    {
+    protected void construct() {
         createImageName();
         sides.put(Direction.NORTH, new TransparentSide());
         sides.put(Direction.WEST, new TransparentSide());
