@@ -78,7 +78,8 @@ public abstract class Token {
     }
 
     public String getGrayedWaitingTokenImageName() {
-        return "Gray_Random";
+        //TODO:For each token there may be one transparent image, to identify the waiting token when they are not active
+        return getWaitingTokenImageName() + "_Transparent";
     }
 
     void createImageName() {

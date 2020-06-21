@@ -89,13 +89,13 @@ public class PurpleTarget extends Token {
             return this.getClass().getSimpleName() + "_Random";
     }
 
-    @Override
-    public String getGrayedWaitingTokenImageName() {
-        if (isMandatoryTarget)
-            return "GrayMandatory_Random";
-        else
-            return "Gray_Random";
-    }
+//    @Override
+//    public String getGrayedWaitingTokenImageName() {
+//        if (isMandatoryTarget)
+//            return "GrayMandatory_Random";
+//        else
+//            return "Gray_Random";
+//    }
 
 
     protected void construct() {
