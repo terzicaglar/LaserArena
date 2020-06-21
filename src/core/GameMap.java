@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class GameMap {
 	public static final String IMG_FOLDER = "img/", IMG_EXTENSION =".png";
-	public static final int MAX_BEAMS = 4;
+	public static final int MAX_BEAMS = 10;
 	private static final int MAX_LOOP = 1000;
 	private static int width, height;
 
@@ -229,7 +229,7 @@ public class GameMap {
 				beam.updatePath();
 
 			}
-			System.out.println( "final beam(s): " + beam);
+			//System.out.println( "final beam(s): " + beam);
 		}
 		System.out.print("");
 		/*while(direction.isMovable())

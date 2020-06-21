@@ -11,10 +11,11 @@ import java.awt.event.MouseListener;
 import java.io.*;
 
 //TODO: make comprehensive explanations to all thrown Exceptions
-
+//TODO: infinite loop laser beam is given in infiniteLoopLaserBeam.png
 class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private JLabel levelLabel;
+    private JButton firstButton, lastButton;
 
     private enum GameState{
         GAME,
@@ -25,13 +26,12 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
         P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
         PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
-    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 65;
-    private final String MAP_FILE_EXTENSION = ".csv";
-    private final String MAP_LEVEL_PATH = "levels/";
-    private final String SOLUTIONS_FOLDER = "solutions/";
+    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 66;
+    private final String MAP_FILE_EXTENSION = ".csv", MAP_LEVEL_PATH = "levels/",
+            SOLUTIONS_FOLDER = "solutions/", LAST_LEVEL_FILE ="LastUnlockedLevel.txt";
 
     private static GameMap map;
-    private int width = 5, height = 5, currentLevel = 61;
+    private int width = 5, height = 5, firstLevel = 61, currentLevel;
     private ArenaPanel[][] panels;
     private JPanel[] rowPanels;
     private JPanel upperPanel, lowerPanel;
@@ -43,6 +43,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     public ArenaFrame(String title)
     {
         super(title);
+        currentLevel = getLastUnlockedLevel();
         gameState = GameState.GAME;
         createMapFromFile();
         createAllPanels();
@@ -67,9 +68,9 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     private void createAllPanels() {
         this.getContentPane().removeAll(); //very important since panels are not removed when leveled up
         createUpperPanel();
-        updateMap();
         createMapPanels();
         createLowerPanel();
+        updateMap();
     }
 
     private void createUpperPanel() {
@@ -109,10 +110,14 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         lowerPanel = new JPanel();
         levelLabel = new JLabel("Level " + currentLevel, SwingConstants.CENTER);
         levelLabel.addMouseListener(this);
-        prevButton = new JButton("<=");
+        firstButton = new JButton("<<");
+        firstButton.addActionListener(this);
+        lastButton = new JButton(">>");
+        lastButton.addActionListener(this);
+        prevButton = new JButton("<");
         prevButton.addActionListener(this);
-        nextButton = new JButton("=>");
-        nextButton.setEnabled(false);
+        nextButton = new JButton(">");
+        //nextButton.setEnabled(false);
         nextButton.addActionListener(this);
         solutionButton = new JButton();
 
@@ -122,11 +127,11 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         }
         else
         {
-            nextButton.setText("=>");
+            nextButton.setText(">");
         }
 
         if(gameState == GameState.GAME)
-            solutionButton.setText("Go to Solution");
+            solutionButton.setText("Solution");
         else if(gameState == GameState.SOLUTION)
             solutionButton.setText("Return to Game");
         File solutionFile = new File( MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION);
@@ -138,9 +143,11 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         if(currentLevel < 2)
             prevButton.setEnabled(false);
 
+        lowerPanel.add(firstButton);
         lowerPanel.add(prevButton);
         lowerPanel.add(levelLabel);
         lowerPanel.add(nextButton);
+        lowerPanel.add(lastButton);
         lowerPanel.add(solutionButton);
 
         lowerPanel.setLayout(new GridLayout(1, lowerPanel.getComponentCount()));
@@ -174,9 +181,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private void updateMap()
     {
+        update();
         map.moveBeamsUntilNotMovable();
-        //TODO: If map.isGameFinished() returns true we will save the solution to solutions folder for that level
-        System.out.println("map.isGameFinished(): " + map.isLevelFinished());
     }
 
 
@@ -487,10 +493,13 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     {
         if(map.isLevelFinished())
         {
-            //TODO: nextButton will be disabled when entered a new level
             writeToSolutionFile();
-            if(currentLevel < MAX_LEVEL)
-                nextButton.setEnabled(true);
+            updateLastUnlockedLevelFile();
+        }
+
+        if(currentLevel < getLastUnlockedLevel())
+        {
+            nextButton.setEnabled(true);
         }
         else
         {
@@ -498,9 +507,27 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         }
     }
 
+    private void updateLastUnlockedLevelFile() {
+        int lastLevel = getLastUnlockedLevel();
+        int unlockedLevel = currentLevel + 1;
+        if(unlockedLevel >= MAX_LEVEL)
+            unlockedLevel = MAX_LEVEL;
+        if(unlockedLevel > lastLevel) {
+
+            BufferedWriter bw = null;
+
+            try {
+                bw = new BufferedWriter(new FileWriter(MAP_LEVEL_PATH + LAST_LEVEL_FILE));
+                bw.write("" + unlockedLevel);
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     void refresh(){
         updateMap();
-        update();
         this.repaint();
         this.setVisible(true);
     }
@@ -527,11 +554,36 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                 gameState = GameState.GAME;
             }
         }
+        else if(e.getSource() == firstButton)
+        {
+            currentLevel = firstLevel;
+            gameState = GameState.GAME;
+        }
+        else if(e.getSource() == lastButton)
+        {
+            currentLevel = getLastUnlockedLevel();
+            if(currentLevel >= MAX_LEVEL)
+                currentLevel = MAX_LEVEL;
+            gameState = GameState.GAME;
+        }
         else
         {
             throw new IllegalArgumentException();
         }
         refreshAll();
+    }
+
+    private int getLastUnlockedLevel() {
+        BufferedReader br = null;
+        int lastLevel = -1;
+        try {
+            br = new BufferedReader(new FileReader(MAP_LEVEL_PATH + LAST_LEVEL_FILE));
+            lastLevel = Integer.parseInt(br.readLine());
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lastLevel;
     }
 
     public void refreshAll()

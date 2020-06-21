@@ -71,7 +71,7 @@ class ArenaPanel extends JPanel implements MouseListener {
 
         int beamNo = 0, line_x2 = 0, line_y2 = 0, prev_line_x2 = 0, prev_line_y2 = 0;
         Direction prevDirection = null;
-        Color[] colors = {Color.RED, Color.DARK_GRAY, Color.MAGENTA, Color.CYAN, Color.BLUE, Color.GREEN};
+        Color[] colors = {Color.RED, Color.DARK_GRAY, Color.MAGENTA, Color.CYAN, Color.BLUE, Color.GREEN, Color.BLUE, Color.LIGHT_GRAY, Color.PINK, Color.YELLOW};
 
         Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         g2d.setStroke(dashed);
