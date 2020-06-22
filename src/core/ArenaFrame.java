@@ -26,7 +26,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
             P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
             PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
-    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 68, FIRST_LEVEl = 61;
+    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 70, FIRST_LEVEl = 61;
     private final String MAP_FILE_EXTENSION = ".csv", MAP_LEVEL_PATH = "levels/",
             SOLUTIONS_FOLDER = "solutions/", LAST_LEVEL_FILE = "LastUnlockedLevel.txt";
 
@@ -416,47 +416,52 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         //TODO: isOrientationFixed is not considered right now, solution shows the final state only
         //TODO: upper and lower panels have not considered yet
 
-        BufferedWriter bw = null;
+        String solutionFilePath = MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION;
+        File solutionFile = new File(solutionFilePath);
 
-        try {
-            bw = new BufferedWriter(new FileWriter(MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION));
+        if(!solutionFile.exists()) {
+            BufferedWriter bw = null;
 
-            Token t = null;
-            String line = "";
-            for (int i = 0; i < height; i++) {
-                line = "";
-                for (int j = 0; j < width; j++) {
-                    t = GameMap.getTokenLocatedInXY(j, i);
-                    if (t != null) {
-                        line += getShortNameFromToken(t);
+            try {
+                bw = new BufferedWriter(new FileWriter(solutionFilePath));
+
+                Token t = null;
+                String line = "";
+                for (int i = 0; i < height; i++) {
+                    line = "";
+                    for (int j = 0; j < width; j++) {
+                        t = GameMap.getTokenLocatedInXY(j, i);
+                        if (t != null) {
+                            line += getShortNameFromToken(t);
+                        }
+                        if (j != width - 1)
+                            line += ",";
+                        else
+                            line += "\n";
+
                     }
-                    if (j != width - 1)
+                    bw.write(line);
+                }
+                //TODO: Tokens in waiting list are written with orientation (e.g., pm-w), if needed it can be converted
+                //  to simple form by deleting everything after '-'
+                line = "";
+                for (int i = 0; i < GameMap.getWaitingTokens().size(); i++) {
+                    line += getShortNameFromToken(GameMap.getWaitingTokens().get(i));
+                    if (i != GameMap.getWaitingTokens().size() - 1)
                         line += ",";
                     else
                         line += "\n";
-
                 }
                 bw.write(line);
-            }
-            //TODO: Tokens in waiting list are written with orientation (e.g., pm-w), if needed it can be converted
-            //  to simple form by deleting everything after '-'
-            line = "";
-            for (int i = 0; i < GameMap.getWaitingTokens().size(); i++) {
-                line += getShortNameFromToken(GameMap.getWaitingTokens().get(i));
-                if (i != GameMap.getWaitingTokens().size() - 1)
-                    line += ",";
-                else
-                    line += "\n";
-            }
-            bw.write(line);
-            line = GameMap.getNoOfTargets() + "\n";
-            bw.write(line);
+                line = GameMap.getNoOfTargets() + "\n";
+                bw.write(line);
 
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            solutionButton.setEnabled(true);
         }
-        solutionButton.setEnabled(true);
     }
 
     private String getShortNameFromToken(Token t) {

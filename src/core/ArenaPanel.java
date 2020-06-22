@@ -142,7 +142,8 @@ class ArenaPanel extends JPanel implements MouseListener {
                         {
                             //draws a green half rectangle if target is hit
                             if (pwd.getDirection() == Direction.TARGET_HIT || pwd.getDirection() == Direction.MANDATORY_TARGET_HIT) {
-                                g2d.setColor(Color.GREEN);
+                                //g2d.setColor(Color.GREEN);]
+                                g2d.setColor(new Color(110,180,39));
                                 g2d.fillPolygon(new int[]{prev_line_x2 - midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 + midWidth / 4, prev_line_x2 - midWidth / 4},
                                         new int[]{prev_line_y2 - midHeight / 4, prev_line_y2 - midHeight / 4, prev_line_y2 + midHeight / 4, prev_line_y2 + midHeight / 4},
                                         4);
