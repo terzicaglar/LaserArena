@@ -3,6 +3,7 @@ package core;
 import tokens.PurpleTarget;
 import tokens.RedLaser;
 import tokens.Token;
+import tokens.WhiteObstacle;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -52,9 +53,11 @@ public class GameMap {
 
 
     public static boolean isAllTokensPassed() {
+        //WhiteObstacle does not need to be passed
         for (int i = 0; i < tokens.length; i++) {
             for (int j = 0; j < tokens[i].length; j++) {
-                if (tokens[i][j] != null && !(tokens[i][j] instanceof RedLaser) && !tokens[i][j].isPassed()) {
+                if (tokens[i][j] != null && !(tokens[i][j] instanceof RedLaser) &&
+                        !(tokens[i][j] instanceof WhiteObstacle) && !tokens[i][j].isPassed()) {
                     //System.out.println(i + "," + j + " not passed");
                     return false;
                 }

@@ -26,10 +26,13 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
             P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
             PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
-    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 66, FIRST_LEVEl = 61;
+    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 68, FIRST_LEVEl = 61;
     private final String MAP_FILE_EXTENSION = ".csv", MAP_LEVEL_PATH = "levels/",
             SOLUTIONS_FOLDER = "solutions/", LAST_LEVEL_FILE = "LastUnlockedLevel.txt";
 
+    private JMenuBar menuBar;
+    private JMenu helpMenu;
+    private JMenuItem gameRules;
     private JLabel levelLabel;
     private JButton firstButton, lastButton, prevButton, nextButton, solutionButton;
     private static GameMap map;
@@ -42,6 +45,13 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     public ArenaFrame(String title) {
         super(title);
+        menuBar = new JMenuBar();
+        helpMenu = new JMenu("Help");
+        gameRules = new JMenuItem("Game Rules");
+        gameRules.addActionListener(this);
+        helpMenu.add(gameRules);
+        menuBar.add(helpMenu);
+        this.setJMenuBar(menuBar);
         currentLevel = getLastUnlockedLevel();
         gameState = GameState.GAME;
         createMapFromFile();
@@ -182,6 +192,29 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         update();
     }
 
+    private void openFileInDesktop(String filePath)
+    {
+        File file = new File(filePath);
+
+        //first check if Desktop is supported by Platform or not
+        if(!Desktop.isDesktopSupported()){
+            System.out.println("Desktop is not supported");
+            return;
+        }
+
+        Desktop desktop = Desktop.getDesktop();
+        if(file.exists()) {
+            try {
+                desktop.open(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("File not found");
+        }
+    }
 
     private void createMapFromFile() {
         //GameMap.refresh();
@@ -191,6 +224,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         BufferedReader br = null;
         Token token = null;
         try {
+            //TODO: File not found error can be given in all read/write methods, maybe a GUI Warning
             br = new BufferedReader(new FileReader(currentFileName));
 
             String line = br.readLine();
@@ -532,7 +566,9 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             if (currentLevel >= MAX_LEVEL)
                 currentLevel = MAX_LEVEL;
             gameState = GameState.GAME;
-        } else {
+        } else if(e.getSource() == gameRules){
+            openFileInDesktop("docs/help.pdf");
+        } else{
             throw new IllegalArgumentException();
         }
         refreshAll();
