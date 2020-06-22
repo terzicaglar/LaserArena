@@ -17,9 +17,6 @@ import java.io.*;
 //  (source: bugs/twoHitsOnSameTarget.png)
 class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
-    private JLabel levelLabel;
-    private JButton firstButton, lastButton;
-
     private enum GameState {
         GAME,
         SOLUTION;
@@ -29,17 +26,17 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
             P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
             PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
-    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 66;
+    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 66, FIRST_LEVEl = 61;
     private final String MAP_FILE_EXTENSION = ".csv", MAP_LEVEL_PATH = "levels/",
             SOLUTIONS_FOLDER = "solutions/", LAST_LEVEL_FILE = "LastUnlockedLevel.txt";
 
+    private JLabel levelLabel;
+    private JButton firstButton, lastButton, prevButton, nextButton, solutionButton;
     private static GameMap map;
-    private int width = 5, height = 5, firstLevel = 61, currentLevel;
+    private int width = 5, height = 5, currentLevel;
     private ArenaPanel[][] panels;
-    private JPanel[] rowPanels;
+    private JPanel[] rowPanels, waitingTokenPanels;
     private JPanel upperPanel, lowerPanel;
-    private JPanel[] waitingTokenPanels;
-    private JButton prevButton, nextButton, solutionButton;
     private String currentFileName;
     private GameState gameState;
 
@@ -107,36 +104,43 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     private void createLowerPanel() {
         lowerPanel = new JPanel();
         levelLabel = new JLabel("Level " + currentLevel, SwingConstants.CENTER);
+        levelLabel.setToolTipText("Refresh the level");
         levelLabel.addMouseListener(this);
-        firstButton = new JButton("<<");
+        firstButton = new JButton("|<");
         firstButton.addActionListener(this);
-        lastButton = new JButton(">>");
+        firstButton.setToolTipText("Go to first level");
+        lastButton = new JButton(">|");
         lastButton.addActionListener(this);
+        lastButton.setToolTipText("Go to last unlocked level");
         prevButton = new JButton("<");
         prevButton.addActionListener(this);
+        prevButton.setToolTipText("Go to previous level");
         nextButton = new JButton(">");
-        //nextButton.setEnabled(false);
+        nextButton.setToolTipText("Go to next level");
         nextButton.addActionListener(this);
         solutionButton = new JButton();
 
+        if(currentLevel <= FIRST_LEVEl)
+            prevButton.setEnabled(false);
+        else
+            prevButton.setEnabled(true);
+
         if (currentLevel == MAX_LEVEL) {
-            nextButton.setText("MAX LEVEL");
+            nextButton.setText("FIN");
         } else {
             nextButton.setText(">");
         }
-
-        if (gameState == GameState.GAME)
+        if (gameState == GameState.GAME) {
             solutionButton.setText("Solution");
-        else if (gameState == GameState.SOLUTION)
-            solutionButton.setText("Return to Game");
+        }
+        else if (gameState == GameState.SOLUTION) {
+            solutionButton.setText("Play");
+        }
         File solutionFile = new File(MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION);
         //TODO: Correctness of the solution file is not checked
         if (!solutionFile.exists())
             solutionButton.setEnabled(false);
         solutionButton.addActionListener(this);
-
-        if (currentLevel < 2)
-            prevButton.setEnabled(false);
 
         lowerPanel.add(firstButton);
         lowerPanel.add(prevButton);
@@ -521,7 +525,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                 gameState = GameState.GAME;
             }
         } else if (e.getSource() == firstButton) {
-            currentLevel = firstLevel;
+            currentLevel = FIRST_LEVEl;
             gameState = GameState.GAME;
         } else if (e.getSource() == lastButton) {
             currentLevel = getLastUnlockedLevel();

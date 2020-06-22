@@ -187,9 +187,9 @@ public class GameMap {
                 i++;
                 beam.updatePath();
             }
-            System.out.println("final beam(s): " + beam);
+            //System.out.println("final beam(s): " + beam);
         }
-        System.out.println();
+        //System.out.println();
         //TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
     }
 
