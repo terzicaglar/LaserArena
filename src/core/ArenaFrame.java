@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
+import java.util.ArrayList;
 
 //TODO: make comprehensive explanations to all thrown Exceptions
 //TODO: infinite loop laser beam is given in bugs/infiniteLoopLaserBeam.png we should fix that
@@ -26,7 +27,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
             P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
             PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
-    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 70, FIRST_LEVEl = 61;
+    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 70, FIRST_LEVEl = 61,
+            MAP_WIDTH = 5, MAP_HEIGHT = 5;
     private final String MAP_FILE_EXTENSION = ".csv", MAP_LEVEL_PATH = "levels/",
             SOLUTIONS_FOLDER = "solutions/", LAST_LEVEL_FILE = "LastUnlockedLevel.txt";
 
@@ -34,17 +36,23 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     private JMenu helpMenu;
     private JMenuItem gameRules;
     private JLabel levelLabel;
-    private JButton firstButton, lastButton, prevButton, nextButton, solutionButton;
+    private JButton firstButton, lastButton, prevButton, nextButton, solutionButton, hintButton;
     private static GameMap map;
-    private int width = 5, height = 5, currentLevel;
+    private int currentLevel;
     private ArenaPanel[][] panels;
     private JPanel[] rowPanels, waitingTokenPanels;
     private JPanel upperPanel, lowerPanel;
     private String currentFileName;
+    private Token[][] fileTokens;
+    private ArrayList<Token> fileWaitingList;
+    private int solutionNoOfTargets;
     private GameState gameState;
 
     public ArenaFrame(String title) {
         super(title);
+
+        fileTokens = new Token[MAP_WIDTH][MAP_HEIGHT];
+        fileWaitingList = new ArrayList<>();
         menuBar = new JMenuBar();
         helpMenu = new JMenu("Help");
         gameRules = new JMenuItem("Game Rules");
@@ -70,7 +78,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         if (gameState == GameState.GAME)
             currentFileName = MAP_LEVEL_PATH + currentLevel + MAP_FILE_EXTENSION;
         else if (gameState == GameState.SOLUTION)
-            currentFileName = MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION;
+            currentFileName = getSolutionFileName();
     }
 
     private void createAllPanels() {
@@ -85,8 +93,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         upperPanel = new JPanel();
         int panelLength = 0;
         waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size() + 1]; //plus one for noOfTargets Panel
-        if (waitingTokenPanels.length < width)
-            panelLength = width;
+        if (waitingTokenPanels.length < MAP_WIDTH)
+            panelLength = MAP_WIDTH;
         else
             panelLength = waitingTokenPanels.length;
         for (int i = 0; i < panelLength; i++) {
@@ -129,6 +137,9 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         nextButton.setToolTipText("Go to next level");
         nextButton.addActionListener(this);
         solutionButton = new JButton();
+        //Icon icon = new ImageIcon("img/hint.png");
+        //TODO: All buttons will have icons
+        hintButton = new JButton("Hint");
 
         if(currentLevel <= FIRST_LEVEl)
             prevButton.setEnabled(false);
@@ -141,15 +152,19 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             nextButton.setText(">");
         }
         if (gameState == GameState.GAME) {
+            hintButton.setEnabled(true);
             solutionButton.setText("Solution");
         }
         else if (gameState == GameState.SOLUTION) {
+            hintButton.setEnabled(false);
             solutionButton.setText("Play");
         }
-        File solutionFile = new File(MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION);
+        File solutionFile = new File(getSolutionFileName());
         //TODO: Correctness of the solution file is not checked
-        if (!solutionFile.exists())
+        if (!solutionFile.exists()) {
             solutionButton.setEnabled(false);
+            hintButton.setEnabled(false);
+        }
         solutionButton.addActionListener(this);
 
         lowerPanel.add(firstButton);
@@ -158,6 +173,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         lowerPanel.add(nextButton);
         lowerPanel.add(lastButton);
         lowerPanel.add(solutionButton);
+        lowerPanel.add(hintButton);
 
         lowerPanel.setLayout(new GridLayout(1, lowerPanel.getComponentCount()));
         this.add(lowerPanel);
@@ -216,16 +232,19 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         }
     }
 
-    private void createMapFromFile() {
-        //GameMap.refresh();
-        map = new GameMap(width, height);
-        //String fileName = MAP_LEVEL_PATH + currentLevel + MAP_FILE_EXTENSION;
-        setCurrentFileNameAccToState();
+    private String getSolutionFileName(){
+        return MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION;
+    }
+
+    private void readMapFile(String fileName)
+    {
+        fileTokens = new Token[MAP_WIDTH][MAP_HEIGHT];
+        fileWaitingList = new ArrayList<>();
         BufferedReader br = null;
         Token token = null;
         try {
             //TODO: File not found error can be given in all read/write methods, maybe a GUI Warning
-            br = new BufferedReader(new FileReader(currentFileName));
+            br = new BufferedReader(new FileReader(fileName));
 
             String line = br.readLine();
             int rowCount = 0;
@@ -233,44 +252,73 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                 //TODO:split method skips last two empty columns for input ,,p,, it does not affect us but good to know
                 String[] shortNames = line.split(",");
 
-                if (rowCount < height) {
+                if (rowCount < MAP_HEIGHT) {
                     int noOfCommas = line.length() - line.replace(",", "").length();
-                    if (noOfCommas < width - 1)
-                        throw new IllegalArgumentException("At least one comma is missing in " + currentFileName + " at line " + rowCount);
+                    if (noOfCommas < MAP_WIDTH - 1)
+                        throw new IllegalArgumentException("At least one comma is missing in " + fileName + " at line " + rowCount);
                 }
 
                 int colCount = 0;
                 for (String shortName : shortNames) {
-                    if (rowCount < height) //tokens inside Map
+                    if (rowCount < MAP_HEIGHT) //tokens inside Map
                     {
                         token = getTokenFromShortName(shortName);
                         if (!shortName.equals("")) {
                             token.setLocationFixed(true); //it is located in map, not waitingList
-                            map.addToken(token, new Point(colCount, rowCount));
+                            //map.addToken(token, new Point(colCount, rowCount));
+                            fileTokens[colCount][rowCount] = token;
 
                         }
-                    } else if (rowCount == height) //waitingList
+                    } else if (rowCount == MAP_HEIGHT) //waitingList
                     {
                         token = getTokenFromShortName(shortName);
-                        map.addWaitingToken(token);
-                    } else if (rowCount == height + 1) //noOfTargets
+                        //map.addWaitingToken(token);
+                        fileWaitingList.add(token);
+                    } else if (rowCount == MAP_HEIGHT + 1) //noOfTargets
                     {
-                        map.setNoOfTargets(Integer.parseInt(shortName));
+                        //map.setNoOfTargets(Integer.parseInt(shortName));
+                        solutionNoOfTargets = Integer.parseInt(shortName);
                     }
                     colCount++;
                 }
                 line = br.readLine();
                 rowCount++;
             }
-            if (rowCount <= height + 1)// one line is missing, probably noOfTargets is missed
+            if (rowCount <= MAP_HEIGHT + 1)// one line is missing, probably noOfTargets is missed
             {
-                throw new IllegalArgumentException("At least one line is missing in " + currentFileName);
+                throw new IllegalArgumentException("At least one line is missing in " + fileName);
             }
 
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createMapFromFile() {
+        //GameMap.refresh();
+        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
+
+        //String fileName = MAP_LEVEL_PATH + currentLevel + MAP_FILE_EXTENSION;
+        setCurrentFileNameAccToState();
+        readMapFile(currentFileName);
+
+        for(int i = 0; i < fileTokens.length; i++)
+        {
+            for(int j = 0; j < fileTokens[i].length; j++)
+            {
+                if(fileTokens[i][j] != null)
+                {
+                    map.addToken(fileTokens[i][j], new Point(i, j));
+                }
+            }
+        }
+
+        for(int i = 0; i < fileWaitingList.size(); i++)
+            map.addWaitingToken(fileWaitingList.get(i));
+
+        map.setNoOfTargets(solutionNoOfTargets);
+
         if (gameState == GameState.SOLUTION)
             GameMap.setAllWaitingTokensActiveness(false);
 
@@ -278,7 +326,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     //TODO: All waiting tokens are !orientationFixed (all images in the waiting list are Question Marked), we can fix this later if needed. in the original game they are all Question Mark
     private void map1() {
-        map = new GameMap(width, height);
+        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(0, 3));
         map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST, true, false, true), new Point(0, 0));
         map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH, false, false, true), new Point(0, 2));
@@ -303,7 +351,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     }
 
     private void map2() {
-        map = new GameMap(width, height);
+        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(2, 2));
 
         //map.addWaitingToken(new RedLaser());
@@ -319,7 +367,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     }
 
     private void map3() {
-        map = new GameMap(width, height);
+        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(0, 3));
         map.addToken(new WhiteObstacle(true), new Point(1, 3));
         map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, true, true), new Point(2, 3));
@@ -336,7 +384,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     }
 
     private void map4() {
-        map = new GameMap(width, height);
+        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
         map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(1, 2));
         map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, true, true), new Point(2, 1));
         map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST, false, false, true), new Point(2, 0));
@@ -416,7 +464,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         //TODO: isOrientationFixed is not considered right now, solution shows the final state only
         //TODO: upper and lower panels have not considered yet
 
-        String solutionFilePath = MAP_LEVEL_PATH + SOLUTIONS_FOLDER + currentLevel + MAP_FILE_EXTENSION;
+        String solutionFilePath = getSolutionFileName();
         File solutionFile = new File(solutionFilePath);
 
         if(!solutionFile.exists()) {
@@ -427,14 +475,14 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
                 Token t = null;
                 String line = "";
-                for (int i = 0; i < height; i++) {
+                for (int i = 0; i < MAP_HEIGHT; i++) {
                     line = "";
-                    for (int j = 0; j < width; j++) {
+                    for (int j = 0; j < MAP_WIDTH; j++) {
                         t = GameMap.getTokenLocatedInXY(j, i);
                         if (t != null) {
                             line += getShortNameFromToken(t);
                         }
-                        if (j != width - 1)
+                        if (j != MAP_WIDTH - 1)
                             line += ",";
                         else
                             line += "\n";
@@ -512,6 +560,11 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         if (map.isLevelFinished()) {
             writeToSolutionFile();
             updateLastUnlockedLevelFile();
+            hintButton.setEnabled(false);
+        }
+        else
+        {
+            hintButton.setEnabled(true);
         }
 
         if (currentLevel < getLastUnlockedLevel()) {
@@ -546,6 +599,10 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         this.setVisible(true);
     }
 
+    private void getHint()
+    {
+
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -573,11 +630,17 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             gameState = GameState.GAME;
         } else if(e.getSource() == gameRules){
             openFileInDesktop("docs/help.pdf");
-        } else{
+        } else if( e.getSource() == hintButton)
+        {
+
+        }
+        else{
             throw new IllegalArgumentException();
         }
         refreshAll();
     }
+
+
 
     private int getLastUnlockedLevel() {
         BufferedReader br = null;
