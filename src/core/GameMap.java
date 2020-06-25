@@ -155,6 +155,17 @@ public class GameMap {
 
     }
 
+    public static ArrayList<Token> getActiveWaitingTokens()
+    {
+        ArrayList<Token> actives = new ArrayList<>();
+        for(int i = 0; i < waitingTokens.size(); i++){
+            if (isWaitingTokenActive.get(i)) {
+                actives.add(waitingTokens.get(i));
+            }
+        }
+        return actives;
+    }
+
     public void moveBeamsUntilNotMovable() {
         for (int i = 0; i < tokens.length; i++) {
             for (int j = 0; j < tokens[i].length; j++) {

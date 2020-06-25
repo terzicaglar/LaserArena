@@ -65,6 +65,11 @@ public abstract class Token {
         construct();
     }
 
+    public boolean isTokenTypeSameWith(Token t)
+    {
+        return this.getClass().getName().equalsIgnoreCase(t.getClass().getName());
+
+    }
 
     public String getTokenImageName() {
         if (isOrientationFixed)

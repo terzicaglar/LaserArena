@@ -140,7 +140,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         //Icon icon = new ImageIcon("img/hint.png");
         //TODO: All buttons will have icons
         hintButton = new JButton("Hint");
-
+        hintButton.addActionListener(this);
         if(currentLevel <= FIRST_LEVEl)
             prevButton.setEnabled(false);
         else
@@ -601,6 +601,35 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private void getHint()
     {
+        //0. read solution file and set fileTokens acc. to
+        readMapFile(getSolutionFileName());
+        boolean exit = false;
+        for(int x = 0; x < fileTokens.length && !exit; x++) {
+            for(int y = 0; y < fileTokens[x].length && !exit; y++) {
+                if(fileTokens[x][y] != null){
+                    //1. If map(x,y)(i.e., mapToken) is empty but solutionFile(x,y)(i.e., solToken) is not
+                    if(GameMap.getTokenLocatedInXY(x,y) == null){
+                        //1.a. If waiting list has a token which has a class same with solToken, retieve it
+                        Token waitingToken;
+                        for(int i = 0; i < GameMap.getActiveWaitingTokens().size(); i++){
+                            waitingToken = GameMap.getActiveWaitingTokens().get(i);
+                            if(waitingToken.isTokenTypeSameWith(fileTokens[x][y])){
+//                                GameMap.addToken(waitingToken, new Point(x, y));
+//                                GameMap.removeWaitingToken(waitingToken);
+//                                refresh();
+//                                exit = true;
+//                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    private void putCorrectTokentoLocation(int x, int y)
+    {
 
     }
 
@@ -632,7 +661,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             openFileInDesktop("docs/help.pdf");
         } else if( e.getSource() == hintButton)
         {
-
+            //TODO: hintButton setEnabled is not working properly
+            getHint();
         }
         else{
             throw new IllegalArgumentException();
