@@ -173,7 +173,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         lowerPanel.add(nextButton);
         lowerPanel.add(lastButton);
         lowerPanel.add(solutionButton);
-        lowerPanel.add(hintButton);
+        //TODO: hintButton will be added
+        //lowerPanel.add(hintButton);
 
         lowerPanel.setLayout(new GridLayout(1, lowerPanel.getComponentCount()));
         this.add(lowerPanel);
@@ -601,7 +602,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private void getHint()
     {
-
+        //TODO: To be implemented
     }
 
     @Override
