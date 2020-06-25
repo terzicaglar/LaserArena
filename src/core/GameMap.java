@@ -53,6 +53,7 @@ public class GameMap {
 
 
     public static boolean isAllTokensPassed() {
+        //TODO: YellowBridge pass also includes Stuck laser Beam, should we fix that?
         //WhiteObstacle does not need to be passed
         for (int i = 0; i < tokens.length; i++) {
             for (int j = 0; j < tokens[i].length; j++) {
