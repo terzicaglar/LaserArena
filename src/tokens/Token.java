@@ -32,6 +32,7 @@ public abstract class Token {
         return orientation;
     }
 
+
     Orientation orientation;
 
     String imageName;

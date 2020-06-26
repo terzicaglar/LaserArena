@@ -27,7 +27,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
             P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
             PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
-    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 70, FIRST_LEVEl = 61,
+    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 66, FIRST_LEVEl = 61,
             MAP_WIDTH = 5, MAP_HEIGHT = 5;
     private final String MAP_FILE_EXTENSION = ".csv", MAP_LEVEL_PATH = "levels/",
             SOLUTIONS_FOLDER = "solutions/", LAST_LEVEL_FILE = "LastUnlockedLevel.txt";
@@ -45,7 +45,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     private String currentFileName;
     private Token[][] fileTokens;
     private ArrayList<Token> fileWaitingList;
-    private int solutionNoOfTargets;
+    private int fileNoOfTargets;
     private GameState gameState;
 
     public ArenaFrame(String title) {
@@ -277,7 +277,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                     } else if (rowCount == MAP_HEIGHT + 1) //noOfTargets
                     {
                         //map.setNoOfTargets(Integer.parseInt(shortName));
-                        solutionNoOfTargets = Integer.parseInt(shortName);
+                        fileNoOfTargets = Integer.parseInt(shortName);
                     }
                     colCount++;
                 }
@@ -303,25 +303,28 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         setCurrentFileNameAccToState();
         readMapFile(currentFileName);
 
-        for(int i = 0; i < fileTokens.length; i++)
+        createMap(fileTokens, fileWaitingList, fileNoOfTargets);
+    }
+
+    private void createMap(Token[][] inputTokens, ArrayList<Token> inputWaitingList, int inputNoOfTargets){
+        for(int i = 0; i < inputTokens.length; i++)
         {
-            for(int j = 0; j < fileTokens[i].length; j++)
+            for(int j = 0; j < inputTokens[i].length; j++)
             {
-                if(fileTokens[i][j] != null)
+                if(inputTokens[i][j] != null)
                 {
-                    map.addToken(fileTokens[i][j], new Point(i, j));
+                    map.addToken(inputTokens[i][j], new Point(i, j));
                 }
             }
         }
 
-        for(int i = 0; i < fileWaitingList.size(); i++)
-            map.addWaitingToken(fileWaitingList.get(i));
+        for(int i = 0; i < inputWaitingList.size(); i++)
+            map.addWaitingToken(inputWaitingList.get(i));
 
-        map.setNoOfTargets(solutionNoOfTargets);
+        map.setNoOfTargets(inputNoOfTargets);
 
         if (gameState == GameState.SOLUTION)
             GameMap.setAllWaitingTokensActiveness(false);
-
     }
 
     //TODO: All waiting tokens are !orientationFixed (all images in the waiting list are Question Marked), we can fix this later if needed. in the original game they are all Question Mark
@@ -609,29 +612,30 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                 if(fileTokens[x][y] != null){
                     //1. If map(x,y)(i.e., mapToken) is empty but solutionFile(x,y)(i.e., solToken) is not
                     if(GameMap.getTokenLocatedInXY(x,y) == null){
-                        //1.a. If waiting list has a token which has a class same with solToken, retieve it
+                        //1.a. If waiting list has a token which has a class same with solToken, retrieve it
                         Token waitingToken;
                         for(int i = 0; i < GameMap.getActiveWaitingTokens().size(); i++){
                             waitingToken = GameMap.getActiveWaitingTokens().get(i);
                             if(waitingToken.isTokenTypeSameWith(fileTokens[x][y])){
-//                                GameMap.addToken(waitingToken, new Point(x, y));
-//                                GameMap.removeWaitingToken(waitingToken);
-//                                refresh();
-//                                exit = true;
-//                                break;
+                                map.addToken(fileTokens[x][y], new Point(x, y)); //hinted tokens cannot be moved, since
+                                // clickCount and prevToken in ArenaPanel malfunctions
+                                map.removeWaitingToken(waitingToken);
+                                exit = true;
+                                break;
                             }
                         }
-                    }
+                        if(!exit){
+                            //1.b. Waiting list does not have a token which has a class same with solToken
+                            // (since exit == false), retrieve this token from map (firsts clean old location,
+                            // then put Token into (x,y))
 
+                        }
+                    }
                 }
             }
         }
     }
 
-    private void putCorrectTokentoLocation(int x, int y)
-    {
-
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -639,35 +643,41 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         {
             currentLevel++;
             gameState = GameState.GAME;
+            refreshAll();
         } else if (e.getSource() == prevButton) //previous level
         {
             currentLevel--;
             gameState = GameState.GAME;
+            refreshAll();
         } else if (e.getSource() == solutionButton) {
             if (gameState == GameState.GAME) {
                 gameState = GameState.SOLUTION;
             } else if (gameState == GameState.SOLUTION) {
                 gameState = GameState.GAME;
             }
+            refreshAll();
         } else if (e.getSource() == firstButton) {
             currentLevel = FIRST_LEVEl;
             gameState = GameState.GAME;
+            refreshAll();
         } else if (e.getSource() == lastButton) {
             currentLevel = getLastUnlockedLevel();
             if (currentLevel >= MAX_LEVEL)
                 currentLevel = MAX_LEVEL;
             gameState = GameState.GAME;
+            refreshAll();
         } else if(e.getSource() == gameRules){
             openFileInDesktop("docs/help.pdf");
         } else if( e.getSource() == hintButton)
         {
             //TODO: hintButton setEnabled is not working properly
             getHint();
+            createAllPanels();
+            refresh();
         }
         else{
             throw new IllegalArgumentException();
         }
-        refreshAll();
     }
 
 

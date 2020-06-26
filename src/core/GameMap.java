@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * GameMap of the game, where tokens are placed and laser(s) pass.
  */
 
-//TODO: levels and Solver(this can be an automated server or it can save the solution when the user passes that level)
+//TODO: Static methods needs to be resolved, either they  will be deleted or GameMap object in Arenaframe will be deleted
 
 public class GameMap {
     public static final String IMG_FOLDER = "img/", IMG_EXTENSION = ".png";
@@ -81,6 +81,7 @@ public class GameMap {
     public static void removeTokenLocatedInXY(int x, int y) {
         tokens[x][y] = null;
     }
+
 
     public static boolean addToken(Token token, Point point) {
         if (point.getY() < height && point.getY() >= 0
