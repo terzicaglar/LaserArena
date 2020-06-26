@@ -122,7 +122,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     private void createLowerPanel() {
         lowerPanel = new JPanel();
         levelLabel = new JLabel("Level " + currentLevel, SwingConstants.CENTER);
-        levelLabel.setToolTipText("Refresh the level");
+        levelLabel.setToolTipText("Refresh the level / Go to level");
         levelLabel.addMouseListener(this);
         firstButton = new JButton("|<");
         firstButton.addActionListener(this);
@@ -679,10 +679,9 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             }
             //right click goes to selected level
             else if(e.getButton() == MouseEvent.BUTTON3){
-                JOptionPane jOptionPane = new JOptionPane();
-                String goToLevelStr = jOptionPane.showInputDialog(this, "Go To Level");
+                String goToLevelStr = JOptionPane.showInputDialog(this, "Go To Level");
                 int goToLevel = -1;
-                if(goToLevelStr != null){
+                if(goToLevelStr != null){ //it is null if clicked to Cancel Button
                     try{
                         goToLevel = Integer.parseInt(goToLevelStr);
                     }catch (NumberFormatException exc){
