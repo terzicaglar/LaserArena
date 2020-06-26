@@ -142,6 +142,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         hintButton = new JButton("Hint");
 
 
+
         if(currentLevel <= FIRST_LEVEl)
             prevButton.setEnabled(false);
         else
