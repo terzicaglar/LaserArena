@@ -8,13 +8,9 @@ import core.Direction;
 import core.Orientation;
 import sides.TransparentSide;
 
-import java.awt.*;
-import java.util.ArrayList;
-
 public class WhiteObstacle extends Token {
 
-    public WhiteObstacle(boolean isLocationFixed)
-    {
+    public WhiteObstacle(boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.orientation = Orientation.NONE;
@@ -25,12 +21,11 @@ public class WhiteObstacle extends Token {
         construct();
     }
 
-    public WhiteObstacle()
-    {
+    public WhiteObstacle() {
         super();
         this.isLocationFixed = false;
         this.orientation = Orientation.NONE;
-        this.isOrientationFixed = true;
+        this.isOrientationFixed = true; //Since there is only one orientation, i.e., Orientation.NONE
         construct();
     }
 
@@ -40,16 +35,12 @@ public class WhiteObstacle extends Token {
     }
 
 
-    protected void construct()
-    {
+    protected void construct() {
+        createImageName();
         sides.put(Direction.NORTH, new TransparentSide());
         sides.put(Direction.WEST, new TransparentSide());
         sides.put(Direction.EAST, new TransparentSide());
         sides.put(Direction.SOUTH, new TransparentSide());
     }
 
-    public void paintToken(Graphics g, int width, int height){
-        g.setColor(Color.WHITE);
-        g.fillOval(width/4, height/4, width/2, height/2);
-    }
 }

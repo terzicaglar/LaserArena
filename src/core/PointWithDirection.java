@@ -2,7 +2,7 @@ package core;
 
 import java.awt.*;
 
-public class PointWithDirection {
+class PointWithDirection {
 
     private Point point;
     private Direction direction;

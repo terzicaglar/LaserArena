@@ -1,6 +1,6 @@
 /**
  * Generates a laser beam in the facing direction at the beginning. If an incoming laser hits it from any side,
- * it becomes stucked.
+ * it becomes stuck.
  */
 package tokens;
 
@@ -9,13 +9,9 @@ import core.Direction;
 import core.Orientation;
 import sides.*;
 
-import java.awt.*;
-import java.util.ArrayList;
-
 public class RedLaser extends Token {
 
-    public RedLaser(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
-    {
+    public RedLaser(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.isOrientationFixed = isOrientationFixed;
@@ -23,12 +19,11 @@ public class RedLaser extends Token {
         construct();
     }
 
-    public RedLaser(Orientation orientation)
-    {
+    public RedLaser(Orientation orientation) {
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
-        this.isOrientationFixed = false;
+        this.isOrientationFixed = true;
         construct();
         /*possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.GENERATOR_ON_WEST);
@@ -37,52 +32,14 @@ public class RedLaser extends Token {
         possibleOrientations.add(Orientation.GENERATOR_ON_SOUTH);*/
     }
 
-    @Override
-    public void paintToken(Graphics g, int width, int height) {
-        g.setColor(Color.RED);
-        int xPoints[], yPoints[];
-        xPoints = new int[3];
-        yPoints = new int[3];
-        if(orientation == Orientation.GENERATOR_ON_EAST){
-            xPoints[0] = 0;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = 0;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.GENERATOR_ON_WEST)
-        {
-            xPoints[0] = width;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.GENERATOR_ON_NORTH)
-        {
-            xPoints[0] = 0;
-            yPoints[0] = height;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.GENERATOR_ON_SOUTH)
-        {
-            xPoints[0] = 0;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = 0;
-        }
-        g.fillPolygon(xPoints, yPoints, 3);
+    public RedLaser() {
+        super();
+        this.orientation = Orientation.GENERATOR_ON_SOUTH;
+        construct();
     }
 
     public String toIconString() {
-        switch(orientation) {
+        switch (orientation) {
             case GENERATOR_ON_WEST:
                 return this.getClass().getSimpleName().charAt(0) + " W";
             case GENERATOR_ON_NORTH:
@@ -97,10 +54,9 @@ public class RedLaser extends Token {
 
     }
 
-    protected void construct()
-    {
-        switch(orientation)
-        {
+    protected void construct() {
+        createImageName();
+        switch (orientation) {
             case GENERATOR_ON_WEST: //LaserGenerator on WEST
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new StuckableSide());
@@ -131,10 +87,8 @@ public class RedLaser extends Token {
         }
     }
 
-    public Direction getGeneratedLaserDirection()
-    {
-        switch(orientation)
-        {
+    public Direction getGeneratedLaserDirection() {
+        switch (orientation) {
             case GENERATOR_ON_WEST: //LaserGenerator on WEST
                 return Direction.WEST;
             case GENERATOR_ON_NORTH: //LaserGenerator on NORTH

@@ -9,12 +9,10 @@ import core.Orientation;
 import sides.BackSlashReflectorSide;
 import sides.SlashReflectorSide;
 
-import java.awt.*;
-import java.util.ArrayList;
+public class BlueMirror extends Token {
 
-public class BlueMirror extends Token{
-    public BlueMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed)
-    {
+
+    public BlueMirror(Orientation orientation, boolean isOrientationFixed, boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.isOrientationFixed = isOrientationFixed;
@@ -22,30 +20,26 @@ public class BlueMirror extends Token{
         construct();
     }
 
-    public BlueMirror(Orientation orientation)
-    {
+    public BlueMirror(Orientation orientation) {
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
-        this.isOrientationFixed = false;
+        this.isOrientationFixed = true;
         construct();
         /*possibleOrientations = new ArrayList<Orientation>();
         possibleOrientations.add(Orientation.SLASH_MIRROR);
         possibleOrientations.add(Orientation.BACKSLASH_MIRROR);*/
     }
 
-    @Override
-    public void paintToken(Graphics g, int width, int height) {
-        g.setColor(Color.BLUE);
-        if(orientation == Orientation.BACKSLASH_MIRROR)
-            g.drawLine(0,0, width, height);
-        else if(orientation == Orientation.SLASH_MIRROR)
-            g.drawLine(0, height, width, 0);
+    public BlueMirror() {
+        super();
+        this.orientation = Orientation.SLASH_MIRROR;
+        construct();
     }
 
     @Override
     public String toIconString() {
-        switch(orientation) {
+        switch (orientation) {
             case SLASH_MIRROR:
                 return this.getClass().getSimpleName().charAt(0) + " /";
             case BACKSLASH_MIRROR:
@@ -56,10 +50,9 @@ public class BlueMirror extends Token{
 
     }
 
-    protected void construct()
-    {
-        switch(orientation)
-        {
+    protected void construct() {
+        createImageName();
+        switch (orientation) {
             case SLASH_MIRROR:
                 //Slash Type Mirror "/"
                 sides.put(Direction.NORTH, new SlashReflectorSide());
@@ -79,7 +72,6 @@ public class BlueMirror extends Token{
                 throw new IllegalArgumentException();
         }
     }
-
 
 
 }

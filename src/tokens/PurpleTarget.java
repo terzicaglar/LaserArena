@@ -1,7 +1,7 @@
 /**
  * Multi-functional and the most crucial token in the game. It is a composition of mirror, stuckable, and target.
- * Mirror side reflects in the same way with BlueMirror. If Target is hit, beam is stucked ath there and lights the
- * Target. Aim of this game is hitting "labeled" Targets. If laser hits the empty edge, it becomes stucked, as well.
+ * Mirror side reflects in the same way with BlueMirror. If Target is hit, beam is stuck ath there and lights the
+ * Target. Aim of this game is hitting "labeled" Targets. If laser hits the empty edge, it becomes stuck, as well.
  */
 
 package tokens;
@@ -12,17 +12,15 @@ import core.Orientation;
 import sides.*;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class PurpleTarget extends Token {
     public boolean isMandatoryTarget() {
         return isMandatoryTarget;
     }
 
-    boolean isMandatoryTarget = false;
+    private boolean isMandatoryTarget = false;
 
-    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget, boolean isOrientationFixed, boolean isLocationFixed)
-    {
+    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget, boolean isOrientationFixed, boolean isLocationFixed) {
         super();
         this.isLocationFixed = isLocationFixed;
         this.isOrientationFixed = isOrientationFixed;
@@ -31,22 +29,40 @@ public class PurpleTarget extends Token {
         construct();
     }
 
+    public PurpleTarget(Orientation orientation, boolean isMandatoryTarget) {
+        super();
+        this.orientation = orientation;
+        this.isLocationFixed = false;
+        this.isOrientationFixed = true;
+        this.isMandatoryTarget = isMandatoryTarget;
+        construct();
+    }
+
     public PurpleTarget(Orientation orientation) {
         super();
         this.orientation = orientation;
         this.isLocationFixed = false;
-        this.isOrientationFixed = false;
+        this.isOrientationFixed = true;
         isMandatoryTarget = false;
         construct();
-       /* possibleOrientations = new ArrayList<Orientation>();
-        possibleOrientations.add(Orientation.TARGET_ON_SOUTH);
-        possibleOrientations.add(Orientation.TARGET_ON_WEST);
-        possibleOrientations.add(Orientation.TARGET_ON_EAST);
-        possibleOrientations.add(Orientation.TARGET_ON_NORTH);*/
+    }
+
+    public PurpleTarget() {
+        super();
+        this.orientation = Orientation.TARGET_ON_SOUTH;
+        this.isMandatoryTarget = false;
+        construct();
+    }
+
+    public PurpleTarget(boolean isMandatoryTarget) {
+        super();
+        this.orientation = Orientation.TARGET_ON_SOUTH;
+        this.isMandatoryTarget = isMandatoryTarget;
+        construct();
     }
 
     public String toIconString() {
-        switch(orientation) {
+        switch (orientation) {
             case TARGET_ON_WEST:
                 return this.getClass().getSimpleName().charAt(0) + " W/";
             case TARGET_ON_NORTH:
@@ -61,97 +77,52 @@ public class PurpleTarget extends Token {
 
     }
 
+    private Point findMidPoint(int x1, int y1, int x2, int y2) {
+        return new Point((x1 + x2) / 2, (y1 + y2) / 2);
+    }
+
     @Override
-    public void paintToken(Graphics g, int width, int height) {
-        g.setColor(Color.MAGENTA);
-        int xPoints[], yPoints[];
-        xPoints = new int[3];
-        yPoints = new int[3];
-        if(orientation == Orientation.TARGET_ON_WEST)
-        {
-            g.drawLine(0, height, width, 0);
-            xPoints[0] = 0;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = 0;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.TARGET_ON_EAST)
-        {
-            g.drawLine(0, height, width, 0);
-            xPoints[0] = width;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.TARGET_ON_SOUTH)
-        {
-            g.drawLine(0,0, width, height);
-            xPoints[0] = 0;
-            yPoints[0] = height;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = height;
-        }
-        else if(orientation == Orientation.TARGET_ON_NORTH)
-        {
-            g.drawLine(0,0, width, height);
-            xPoints[0] = 0;
-            yPoints[0] = 0;
-            xPoints[1] = width/2;
-            yPoints[1] = height/2;
-            xPoints[2] = width;
-            yPoints[2] = 0;
-        }
-
-        g.fillPolygon(xPoints, yPoints, 3);
-        if(isMandatoryTarget)
-        {
-            int triangleXPoints[], triangleYPoints[];
-            triangleXPoints = new int[3];
-            triangleYPoints = new int[3];
-            //draw a little red triangle if the target is mandatory target
-            g.setColor(Color.RED);
-            Point midPoint1 = findMidPoint(xPoints[0], yPoints[0], xPoints[2], yPoints[2]);
-            Point midPoint2 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[1], yPoints[1]);
-            Point midPoint3 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[0], yPoints[0]);
-            Point midPoint4 = findMidPoint(midPoint1.x, midPoint1.y, xPoints[2], yPoints[2]);
-            triangleXPoints[0] = midPoint3.x;
-            triangleYPoints[0] = midPoint3.y;
-            triangleXPoints[1] = midPoint4.x;
-            triangleYPoints[1] = midPoint4.y;
-            triangleXPoints[2] = midPoint2.x;
-            triangleYPoints[2] = midPoint2.y;
-            g.fillPolygon(triangleXPoints, triangleYPoints, 3);
-        }
+    public String getWaitingTokenImageName() {
+        if (isMandatoryTarget)
+            return this.getClass().getSimpleName() + "Mandatory_Random";
+        else
+            return this.getClass().getSimpleName() + "_Random";
     }
 
-    private Point findMidPoint(int x1, int y1, int x2, int y2)
+//    @Override
+//    public String getGrayedWaitingTokenImageName() {
+//        if (isMandatoryTarget)
+//            return "GrayMandatory_Random";
+//        else
+//            return "Gray_Random";
+//    }
+
+    @Override
+    public boolean isTokenTypeSameWith(Token t)
     {
-        return new Point((x1+x2)/2, (y1+y2)/2);
+        if(t == null)
+            return false;
+        return this.getClass().getName().equalsIgnoreCase(t.getClass().getName()) && this.isMandatoryTarget == ((PurpleTarget) t).isMandatoryTarget;
     }
 
-    protected void construct()
-    {
+    protected void construct() {
+        createImageName();
+        if (isMandatoryTarget)
+            imageName += "-M";
         //TODO: Mandatory Target will be added
-        switch(orientation)
-        {
+        switch (orientation) {
             case TARGET_ON_WEST: //Target on WEST, Stuckable on NORTH, Mirrors on EAST and SOUTH
                 sides.put(Direction.SOUTH, new SlashReflectorSide());
                 sides.put(Direction.NORTH, new StuckableSide());
                 sides.put(Direction.EAST, new SlashReflectorSide());
-                if(isMandatoryTarget)
+                if (isMandatoryTarget)
                     sides.put(Direction.WEST, new MandatoryTargetableSide());
                 else
                     sides.put(Direction.WEST, new TargetableSide());
                 break;
             case TARGET_ON_NORTH: //Target on NORTH
                 sides.put(Direction.SOUTH, new BackSlashReflectorSide());
-                if(isMandatoryTarget)
+                if (isMandatoryTarget)
                     sides.put(Direction.NORTH, new MandatoryTargetableSide());
                 else
                     sides.put(Direction.NORTH, new TargetableSide());
@@ -161,14 +132,14 @@ public class PurpleTarget extends Token {
             case TARGET_ON_EAST: //Target on EAST
                 sides.put(Direction.SOUTH, new StuckableSide());
                 sides.put(Direction.NORTH, new SlashReflectorSide());
-                if(isMandatoryTarget)
+                if (isMandatoryTarget)
                     sides.put(Direction.EAST, new MandatoryTargetableSide());
                 else
                     sides.put(Direction.EAST, new TargetableSide());
                 sides.put(Direction.WEST, new SlashReflectorSide());
                 break;
             case TARGET_ON_SOUTH: //Target on SOUTH
-                if(isMandatoryTarget)
+                if (isMandatoryTarget)
                     sides.put(Direction.SOUTH, new MandatoryTargetableSide());
                 else
                     sides.put(Direction.SOUTH, new TargetableSide());
@@ -181,5 +152,5 @@ public class PurpleTarget extends Token {
                 throw new IllegalArgumentException();
         }
     }
-	
+
 }
