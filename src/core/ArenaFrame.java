@@ -637,7 +637,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private void fillEmptyCell(int x, int y)
     {
-        boolean moveOn = true;
+        boolean moveOn = true, exit = false;
         //1.a. If waiting list has a token which has a class same with solToken, retrieve it
         if( retrieveTokenFromWaitingList(x, y)){
             moveOn = false;
@@ -648,8 +648,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         // location, then put Token into (x,y))
         if(moveOn){
             Token mapToken = null;
-            for (int i = 0; i < GameMap.getTokens().length; i++) {
-                for (int j = 0; j < GameMap.getTokens()[i].length; j++) {
+            for (int i = 0; i < GameMap.getTokens().length && !exit; i++) {
+                for (int j = 0; j < GameMap.getTokens()[i].length && !exit; j++) {
                     mapToken = GameMap.getTokenLocatedInXY(j, i);
                     //retrieve token from map where it is placed wrong (!mapToken.isTokenTypeSameWith(fileTokens[j][i])
                     if(mapToken != null &&
@@ -657,6 +657,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                             !mapToken.isTokenTypeSameWith(fileTokens[j][i])){
                         panels[j][i].cleanPanel(); //cleans panel and puts necessary token to waiting list
                         retrieveTokenFromWaitingList(x, y); //retrieve that token from waiting list
+                        exit = true;
                         break;
                     }
                 }
