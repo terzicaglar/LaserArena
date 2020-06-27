@@ -11,11 +11,10 @@ import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 
+//TODO: Create a new class Game and migrate game related methods from this class to Game class
 //TODO: make comprehensive explanations to all thrown Exceptions
 //TODO: infinite loop laser beam is given in bugs/infiniteLoopLaserBeam.png we should fix that
-//TODO: another bug is that for infinite laser beams / or something like that, we can hit same target with two different
-//  beams, therefore we should fix that, it can treat an unfinished level as finished
-//  (source: bugs/twoHitsOnSameTarget.png)
+
 class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private enum GameState {
@@ -613,27 +612,48 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                     //1. If map(x,y)(i.e., mapToken) is empty but solutionFile(x,y)(i.e., solToken) is not
                     if(GameMap.getTokenLocatedInXY(x,y) == null){
                         //1.a. If waiting list has a token which has a class same with solToken, retrieve it
-                        Token waitingToken;
-                        for(int i = 0; i < GameMap.getActiveWaitingTokens().size(); i++){
-                            waitingToken = GameMap.getActiveWaitingTokens().get(i);
-                            if(waitingToken.isTokenTypeSameWith(fileTokens[x][y])){
-                                map.addToken(fileTokens[x][y], new Point(x, y)); //hinted tokens cannot be moved, since
-                                // clickCount and prevToken in ArenaPanel malfunctions
-                                map.removeWaitingToken(waitingToken);
-                                exit = true;
-                                break;
-                            }
+                        if( retrieveTokenFromWaitingList(x, y)){
+                            exit = true;
                         }
-                        if(!exit){
-                            //1.b. Waiting list does not have a token which has a class same with solToken
-                            // (since exit == false), retrieve this token from map (firsts clean old location,
-                            // then put Token into (x,y))
 
+                        //1.b. Waiting list does not have a token which has same class with solToken
+                        // (since exit == false), retrieve this token from map (first delete it from its old
+                        // location, then put Token into (x,y))
+                        if(exit == false){
+                            Token mapToken = null;
+                            for (int i = 0; i < GameMap.getTokens().length; i++) {
+                                for (int j = 0; j < GameMap.getTokens()[i].length; j++) {
+                                    mapToken = GameMap.getTokenLocatedInXY(j, i);
+                                    //retrieve token from map where it is placed wrong (!mapToken.isTokenTypeSameWith(fileTokens[j][i])
+                                    if(mapToken != null &&
+                                            !mapToken.isLocationFixed() && mapToken.isTokenTypeSameWith(fileTokens[x][y]) &&
+                                            !mapToken.isTokenTypeSameWith(fileTokens[j][i])){
+                                        panels[j][i].cleanPanel(); //cleans panel and puts necessary token to waiting list
+                                        retrieveTokenFromWaitingList(x, y); //retrieve that token from waiting list
+                                        exit = true;
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    private boolean retrieveTokenFromWaitingList(int x, int y) {
+        Token waitingToken;
+        for(int i = 0; i < GameMap.getActiveWaitingTokens().size(); i++){
+            waitingToken = GameMap.getActiveWaitingTokens().get(i);
+            if(waitingToken.isTokenTypeSameWith(fileTokens[x][y])){
+                map.addToken(fileTokens[x][y], new Point(x, y)); //hinted tokens cannot be moved, since
+                // clickCount and prevToken in ArenaPanel malfunctions
+                map.removeWaitingToken(waitingToken);
+                return true;
+            }
+        }
+        return false;
     }
 
 
