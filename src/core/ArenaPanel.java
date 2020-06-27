@@ -32,6 +32,10 @@ class ArenaPanel extends JPanel implements MouseListener {
         this.arenaFrame = arenaFrame;
     }
 
+    public void setToken(Token t){
+        this.t = t;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -174,6 +178,18 @@ class ArenaPanel extends JPanel implements MouseListener {
 
     }
 
+    public void cleanPanel()
+    {
+        if (!t.isLocationFixed()) {
+            GameMap.removeTokenLocatedInXY(x, y);
+            GameMap.addWaitingToken(t);
+            prevToken = null;
+            t = null;
+            clickCount = 0;
+        }
+    }
+
+
     @Override
     public void mousePressed(MouseEvent e) {
         //Left click changes the orientation of token
@@ -184,14 +200,7 @@ class ArenaPanel extends JPanel implements MouseListener {
         }
         //Middle click deletes token
         else if (t != null && e.getButton() == MouseEvent.BUTTON2) {
-            if (!t.isLocationFixed()) {
-                GameMap.removeTokenLocatedInXY(x, y);
-                GameMap.addWaitingToken(t);
-                prevToken = null;
-                t = null;
-                clickCount = 0;
-            }
-
+            cleanPanel();
         }
         //Right click changes token
         else if (e.getButton() == MouseEvent.BUTTON3) {

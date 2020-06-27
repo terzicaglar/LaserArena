@@ -97,6 +97,13 @@ public class PurpleTarget extends Token {
 //            return "Gray_Random";
 //    }
 
+    @Override
+    public boolean isTokenTypeSameWith(Token t)
+    {
+        if(t == null)
+            return false;
+        return this.getClass().getName().equalsIgnoreCase(t.getClass().getName()) && this.isMandatoryTarget == ((PurpleTarget) t).isMandatoryTarget;
+    }
 
     protected void construct() {
         createImageName();

@@ -87,6 +87,27 @@ class ArenaTest {
         //System.out.println(Direction.SOUTH.ordinal());
     }
 
+    @Test
+    void CheckIfTokenTypesAreEqual() {
+        RedLaser r1 = new RedLaser(Orientation.GENERATOR_ON_EAST);
+        RedLaser r2 = new RedLaser(Orientation.GENERATOR_ON_SOUTH);
+        assertTrue(r1.isTokenTypeSameWith(r2));
+        GreenMirror g1 = new GreenMirror();
+        assertFalse(r1.isTokenTypeSameWith(g1));
+        PurpleTarget p1 = new PurpleTarget(Orientation.TARGET_ON_SOUTH, false, false,true);
+        PurpleTarget p2 = new PurpleTarget(Orientation.TARGET_ON_WEST, false, true,false);
+        assertTrue(p1.isTokenTypeSameWith(p2));
+        assertFalse(p1.isTokenTypeSameWith(g1));
+        PurpleTarget p3 = new PurpleTarget(Orientation.TARGET_ON_EAST, true, false,false);
+        PurpleTarget p4 = new PurpleTarget(Orientation.TARGET_ON_WEST, true, true,false);
+        assertTrue(p3.isTokenTypeSameWith(p4));
+        assertFalse(p3.isTokenTypeSameWith(p2));
+        GreenMirror g2 = new GreenMirror(Orientation.BACKSLASH_MIRROR);
+        GreenMirror g3 = new GreenMirror(Orientation.SLASH_MIRROR);
+        assertTrue(g1.isTokenTypeSameWith(g2));
+        assertTrue(g1.isTokenTypeSameWith(g3));
+    }
+
     /*
     @Test
     public void CreateLaserAndHitATokenUsingMoveUntilHitATokenOrOutOfBounds(){

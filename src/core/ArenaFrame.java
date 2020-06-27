@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 
+//TODO: Create a new class Game and migrate game related methods from this class to Game class
 //TODO: make comprehensive explanations to all thrown Exceptions
 //TODO: infinite loop laser beam is given in bugs/infiniteLoopLaserBeam.png we should fix that
 //TODO: another bug is that for infinite laser beams / or something like that, we can hit same target with two different
@@ -45,7 +46,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     private String currentFileName;
     private Token[][] fileTokens;
     private ArrayList<Token> fileWaitingList;
-    private int solutionNoOfTargets;
+    private int fileNoOfTargets;
     private GameState gameState;
 
     public ArenaFrame(String title) {
@@ -140,7 +141,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         //Icon icon = new ImageIcon("img/hint.png");
         //TODO: All buttons will have icons
         hintButton = new JButton("Hint");
-
+        hintButton.addActionListener(this);
         if(currentLevel <= FIRST_LEVEl)
             prevButton.setEnabled(false);
         else
@@ -173,8 +174,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         lowerPanel.add(nextButton);
         lowerPanel.add(lastButton);
         lowerPanel.add(solutionButton);
-        //TODO: hintButton will be added
-        //lowerPanel.add(hintButton);
+        lowerPanel.add(hintButton);
 
         lowerPanel.setLayout(new GridLayout(1, lowerPanel.getComponentCount()));
         this.add(lowerPanel);
@@ -279,7 +279,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                     } else if (rowCount == MAP_HEIGHT + 1) //noOfTargets
                     {
                         //map.setNoOfTargets(Integer.parseInt(shortName));
-                        solutionNoOfTargets = Integer.parseInt(shortName);
+                        fileNoOfTargets = Integer.parseInt(shortName);
                     }
                     colCount++;
                 }
@@ -305,25 +305,28 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         setCurrentFileNameAccToState();
         readMapFile(currentFileName);
 
-        for(int i = 0; i < fileTokens.length; i++)
+        createMap(fileTokens, fileWaitingList, fileNoOfTargets);
+    }
+
+    private void createMap(Token[][] inputTokens, ArrayList<Token> inputWaitingList, int inputNoOfTargets){
+        for(int i = 0; i < inputTokens.length; i++)
         {
-            for(int j = 0; j < fileTokens[i].length; j++)
+            for(int j = 0; j < inputTokens[i].length; j++)
             {
-                if(fileTokens[i][j] != null)
+                if(inputTokens[i][j] != null)
                 {
-                    map.addToken(fileTokens[i][j], new Point(i, j));
+                    map.addToken(inputTokens[i][j], new Point(i, j));
                 }
             }
         }
 
-        for(int i = 0; i < fileWaitingList.size(); i++)
-            map.addWaitingToken(fileWaitingList.get(i));
+        for(int i = 0; i < inputWaitingList.size(); i++)
+            map.addWaitingToken(inputWaitingList.get(i));
 
-        map.setNoOfTargets(solutionNoOfTargets);
+        map.setNoOfTargets(inputNoOfTargets);
 
         if (gameState == GameState.SOLUTION)
             GameMap.setAllWaitingTokensActiveness(false);
-
     }
 
     //TODO: All waiting tokens are !orientationFixed (all images in the waiting list are Question Marked), we can fix this later if needed. in the original game they are all Question Mark
@@ -564,10 +567,6 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             updateLastUnlockedLevelFile();
             hintButton.setEnabled(false);
         }
-        else
-        {
-            hintButton.setEnabled(true);
-        }
 
         if (currentLevel < getLastUnlockedLevel()) {
             nextButton.setEnabled(true);
@@ -603,8 +602,83 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private void getHint()
     {
-        //TODO: To be implemented
+        //0. read solution file and set fileTokens respectively
+        readMapFile(getSolutionFileName());
+        boolean exit = false;
+        for(int x = 0; x < fileTokens.length && !exit; x++) {
+            for(int y = 0; y < fileTokens[x].length && !exit; y++) {
+                if(fileTokens[x][y] != null){
+                    //1. If map(x,y)(i.e., mapToken) is empty but solutionFile(x,y)(i.e., solToken) is not
+                    if( GameMap.getTokenLocatedInXY(x,y) == null){
+                        fillEmptyCell(x,y); //Fill empty cell with correct token
+                        exit = true;
+                    }
+                    //2. map(x,y) and solutionFile(x,y) have different type of tokens.
+                    else if( !GameMap.getTokenLocatedInXY(x,y).isTokenTypeSameWith(fileTokens[x][y])){
+                        //2.a. Move token in map(x,y) to waiting list
+                        panels[x][y].cleanPanel(); //Cleans panel and puts necessary token to waiting list
+                        fillEmptyCell(x,y); //Fill empty cell with correct token
+                        exit = true;
+                    }
+                    //3. map(x,y) and solutionFile(x,y) have same type of tokens but different orientation
+                    else if(GameMap.getTokenLocatedInXY(x,y).isTokenTypeSameWith(fileTokens[x][y]) &&
+                            GameMap.getTokenLocatedInXY(x,y).getOrientation() != fileTokens[x][y].getOrientation()){
+                        GameMap.getTokenLocatedInXY(x,y).setOrientation(fileTokens[x][y].getOrientation());
+                        GameMap.getTokenLocatedInXY(x,y).setLocationFixed(true); //it can be removed, it is done
+                        // to be compatible with retrieveTokenFromWaitingList(), where added token cannot move
+                        GameMap.getTokenLocatedInXY(x,y).setOrientationFixed(true);
+                        exit = true;
+                    }
+
+                }
+            }
+        }
     }
+
+    private void fillEmptyCell(int x, int y)
+    {
+        boolean moveOn = true;
+        //1.a. If waiting list has a token which has a class same with solToken, retrieve it
+        if( retrieveTokenFromWaitingList(x, y)){
+            moveOn = false;
+        }
+
+        //1.b. Waiting list does not have a token which has same class with solToken
+        // (since exit == false), retrieve this token from map (first delete it from its old
+        // location, then put Token into (x,y))
+        if(moveOn){
+            Token mapToken = null;
+            for (int i = 0; i < GameMap.getTokens().length; i++) {
+                for (int j = 0; j < GameMap.getTokens()[i].length; j++) {
+                    mapToken = GameMap.getTokenLocatedInXY(j, i);
+                    //retrieve token from map where it is placed wrong (!mapToken.isTokenTypeSameWith(fileTokens[j][i])
+                    if(mapToken != null &&
+                            !mapToken.isLocationFixed() && mapToken.isTokenTypeSameWith(fileTokens[x][y]) &&
+                            !mapToken.isTokenTypeSameWith(fileTokens[j][i])){
+                        panels[j][i].cleanPanel(); //cleans panel and puts necessary token to waiting list
+                        retrieveTokenFromWaitingList(x, y); //retrieve that token from waiting list
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+
+    private boolean retrieveTokenFromWaitingList(int x, int y) {
+        Token waitingToken;
+        for(int i = 0; i < GameMap.getActiveWaitingTokens().size(); i++){
+            waitingToken = GameMap.getActiveWaitingTokens().get(i);
+            if(waitingToken.isTokenTypeSameWith(fileTokens[x][y])){
+                map.addToken(fileTokens[x][y], new Point(x, y)); //hinted tokens cannot be moved, since
+                // clickCount and prevToken in ArenaPanel malfunctions
+                map.removeWaitingToken(waitingToken);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -612,34 +686,41 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         {
             currentLevel++;
             gameState = GameState.GAME;
+            refreshAll();
         } else if (e.getSource() == prevButton) //previous level
         {
             currentLevel--;
             gameState = GameState.GAME;
+            refreshAll();
         } else if (e.getSource() == solutionButton) {
             if (gameState == GameState.GAME) {
                 gameState = GameState.SOLUTION;
             } else if (gameState == GameState.SOLUTION) {
                 gameState = GameState.GAME;
             }
+            refreshAll();
         } else if (e.getSource() == firstButton) {
             currentLevel = FIRST_LEVEl;
             gameState = GameState.GAME;
+            refreshAll();
         } else if (e.getSource() == lastButton) {
             currentLevel = getLastUnlockedLevel();
             if (currentLevel >= MAX_LEVEL)
                 currentLevel = MAX_LEVEL;
             gameState = GameState.GAME;
+            refreshAll();
         } else if(e.getSource() == gameRules){
             openFileInDesktop("docs/help.pdf");
         } else if( e.getSource() == hintButton)
         {
-
+            //TODO: hintButton setEnabled is not working properly
+            getHint();
+            createAllPanels();
+            refresh();
         }
         else{
             throw new IllegalArgumentException();
         }
-        refreshAll();
     }
 
 
