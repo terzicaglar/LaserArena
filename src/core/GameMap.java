@@ -1,9 +1,6 @@
 package core;
 
-import tokens.PurpleTarget;
-import tokens.RedLaser;
-import tokens.Token;
-import tokens.WhiteObstacle;
+import tokens.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ import java.util.ArrayList;
 public class GameMap {
     public static final String IMG_FOLDER = "img/", IMG_EXTENSION = ".png";
     public static final int MAX_BEAMS = 10;
-    private static final int MAX_LOOP = 1000;
+    private static final int MAX_LOOP = 1000; //TODO: Will be fixed
     private static int width, height;
 
     public void setNoOfTargets(int noOfTargets) {
@@ -304,7 +301,26 @@ public class GameMap {
     }
 
     public static void addLaserBeam(LaserBeam l) {
-        beams.add(l);
+        //checks if infinite laser beams are trying to be created
+        if(beams.size() < getNoOfGreenMirrorsOnMap() + 1)
+            beams.add(l);
+        else{
+            //prevents infinite laser beam creation
+            //TODO: May be pop up warning window can be shown
+            //TODO: all cases are not tested yet
+        }
+    }
+
+    public static int getNoOfGreenMirrorsOnMap()
+    {
+        int count = 0;
+        for(int i = 0; i < tokens.length; i++){
+            for (int j = 0; j < tokens[i].length; j++) {
+                if(tokens[i][j] instanceof GreenMirror)
+                    count ++;
+            }
+        }
+        return count;
     }
 
     public void print() {
