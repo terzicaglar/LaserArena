@@ -32,6 +32,10 @@ public abstract class Token {
         return orientation;
     }
 
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+        construct();
+    }
 
     Orientation orientation;
 
@@ -68,6 +72,8 @@ public abstract class Token {
 
     public boolean isTokenTypeSameWith(Token t)
     {
+        if(t == null)
+            return false;
         return this.getClass().getName().equalsIgnoreCase(t.getClass().getName());
 
     }

@@ -100,6 +100,8 @@ public class PurpleTarget extends Token {
     @Override
     public boolean isTokenTypeSameWith(Token t)
     {
+        if(t == null)
+            return false;
         return this.getClass().getName().equalsIgnoreCase(t.getClass().getName()) && this.isMandatoryTarget == ((PurpleTarget) t).isMandatoryTarget;
     }
 

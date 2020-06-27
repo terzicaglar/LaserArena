@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 
 //TODO: Static methods needs to be resolved, either they  will be deleted or GameMap object in Arenaframe will be deleted
+// this class may be Singleton
 
 public class GameMap {
     public static final String IMG_FOLDER = "img/", IMG_EXTENSION = ".png";

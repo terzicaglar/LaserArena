@@ -564,10 +564,6 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             updateLastUnlockedLevelFile();
             hintButton.setEnabled(false);
         }
-        else
-        {
-            hintButton.setEnabled(true);
-        }
 
         if (currentLevel < getLastUnlockedLevel()) {
             nextButton.setEnabled(true);
@@ -603,43 +599,67 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private void getHint()
     {
-        //0. read solution file and set fileTokens acc. to
+        //0. read solution file and set fileTokens respectively
         readMapFile(getSolutionFileName());
         boolean exit = false;
         for(int x = 0; x < fileTokens.length && !exit; x++) {
             for(int y = 0; y < fileTokens[x].length && !exit; y++) {
                 if(fileTokens[x][y] != null){
                     //1. If map(x,y)(i.e., mapToken) is empty but solutionFile(x,y)(i.e., solToken) is not
-                    if(GameMap.getTokenLocatedInXY(x,y) == null){
-                        //1.a. If waiting list has a token which has a class same with solToken, retrieve it
-                        if( retrieveTokenFromWaitingList(x, y)){
-                            exit = true;
-                        }
+                    if( GameMap.getTokenLocatedInXY(x,y) == null){
+                        fillEmptyCell(x,y); //Fill empty cell with correct token
+                        exit = true;
+                    }
+                    //2. map(x,y) and solutionFile(x,y) have different type of tokens.
+                    else if( !GameMap.getTokenLocatedInXY(x,y).isTokenTypeSameWith(fileTokens[x][y])){
+                        //2.a. Move token in map(x,y) to waiting list
+                        panels[x][y].cleanPanel(); //Cleans panel and puts necessary token to waiting list
+                        fillEmptyCell(x,y); //Fill empty cell with correct token
+                        exit = true;
+                    }
+                    //3. map(x,y) and solutionFile(x,y) have same type of tokens but different orientation
+                    else if(GameMap.getTokenLocatedInXY(x,y).isTokenTypeSameWith(fileTokens[x][y]) &&
+                            GameMap.getTokenLocatedInXY(x,y).getOrientation() != fileTokens[x][y].getOrientation()){
+                        GameMap.getTokenLocatedInXY(x,y).setOrientation(fileTokens[x][y].getOrientation());
+                        GameMap.getTokenLocatedInXY(x,y).setLocationFixed(true); //it can be removed, it is done
+                        // to be compatible with retrieveTokenFromWaitingList(), where added token cannot move
+                        GameMap.getTokenLocatedInXY(x,y).setOrientationFixed(true);
+                        exit = true;
+                    }
 
-                        //1.b. Waiting list does not have a token which has same class with solToken
-                        // (since exit == false), retrieve this token from map (first delete it from its old
-                        // location, then put Token into (x,y))
-                        if(exit == false){
-                            Token mapToken = null;
-                            for (int i = 0; i < GameMap.getTokens().length; i++) {
-                                for (int j = 0; j < GameMap.getTokens()[i].length; j++) {
-                                    mapToken = GameMap.getTokenLocatedInXY(j, i);
-                                    //retrieve token from map where it is placed wrong (!mapToken.isTokenTypeSameWith(fileTokens[j][i])
-                                    if(mapToken != null &&
-                                            !mapToken.isLocationFixed() && mapToken.isTokenTypeSameWith(fileTokens[x][y]) &&
-                                            !mapToken.isTokenTypeSameWith(fileTokens[j][i])){
-                                        panels[j][i].cleanPanel(); //cleans panel and puts necessary token to waiting list
-                                        retrieveTokenFromWaitingList(x, y); //retrieve that token from waiting list
-                                        exit = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
+                }
+            }
+        }
+    }
+
+    private void fillEmptyCell(int x, int y)
+    {
+        boolean moveOn = true;
+        //1.a. If waiting list has a token which has a class same with solToken, retrieve it
+        if( retrieveTokenFromWaitingList(x, y)){
+            moveOn = false;
+        }
+
+        //1.b. Waiting list does not have a token which has same class with solToken
+        // (since exit == false), retrieve this token from map (first delete it from its old
+        // location, then put Token into (x,y))
+        if(moveOn){
+            Token mapToken = null;
+            for (int i = 0; i < GameMap.getTokens().length; i++) {
+                for (int j = 0; j < GameMap.getTokens()[i].length; j++) {
+                    mapToken = GameMap.getTokenLocatedInXY(j, i);
+                    //retrieve token from map where it is placed wrong (!mapToken.isTokenTypeSameWith(fileTokens[j][i])
+                    if(mapToken != null &&
+                            !mapToken.isLocationFixed() && mapToken.isTokenTypeSameWith(fileTokens[x][y]) &&
+                            !mapToken.isTokenTypeSameWith(fileTokens[j][i])){
+                        panels[j][i].cleanPanel(); //cleans panel and puts necessary token to waiting list
+                        retrieveTokenFromWaitingList(x, y); //retrieve that token from waiting list
+                        break;
                     }
                 }
             }
         }
+
     }
 
     private boolean retrieveTokenFromWaitingList(int x, int y) {
