@@ -663,7 +663,10 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         setCurrentFileNameAccToState();
         createMapFromFile();
         createAllPanels();
-        refresh();
+        //refresh();
+        this.repaint();
+        this.setVisible(true);
+
     }
 
     @Override
