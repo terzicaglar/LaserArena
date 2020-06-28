@@ -12,7 +12,7 @@ public class BackSlashReflectorTransparentSide extends Side implements Reflector
     @Override
     public Direction action(LaserBeam laserBeam) {
         //New LaserBeam is created in the same location and direction
-        GameMap.addLaserBeam(new LaserBeam(laserBeam.getLocation(), pass(laserBeam.getDirection())));
+        GameMap.getInstance().addLaserBeam(new LaserBeam(laserBeam.getLocation(), pass(laserBeam.getDirection())));
         //Return the current laserBeam's new direction
         return reflect(laserBeam.getDirection(), Orientation.BACKSLASH_MIRROR);
     }

@@ -23,12 +23,14 @@ class ArenaPanel extends JPanel implements MouseListener {
     private Token t;
     private Token prevToken;
     private ArenaFrame arenaFrame;
+    private GameMap map;
 
 
     public ArenaPanel(ArenaFrame arenaFrame, int x, int y) {
         super();
         clickCount = 0;
-        t = GameMap.getTokenLocatedInXY(x, y);
+        map = GameMap.getInstance();
+        t = map.getTokenLocatedInXY(x, y);
         this.x = x;
         this.y = y;
         this.addMouseListener(this);
@@ -42,7 +44,7 @@ class ArenaPanel extends JPanel implements MouseListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //System.out.println("IsAllTokensPassed: " + GameMap.isAllTokensPassed());
+        //System.out.println("IsAllTokensPassed: " + map.isAllTokensPassed());
 
         int midWidth = getWidth() / 2;
         int midHeight = getHeight() / 2;
@@ -78,7 +80,7 @@ class ArenaPanel extends JPanel implements MouseListener {
         Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         g2d.setStroke(dashed);
 
-        for (LaserBeam beam : GameMap.getBeams()) {
+        for (LaserBeam beam : map.getBeams()) {
             //TODO: Refactor code below
             //Draw LaserBeam
             for (PointWithDirection pwd : beam.getPathHistory()) {
@@ -180,8 +182,8 @@ class ArenaPanel extends JPanel implements MouseListener {
     public void cleanPanel()
     {
         if (!t.isLocationFixed()) {
-            GameMap.removeTokenLocatedInXY(x, y);
-            GameMap.addWaitingToken(t);
+            map.removeTokenLocatedInXY(x, y);
+            map.addWaitingToken(t);
             prevToken = null;
             t = null;
             clickCount = 0;
@@ -205,20 +207,20 @@ class ArenaPanel extends JPanel implements MouseListener {
         else if (e.getButton() == MouseEvent.BUTTON3) {
             if (t == null || !t.isLocationFixed()) {
                 Token newToken = null;
-                int activeTokensSize = GameMap.getActiveTokensCount();
+                int activeTokensSize = map.getActiveTokensCount();
                 //System.out.println("activeTokensSize: " + activeTokensSize);
 
                 if (activeTokensSize > 0) { //more than one item on waiting list
                     if (prevToken != null)
-                        GameMap.addWaitingToken(prevToken);
+                        map.addWaitingToken(prevToken);
 
-                    newToken = GameMap.getNthActiveToken(clickCount);
+                    newToken = map.getNthActiveToken(clickCount);
 
                     if (newToken != null) {
-                        GameMap.addToken(newToken, new Point(x, y));
-                        GameMap.removeWaitingToken(newToken);
+                        map.addToken(newToken, new Point(x, y));
+                        map.removeWaitingToken(newToken);
                     } else {
-                        GameMap.removeTokenLocatedInXY(x, y);
+                        map.removeTokenLocatedInXY(x, y);
                     }
 
                     prevToken = newToken;
@@ -227,8 +229,8 @@ class ArenaPanel extends JPanel implements MouseListener {
                 }
             }
         }
-        //System.out.println("\twaiting tokens: " + GameMap.getWaitingTokens());
-        //System.out.println("\tis tokens active: " + GameMap.getIsWaitingTokenActive());
+        //System.out.println("\twaiting tokens: " + map.getWaitingTokens());
+        //System.out.println("\tis tokens active: " + map.getIsWaitingTokenActive());
         repaint();
         arenaFrame.refresh();
     }

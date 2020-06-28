@@ -20,23 +20,35 @@ public class GameMap {
         this.noOfTargets = noOfTargets;
     }
 
-    public static int getNoOfTargets() {
+    public int getNoOfTargets() {
         return noOfTargets;
     }
 
-    private static int noOfTargets = 1;
-    private static Token[][] tokens;
-    private static ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
+    private int noOfTargets = -1;
+    private Token[][] tokens;
+    private ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
 
-    public static ArrayList<Boolean> getIsWaitingTokenActive() {
+    public ArrayList<Boolean> getIsWaitingTokenActive() {
         return isWaitingTokenActive;
     }
 
-    private static ArrayList<Boolean> isWaitingTokenActive; //true if not added to the map, false if it is on the map
-    private static ArrayList<Token> randomTargetsHit, mandatoryTargetsHit;
-    private static ArrayList<LaserBeam> beams;
+    private ArrayList<Boolean> isWaitingTokenActive; //true if not added to the map, false if it is on the map
+    private ArrayList<Token> randomTargetsHit, mandatoryTargetsHit;
+    private ArrayList<LaserBeam> beams;
 
-    public GameMap(int width, int height) {
+    private static GameMap instance = null;
+
+    private GameMap(){}
+
+    public static GameMap getInstance() {
+        if(instance == null){
+            instance = new GameMap();
+        }
+        return instance;
+    }
+
+    public void initiateMap(int width, int height){
+        noOfTargets = -1;
         waitingTokens = new ArrayList<>();
         randomTargetsHit = new ArrayList<>();
         mandatoryTargetsHit = new ArrayList<>();
@@ -48,7 +60,7 @@ public class GameMap {
     }
 
 
-    public static boolean isAllTokensPassed() {
+    public boolean isAllTokensPassed() {
         //TODO: YellowBridge pass also includes Stuck laser Beam, should we fix that?
         //WhiteObstacle does not need to be passed
         for (int i = 0; i < tokens.length; i++) {
@@ -63,24 +75,24 @@ public class GameMap {
         return true;
     }
 
-    public static ArrayList<Token> getWaitingTokens() {
+    public ArrayList<Token> getWaitingTokens() {
         return waitingTokens;
     }
 
-    public static Token getTokenLocatedInXY(int x, int y) {
+    public Token getTokenLocatedInXY(int x, int y) {
         return tokens[x][y];
     }
 
-    private static Token getTokenLocatedInPoint(Point p) {
+    private Token getTokenLocatedInPoint(Point p) {
         return tokens[(int) p.getX()][(int) p.getY()];
     }
 
-    public static void removeTokenLocatedInXY(int x, int y) {
+    public void removeTokenLocatedInXY(int x, int y) {
         tokens[x][y] = null;
     }
 
 
-    public static boolean addToken(Token token, Point point) {
+    public boolean addToken(Token token, Point point) {
         if (point.getY() < height && point.getY() >= 0
                 && point.getX() < width && point.getX() >= 0) {
             tokens[(int) point.getX()][(int) point.getY()] = token;
@@ -91,7 +103,7 @@ public class GameMap {
             return false;
     }
 
-    public static void addWaitingToken(Token token) {
+    public void addWaitingToken(Token token) {
         int loc = waitingTokens.indexOf(token);
         if (loc == -1) //new Token
         {
@@ -103,7 +115,7 @@ public class GameMap {
         }
     }
 
-    public static boolean isTokenActive(Token t) {
+    public boolean isTokenActive(Token t) {
         int index = waitingTokens.indexOf(t);
         if (index >= 0) {
             return isWaitingTokenActive.get(index);
@@ -112,7 +124,7 @@ public class GameMap {
         }
     }
 
-    public static void removeWaitingToken(Token token) {
+    public void removeWaitingToken(Token token) {
         int loc = waitingTokens.indexOf(token);
         if (loc == -1) {
             throw new IllegalArgumentException();
@@ -121,11 +133,11 @@ public class GameMap {
         }
     }
 
-    public static Token getNthActiveToken(int n) {
+    public Token getNthActiveToken(int n) {
         return waitingTokens.get(getLocationOfNthActiveToken(n));
     }
 
-    public static int getActiveTokensCount() {
+    public int getActiveTokensCount() {
         int activeTokensCount = 0;
 
         for (boolean bool : isWaitingTokenActive) {
@@ -136,7 +148,7 @@ public class GameMap {
         return activeTokensCount;
     }
 
-    public static int getLocationOfNthActiveToken(int n) {
+    public int getLocationOfNthActiveToken(int n) {
         int index = -1;
 
         n = n % getActiveTokensCount();
@@ -153,7 +165,7 @@ public class GameMap {
 
     }
 
-    public static ArrayList<Token> getActiveWaitingTokens()
+    public ArrayList<Token> getActiveWaitingTokens()
     {
         ArrayList<Token> actives = new ArrayList<>();
         for(int i = 0; i < waitingTokens.size(); i++){
@@ -203,7 +215,7 @@ public class GameMap {
         //System.out.println();
     }
 
-    private static int getWantedMandatoryTargets() {
+    private int getWantedMandatoryTargets() {
         int noOfWantedMandatoryTargets = 0;
         for (Token[] token_arr : tokens) {
             for (Token t : token_arr) {
@@ -216,17 +228,17 @@ public class GameMap {
     }
 
     //TODO:This method is called 4-5 times when a new token is added to the map, fix it if needed
-    public static int getNoOfRandomTargetsHit() {
+    public int getNoOfRandomTargetsHit() {
         randomTargetsHit = new ArrayList<>();
         return getTargetsHit(Direction.TARGET_HIT, randomTargetsHit);
     }
 
-    public static int getNoOfMandatoryTargetsHit() {
+    public int getNoOfMandatoryTargetsHit() {
         mandatoryTargetsHit = new ArrayList<>();
         return getTargetsHit(Direction.MANDATORY_TARGET_HIT, mandatoryTargetsHit);
     }
 
-    public static int getTargetsHit(Direction direction, ArrayList list)
+    public int getTargetsHit(Direction direction, ArrayList list)
     {
         Token hitToken;
         for (LaserBeam beam : beams) {
@@ -239,13 +251,13 @@ public class GameMap {
         return list.size();
     }
 
-    public static void setAllWaitingTokensActiveness(boolean isActive) {
+    public void setAllWaitingTokensActiveness(boolean isActive) {
         for (int i = 0; i < isWaitingTokenActive.size(); i++)
             isWaitingTokenActive.set(i, isActive);
     }
 
     //checksIfAllWantedTargetsHitAndAllTokensArePassed
-    public static boolean isLevelFinished() {
+    public boolean isLevelFinished() {
         //TODO: When mouse clicked this method is called twice, it should be once
         if (getActiveTokensCount() > 0)
             return false;
@@ -280,23 +292,23 @@ public class GameMap {
         this.height = height;
     }
 
-    public static ArrayList<LaserBeam> getBeams() {
+    public ArrayList<LaserBeam> getBeams() {
         return beams;
     }
 
-    public static void setBeams(ArrayList<LaserBeam> beams) {
-        GameMap.beams = beams;
+    public void setBeams(ArrayList<LaserBeam> beams) {
+        this.beams = beams;
     }
 
-    public static Token[][] getTokens() {
+    public Token[][] getTokens() {
         return tokens;
     }
 
-    public static void setTokens(Token[][] tokens) {
-        GameMap.tokens = tokens;
+    public void setTokens(Token[][] tokens) {
+        this.tokens = tokens;
     }
 
-    public static void addLaserBeam(LaserBeam l) {
+    public void addLaserBeam(LaserBeam l) {
         //checks if infinite laser beams are trying to be created
         if(beams.size() < getNoOfGreenMirrorsOnMap() + 1)
             beams.add(l);
@@ -306,7 +318,7 @@ public class GameMap {
         }
     }
 
-    public static int getNoOfGreenMirrorsOnMap()
+    public int getNoOfGreenMirrorsOnMap()
     {
         int count = 0;
         for(int i = 0; i < tokens.length; i++){

@@ -22,7 +22,8 @@ class ArenaTest {
     @BeforeEach
     void initEach() {
         beam = new LaserBeam(new Point(2, 1), Direction.EAST);
-        map = new GameMap(5, 5);
+        map = GameMap.getInstance();
+        map.initiateMap(5,5);
     }
 
     @Test
@@ -71,13 +72,13 @@ class ArenaTest {
         LaserBeam beam = new LaserBeam(new Point(1, 1), Direction.EAST);
 
         beam.move();
-        assertTrue(GameMap.getTokenLocatedInXY(2, 1) == null);
+        assertTrue(map.getTokenLocatedInXY(2, 1) == null);
         assertTrue(beam.getLocation().getX() == 2 && beam.getLocation().getY() == 1);
         beam.move();
         assertTrue(map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST), new Point(3, 1))); //"/" Mirror
 
-        assertFalse(GameMap.getTokenLocatedInXY(3, 1) == null);
-        Token t = GameMap.getTokenLocatedInXY(3, 1);
+        assertFalse(map.getTokenLocatedInXY(3, 1) == null);
+        Token t = map.getTokenLocatedInXY(3, 1);
         //assertTrue(t instanceof YellowBridge);
         beam.setDirection(t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
         //beam.move();

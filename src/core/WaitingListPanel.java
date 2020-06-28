@@ -35,16 +35,16 @@ class WaitingListPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int noOfTargetsDisplayed = noOfTargets - (GameMap.getNoOfRandomTargetsHit() + GameMap.getNoOfMandatoryTargetsHit());
+        int noOfTargetsDisplayed = noOfTargets - (GameMap.getInstance().getNoOfRandomTargetsHit() + GameMap.getInstance().getNoOfMandatoryTargetsHit());
         if (noOfTargetsDisplayed < 0)
             noOfTargetsDisplayed = 0;
         String imgName = "";
         if (t != null) {
-            if (GameMap.isTokenActive(t))
+            if (GameMap.getInstance().isTokenActive(t))
                 imgName = t.getWaitingTokenImageName();
             else
                 imgName = t.getGrayedWaitingTokenImageName();
-        } else if (noOfTargetsDisplayed == 0 && GameMap.isLevelFinished()) {
+        } else if (noOfTargetsDisplayed == 0 && GameMap.getInstance().isLevelFinished()) {
             imgName = "0_green";
         } else if (noOfTargetsDisplayed >= 0) {
             imgName = "" + noOfTargetsDisplayed;

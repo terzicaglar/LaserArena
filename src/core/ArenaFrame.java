@@ -90,23 +90,23 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     private void createUpperPanel() {
         upperPanel = new JPanel();
         int panelLength = 0;
-        waitingTokenPanels = new WaitingListPanel[GameMap.getWaitingTokens().size() + 1]; //plus one for noOfTargets Panel
+        waitingTokenPanels = new WaitingListPanel[map.getWaitingTokens().size() + 1]; //plus one for noOfTargets Panel
         if (waitingTokenPanels.length < MAP_WIDTH)
             panelLength = MAP_WIDTH;
         else
             panelLength = waitingTokenPanels.length;
         for (int i = 0; i < panelLength; i++) {
-            if (i < GameMap.getWaitingTokens().size()) //for waiting tokens
+            if (i < map.getWaitingTokens().size()) //for waiting tokens
             {
-                waitingTokenPanels[i] = new WaitingListPanel(GameMap.getWaitingTokens().get(i));
+                waitingTokenPanels[i] = new WaitingListPanel(map.getWaitingTokens().get(i));
                 upperPanel.add(waitingTokenPanels[i]);
             } else if (i == panelLength - 1)//for noOfTargets
             {
                 if (map.getNoOfTargets() > 0 && map.getNoOfTargets() <= MAX_WAITING_TOKENS)
-                    waitingTokenPanels[GameMap.getWaitingTokens().size()] = new WaitingListPanel(map.getNoOfTargets());
+                    waitingTokenPanels[map.getWaitingTokens().size()] = new WaitingListPanel(map.getNoOfTargets());
                 else
                     throw new IllegalArgumentException("Number of targets must be between 1 and " + MAX_WAITING_TOKENS);
-                upperPanel.add(waitingTokenPanels[GameMap.getWaitingTokens().size()]);
+                upperPanel.add(waitingTokenPanels[map.getWaitingTokens().size()]);
             } else //empty panel
             {
                 upperPanel.add(new JPanel());
@@ -295,8 +295,9 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     }
 
     private void createMapFromFile() {
-        //GameMap.refresh();
-        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
+        //map.refresh();
+        map = GameMap.getInstance();
+        map.initiateMap(MAP_WIDTH, MAP_HEIGHT);
 
         //String fileName = MAP_LEVEL_PATH + currentLevel + MAP_FILE_EXTENSION;
         setCurrentFileNameAccToState();
@@ -324,7 +325,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         map.setNoOfTargets(inputNoOfTargets);
 
         if (gameState == GameState.SOLUTION)
-            GameMap.setAllWaitingTokensActiveness(false);
+            map.setAllWaitingTokensActiveness(false);
     }
 
     //TODO: This method can be moved to class Token (or its subclasses)
@@ -403,7 +404,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                 for (int i = 0; i < MAP_HEIGHT; i++) {
                     line = "";
                     for (int j = 0; j < MAP_WIDTH; j++) {
-                        t = GameMap.getTokenLocatedInXY(j, i);
+                        t = map.getTokenLocatedInXY(j, i);
                         if (t != null) {
                             line += getShortNameFromToken(t);
                         }
@@ -418,15 +419,15 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
                 //TODO: Tokens in waiting list are written with orientation (e.g., pm-w), if needed it can be converted
                 //  to simple form by deleting everything after '-'
                 line = "";
-                for (int i = 0; i < GameMap.getWaitingTokens().size(); i++) {
-                    line += getShortNameFromToken(GameMap.getWaitingTokens().get(i));
-                    if (i != GameMap.getWaitingTokens().size() - 1)
+                for (int i = 0; i < map.getWaitingTokens().size(); i++) {
+                    line += getShortNameFromToken(map.getWaitingTokens().get(i));
+                    if (i != map.getWaitingTokens().size() - 1)
                         line += ",";
                     else
                         line += "\n";
                 }
                 bw.write(line);
-                line = GameMap.getNoOfTargets() + "\n";
+                line = map.getNoOfTargets() + "\n";
                 bw.write(line);
 
                 bw.close();
@@ -529,24 +530,24 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             for(int y = 0; y < fileTokens[x].length && !exit; y++) {
                 if(fileTokens[x][y] != null){
                     //1. If map(x,y)(i.e., mapToken) is empty but solutionFile(x,y)(i.e., solToken) is not
-                    if( GameMap.getTokenLocatedInXY(x,y) == null){
+                    if( map.getTokenLocatedInXY(x,y) == null){
                         fillEmptyCell(x,y); //Fill empty cell with correct token
                         exit = true;
                     }
                     //2. map(x,y) and solutionFile(x,y) have different type of tokens.
-                    else if( !GameMap.getTokenLocatedInXY(x,y).isTokenTypeSameWith(fileTokens[x][y])){
+                    else if( !map.getTokenLocatedInXY(x,y).isTokenTypeSameWith(fileTokens[x][y])){
                         //2.a. Move token in map(x,y) to waiting list
                         panels[x][y].cleanPanel(); //Cleans panel and puts necessary token to waiting list
                         fillEmptyCell(x,y); //Fill empty cell with correct token
                         exit = true;
                     }
                     //3. map(x,y) and solutionFile(x,y) have same type of tokens but different orientation
-                    else if(GameMap.getTokenLocatedInXY(x,y).isTokenTypeSameWith(fileTokens[x][y]) &&
-                            GameMap.getTokenLocatedInXY(x,y).getOrientation() != fileTokens[x][y].getOrientation()){
-                        GameMap.getTokenLocatedInXY(x,y).setOrientation(fileTokens[x][y].getOrientation());
-                        GameMap.getTokenLocatedInXY(x,y).setLocationFixed(true); //it can be removed, it is done
+                    else if(map.getTokenLocatedInXY(x,y).isTokenTypeSameWith(fileTokens[x][y]) &&
+                            map.getTokenLocatedInXY(x,y).getOrientation() != fileTokens[x][y].getOrientation()){
+                        map.getTokenLocatedInXY(x,y).setOrientation(fileTokens[x][y].getOrientation());
+                        map.getTokenLocatedInXY(x,y).setLocationFixed(true); //it can be removed, it is done
                         // to be compatible with retrieveTokenFromWaitingList(), where added token cannot move
-                        GameMap.getTokenLocatedInXY(x,y).setOrientationFixed(true);
+                        map.getTokenLocatedInXY(x,y).setOrientationFixed(true);
                         exit = true;
                     }
 
@@ -568,9 +569,9 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         // location, then put Token into (x,y))
         if(moveOn){
             Token mapToken = null;
-            for (int i = 0; i < GameMap.getTokens().length && !exit; i++) {
-                for (int j = 0; j < GameMap.getTokens()[i].length && !exit; j++) {
-                    mapToken = GameMap.getTokenLocatedInXY(j, i);
+            for (int i = 0; i < map.getTokens().length && !exit; i++) {
+                for (int j = 0; j < map.getTokens()[i].length && !exit; j++) {
+                    mapToken = map.getTokenLocatedInXY(j, i);
                     //retrieve token from map where it is placed wrong (!mapToken.isTokenTypeSameWith(fileTokens[j][i])
                     if(mapToken != null &&
                             !mapToken.isLocationFixed() && mapToken.isTokenTypeSameWith(fileTokens[x][y]) &&
@@ -588,8 +589,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private boolean retrieveTokenFromWaitingList(int x, int y) {
         Token waitingToken;
-        for(int i = 0; i < GameMap.getActiveWaitingTokens().size(); i++){
-            waitingToken = GameMap.getActiveWaitingTokens().get(i);
+        for(int i = 0; i < map.getActiveWaitingTokens().size(); i++){
+            waitingToken = map.getActiveWaitingTokens().get(i);
             if(waitingToken.isTokenTypeSameWith(fileTokens[x][y])){
                 map.addToken(fileTokens[x][y], new Point(x, y)); //hinted tokens cannot be moved, since
                 // clickCount and prevToken in ArenaPanel malfunctions
