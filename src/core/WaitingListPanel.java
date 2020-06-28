@@ -9,6 +9,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static core.Constants.IMG_EXTENSION;
+import static core.Constants.IMG_FOLDER;
+
 //TODO: to be deleted if not used
 class WaitingListPanel extends JPanel {
     private Token t;
@@ -51,7 +54,7 @@ class WaitingListPanel extends JPanel {
 
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(GameMap.IMG_FOLDER + imgName + GameMap.IMG_EXTENSION));
+            img = ImageIO.read(new File(IMG_FOLDER + imgName + IMG_EXTENSION));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -11,6 +11,8 @@ import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 
+import static core.Constants.*;
+
 //TODO: Create a new class Game and migrate game related methods from this class to Game class
 //TODO: make comprehensive explanations to all thrown Exceptions
 
@@ -25,10 +27,8 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
             P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
             PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
-    private final int MAX_WAITING_TOKENS = 5, MAX_LEVEL = 71, FIRST_LEVEl = 1,
-            MAP_WIDTH = 5, MAP_HEIGHT = 5;
-    private final String MAP_FILE_EXTENSION = ".csv", MAP_LEVEL_PATH = "levels/",
-            SOLUTIONS_FOLDER = "solutions/", LAST_LEVEL_FILE = "LastUnlockedLevel.txt";
+
+
 
     private JMenuBar menuBar;
     private JMenu helpMenu;

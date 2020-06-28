@@ -13,9 +13,7 @@ import java.util.ArrayList;
 // this class may be Singleton
 
 public class GameMap {
-    public static final String IMG_FOLDER = "img/", IMG_EXTENSION = ".png";
-    public static final int MAX_BEAMS = 10;
-    private static final int MAX_LOOP = 1000; //TODO: Will be fixed
+
     private static int width, height;
 
     public void setNoOfTargets(int noOfTargets) {
@@ -43,7 +41,7 @@ public class GameMap {
         randomTargetsHit = new ArrayList<>();
         mandatoryTargetsHit = new ArrayList<>();
         isWaitingTokenActive = new ArrayList<>();
-        beams = new ArrayList<>(MAX_BEAMS);
+        beams = new ArrayList<>();
         this.setWidth(width);
         this.setHeight(height);
         tokens = new Token[width][height];
@@ -186,7 +184,7 @@ public class GameMap {
         for (int k = 0; k < beams.size(); k++) {
             beam = beams.get(k);
             i = 0;
-            while (beam.getDirection().isMovable() && i < MAX_LOOP) {
+            while (beam.getDirection().isMovable()) {
                 beam.move();
                 if (isOutOfBounds(beam.getLocation())) {
                     beam.setDirection(Direction.OUT_OF_BOUNDS);

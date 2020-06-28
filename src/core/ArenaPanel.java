@@ -14,6 +14,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static core.Constants.IMG_EXTENSION;
+import static core.Constants.IMG_FOLDER;
+
 class ArenaPanel extends JPanel implements MouseListener {
     private int x;
     private int y, clickCount;
@@ -57,7 +60,7 @@ class ArenaPanel extends JPanel implements MouseListener {
 
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(GameMap.IMG_FOLDER + imgName + GameMap.IMG_EXTENSION));
+            img = ImageIO.read(new File(IMG_FOLDER + imgName + IMG_EXTENSION));
         } catch (IOException e) {
             e.printStackTrace();
         }
