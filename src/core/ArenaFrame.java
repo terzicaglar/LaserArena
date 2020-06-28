@@ -13,10 +13,7 @@ import java.util.ArrayList;
 
 //TODO: Create a new class Game and migrate game related methods from this class to Game class
 //TODO: make comprehensive explanations to all thrown Exceptions
-//TODO: infinite loop laser beam is given in bugs/infiniteLoopLaserBeam.png we should fix that
-//TODO: another bug is that for infinite laser beams / or something like that, we can hit same target with two different
-//  beams, therefore we should fix that, it can treat an unfinished level as finished
-//  (source: bugs/twoHitsOnSameTarget.png)
+
 class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private enum GameState {
@@ -308,6 +305,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         createMap(fileTokens, fileWaitingList, fileNoOfTargets);
     }
 
+    //TODO: All waiting tokens are !orientationFixed (all images in the waiting list are Question Marked), we can fix this later if needed. in the original game they are all Question Mark
     private void createMap(Token[][] inputTokens, ArrayList<Token> inputWaitingList, int inputNoOfTargets){
         for(int i = 0; i < inputTokens.length; i++)
         {
@@ -328,82 +326,6 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         if (gameState == GameState.SOLUTION)
             GameMap.setAllWaitingTokensActiveness(false);
     }
-
-    //TODO: All waiting tokens are !orientationFixed (all images in the waiting list are Question Marked), we can fix this later if needed. in the original game they are all Question Mark
-    private void map1() {
-        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
-        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(0, 3));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST, true, false, true), new Point(0, 0));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH, false, false, true), new Point(0, 2));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_SOUTH, false, true, true), new Point(3, 4));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST, false, true, true), new Point(4, 3));
-        map.addToken(new BlueMirror(Orientation.SLASH_MIRROR, false, true), new Point(4, 4));
-        map.addToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, true), new Point(2, 2));
-        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, true), new Point(3, 3));
-        map.addToken(new GreenMirror(Orientation.SLASH_MIRROR, false, true), new Point(2, 3));
-        map.addToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true, true), new Point(0, 1));
-        map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, false, true), new Point(1, 3));
-        //map.addToken(new WhiteObstacle(true), new Point(4,0));
-        map.addToken(new WhiteObstacle(true), new Point(1, 2));
-        //map.addWaitingToken(new BlackHole());
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST, true, false, false));
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_NORTH, true, false, false));
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_WEST, false, true, false));
-        map.addWaitingToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, false));
-        map.addWaitingToken(new YellowBridge(Orientation.HORIZONTAL_BRIDGE, true, false));
-        //map.addWaitingToken(null);
-
-    }
-
-    private void map2() {
-        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
-        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(2, 2));
-
-        //map.addWaitingToken(new RedLaser());
-        map.addWaitingToken(new PurpleTarget());
-        map.addWaitingToken(new PurpleTarget(true));
-        //map.addWaitingToken(new PurpleTarget(false));
-        map.addWaitingToken(new BlueMirror());
-        map.addWaitingToken(new YellowBridge());
-        map.addWaitingToken(new GreenMirror());
-        //map.addWaitingToken(new GreenMirror());
-        map.addWaitingToken(new WhiteObstacle());
-        map.setNoOfTargets(1);
-    }
-
-    private void map3() {
-        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
-        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(0, 3));
-        map.addToken(new WhiteObstacle(true), new Point(1, 3));
-        map.addToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, true, true), new Point(2, 3));
-        map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, false, true), new Point(3, 3));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST, false, true, true), new Point(4, 4));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST, false, false, true), new Point(4, 0));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST, false, false, true), new Point(1, 0));
-
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST, false, false, false));
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST, false, false, false));
-        map.addWaitingToken(new BlueMirror(Orientation.BACKSLASH_MIRROR, false, false));
-        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
-        map.setNoOfTargets(3);
-    }
-
-    private void map4() {
-        map = new GameMap(MAP_WIDTH, MAP_HEIGHT);
-        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST, false, true), new Point(1, 2));
-        map.addToken(new YellowBridge(Orientation.VERTICAL_BRIDGE, true, true), new Point(2, 1));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_EAST, false, false, true), new Point(2, 0));
-        map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST, false, false, true), new Point(0, 4));
-        map.addToken(new BlueMirror(Orientation.SLASH_MIRROR, false, true), new Point(4, 2));
-
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST, false, false, false));
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST, false, false, false));
-        map.addWaitingToken(new PurpleTarget(Orientation.TARGET_ON_EAST, false, false, false));
-        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
-        map.addWaitingToken(new GreenMirror(Orientation.BACKSLASH_MIRROR, false, false));
-        map.setNoOfTargets(2);
-    }
-
 
     //TODO: This method can be moved to class Token (or its subclasses)
     private Token getTokenFromShortName(String shortName) {
@@ -467,8 +389,6 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private void writeToSolutionFile() {
         //TODO: isOrientationFixed is not considered right now, solution shows the final state only
-        //TODO: upper and lower panels have not considered yet
-
         String solutionFilePath = getSolutionFileName();
         File solutionFile = new File(solutionFilePath);
 
@@ -714,7 +634,6 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             openFileInDesktop("docs/help.pdf");
         } else if( e.getSource() == hintButton)
         {
-            //TODO: hintButton setEnabled is not working properly
             getHint();
             createAllPanels();
             refresh();

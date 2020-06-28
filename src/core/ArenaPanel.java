@@ -47,15 +47,12 @@ class ArenaPanel extends JPanel implements MouseListener {
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setStroke(new BasicStroke(3));
 
-        String imgName = "", text;
+        String imgName = "";
 
         if (t == null) {
             imgName = "EmptyCell";
         } else {
             imgName = t.getTokenImageName();
-
-            //t.paintIfOrientationNotFixed(g2d, getWidth(), getHeight());
-            text = GameMap.getTokenLocatedInXY(x, y).toIconString();
         }
 
         BufferedImage img = null;
@@ -78,7 +75,6 @@ class ArenaPanel extends JPanel implements MouseListener {
         Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         g2d.setStroke(dashed);
 
-        //TODO: Beams can be image-based or with a better GUI not like g2d.drawline
         for (LaserBeam beam : GameMap.getBeams()) {
             //TODO: Refactor code below
             //Draw LaserBeam

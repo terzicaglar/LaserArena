@@ -1,5 +1,3 @@
-//TODO:Is not used right now, no image etc.
-
 package tokens;
 
 import core.Direction;
@@ -28,6 +26,7 @@ public class BlackHole extends Token {
         construct();
     }
 
+    @Override
     public String toIconString() {
         return "" + this.getClass().getSimpleName().charAt(0);
     }

@@ -41,17 +41,6 @@ public class LaserBeam {
             default:
                 throw new IllegalArgumentException(); //if LaserBeam not movable, return false
         }
-
-        //TODO This commented part should be checked in GameMap, if LaserBeam goes out of bounds
-		/*try {
-			t = GameMap.getTokenLocatedInXY(location.x, location.y);
-			if(t != null)
-			{
-				//direction = t.action();
-			}
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("Index of of bounds: " + location.x + "," + location.y);
-		}*/
     }
 
     public Direction getDirection() {

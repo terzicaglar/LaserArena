@@ -33,6 +33,7 @@ public class GreenMirror extends Token {
         construct();
     }
 
+    @Override
     public String toIconString() {
         switch (orientation) {
             case SLASH_MIRROR:

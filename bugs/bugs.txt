@@ -1,2 +1,2 @@
-1- not fıxed - infinite loop laser beam is given in bugs/infiniteLoopLaserBeam.png we should fix that
+1- fıxed - infinite loop laser beam is given in bugs/infiniteLoopLaserBeam.png we should fix that
 2- fıxed - another bug is that for infinite laser beams / or something like that, we can hit same target with two different beams, therefore we should fix that, it can treat an unfinished level as finished (source: bugs/twoHitsOnSameTarget.png)

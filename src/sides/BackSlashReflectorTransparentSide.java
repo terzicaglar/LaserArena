@@ -11,7 +11,6 @@ import interfaces.Transparent;
 public class BackSlashReflectorTransparentSide extends Side implements Reflector, BeamCreator, Transparent {
     @Override
     public Direction action(LaserBeam laserBeam) {
-        //TODO: not tested
         //New LaserBeam is created in the same location and direction
         GameMap.addLaserBeam(new LaserBeam(laserBeam.getLocation(), pass(laserBeam.getDirection())));
         //Return the current laserBeam's new direction

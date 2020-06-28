@@ -61,6 +61,7 @@ public class PurpleTarget extends Token {
         construct();
     }
 
+    @Override
     public String toIconString() {
         switch (orientation) {
             case TARGET_ON_WEST:
@@ -89,13 +90,6 @@ public class PurpleTarget extends Token {
             return this.getClass().getSimpleName() + "_Random";
     }
 
-//    @Override
-//    public String getGrayedWaitingTokenImageName() {
-//        if (isMandatoryTarget)
-//            return "GrayMandatory_Random";
-//        else
-//            return "Gray_Random";
-//    }
 
     @Override
     public boolean isTokenTypeSameWith(Token t)
@@ -109,7 +103,6 @@ public class PurpleTarget extends Token {
         createImageName();
         if (isMandatoryTarget)
             imageName += "-M";
-        //TODO: Mandatory Target will be added
         switch (orientation) {
             case TARGET_ON_WEST: //Target on WEST, Stuckable on NORTH, Mirrors on EAST and SOUTH
                 sides.put(Direction.SOUTH, new SlashReflectorSide());

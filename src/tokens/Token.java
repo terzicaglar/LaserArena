@@ -21,9 +21,6 @@ import javax.imageio.ImageIO;
 
 public abstract class Token {
     //TODO: New Tokens (BlackHole and Portal) will be added
-	/*	TODO Orientation (position) field can be added and Orientation will be removed. Each token will have four orientations. For mirrors; orientation 1 and 3, i.e., SLASH, and
-			2 and 4, i.e., BACK_SLASH, will be the same. For WhiteObstacle, all four orientations will be the same, for PurpleTarget each orientation will be different, etc.
-	 */
 
     //protected Point location; //TODO: Currently, tokens do not have location field, in the future it can be added
     Map<Direction, Side> sides;
@@ -124,7 +121,7 @@ public abstract class Token {
 
     public ArrayList<Orientation> possibleOrientations;
 
-    //TODO: should be deleted, since we are using graphics now
+    //TODO: can be used for shortName for reading/writing to file
     abstract public String toIconString();
 
     abstract protected void construct();

@@ -42,7 +42,6 @@ class ArenaTest {
     void YellowBridgeCreationTest() {
         Token yellowBridge = new YellowBridge(Orientation.VERTICAL_BRIDGE); //"|" Bridge
 
-        //TODO code below will be modified for LaserBeam parameter given to action method
         /*assertTrue(yellowBridge.getSide(Direction.NORTH).action(Direction.SOUTH) == Direction.NONE); //stucks
         assertTrue(yellowBridge.getSide(Direction.SOUTH).action(Direction.NORTH) == Direction.NONE); //stucks
         assertTrue(yellowBridge.getSide(Direction.EAST).action(Direction.WEST) == Direction.WEST); //passes directly
@@ -108,24 +107,6 @@ class ArenaTest {
         assertTrue(g1.isTokenTypeSameWith(g3));
     }
 
-    /*
-    @Test
-    public void CreateLaserAndHitATokenUsingMoveUntilHitATokenOrOutOfBounds(){
-        //LaserBeam beam = new LaserBeam(new Point(1,1), Direction.EAST);
-        //TODO: not completed
-        map.addToken(new RedLaser(Orientation.GENERATOR_ON_EAST),new Point(1,1));
-        assertTrue( map.addToken(new PurpleTarget(Orientation.TARGET_ON_WEST),new Point(3,1))); //"/" Mirror
-
-        assertFalse(GameMap.getTokenLocatedInXY(3,1) == null);
-        Token t = GameMap.getTokenLocatedInXY(3,1);
-        //assertTrue(t instanceof YellowBridge);
-        GameMap.getBeams().get(0).setDirection( t.getSide(GameMap.getBeams().get(0).getDirection().getOppositeDirection()).action(GameMap.getBeams().get(0)));
-        //GameMap.getBeams().get(0).move();
-        System.out.println(GameMap.getBeams().get(0));
-        System.out.println(GameMap.getBeams().get(0).getPathHistory());
-        //System.out.println(Direction.SOUTH.ordinal());
-    }
-    */
 
     void GameMapWithGreenAndPurpleTokens() {
         Token greenMirror = new GreenMirror(Orientation.BACKSLASH_MIRROR);
@@ -139,7 +120,6 @@ class ArenaTest {
         map.addToken(target1, new Point(4, 1));
         map.addToken(target2, new Point(3, 3));
 
-        //TODO: not completed, test if two lasers hit two targets
     }
 
     @Test
@@ -159,7 +139,6 @@ class ArenaTest {
         map.addToken(new WhiteObstacle(), new Point(4, 0));
         map.moveBeamsUntilNotMovable();
 
-        //TODO: not completed, test if two lasers hit two targets
     }
 
     @Test

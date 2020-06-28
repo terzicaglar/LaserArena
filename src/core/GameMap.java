@@ -193,7 +193,6 @@ public class GameMap {
                 } else {
                     Token t = getTokenLocatedInPoint(beam.getLocation());
                     if (t != null) {
-                        //TODO null exception code below t.getSide(beam.getDirection().getOppositeDirection()).action(beam);
                         beam.setDirection(t.getSide(beam.getDirection().getOppositeDirection()).action(beam));
                         t.setPassed(true);
                     }
@@ -204,7 +203,6 @@ public class GameMap {
             //System.out.println("final beam(s): " + beam);
         }
         //System.out.println();
-        //TODO: check if the LaserBeam loops indefinitely, not sure if it is possible???
     }
 
     private static int getWantedMandatoryTargets() {
@@ -255,7 +253,7 @@ public class GameMap {
             return false;
         if (!isAllTokensPassed())
             return false;
-        //TODO: not tested
+
         int noOfMandatoryTargetsHit = getNoOfMandatoryTargetsHit();
         int noOfRandomTargetsHit = getNoOfRandomTargetsHit();
 
@@ -307,7 +305,6 @@ public class GameMap {
         else{
             //prevents infinite laser beam creation
             //TODO: May be pop up warning window can be shown
-            //TODO: all cases are not tested yet
         }
     }
 
@@ -321,18 +318,5 @@ public class GameMap {
             }
         }
         return count;
-    }
-
-    public void print() {
-        String str = "";
-        Token t;
-        for (int i = 0; i < tokens.length; i++) {
-            for (int j = 0; j < tokens[i].length; j++) {
-                t = tokens[i][j];
-                if (t != null)
-                    System.out.println(t.toIconString() + " " + i + "," + j);
-            }
-
-        }
     }
 }
