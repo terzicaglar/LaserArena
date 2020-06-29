@@ -11,7 +11,7 @@ public final class Constants {
             LAST_LEVEL_FILE = "LastUnlockedLevel.txt";
 
     public static final int MAX_WAITING_TOKENS = 5,
-            MAX_LEVEL = 71,
+            MAX_LEVEL = 74,
             FIRST_LEVEl = 1,
             MAP_WIDTH = 5,
             MAP_HEIGHT = 5;

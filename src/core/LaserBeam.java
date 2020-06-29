@@ -72,8 +72,19 @@ public class LaserBeam {
         this.pathHistory = pathHistory;
     }
 
+    private boolean pathExistsInPathHistory(){
+        for(PointWithDirection path: pathHistory){
+            if(path.getDirection() == direction && path.getPoint().getY() == location.getY()
+                    && path.getPoint().getX() == location.getX())
+                return true;
+        }
+        return false;
+    }
 
     public void updatePath() {
+        //Existence of given path in path history is checked to prevent infinite loops caused by green mirrors
+        if(pathExistsInPathHistory())
+            direction = Direction.STUCK; //set beam direction to STUCK to prevent infinite loop
         pathHistory.add(new PointWithDirection(location, direction));
     }
 }
