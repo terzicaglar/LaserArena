@@ -686,26 +686,28 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             else if(e.getButton() == MouseEvent.BUTTON3){
                 String goToLevelStr = JOptionPane.showInputDialog(this, "Go To Level");
                 int goToLevel = -1;
-                if(goToLevelStr != null){ //it is null if clicked to Cancel Button
+                if(goToLevelStr != null && !goToLevelStr.equalsIgnoreCase("")){ //it is null if clicked to Cancel Button
                     try{
                         goToLevel = Integer.parseInt(goToLevelStr);
                     }catch (NumberFormatException exc){
                         JOptionPane.showMessageDialog(this,
-                                "Invalid Numver",
+                                "Invalid Number",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if(goToLevel <= 0 || goToLevel > getLastUnlockedLevel()){
+                        JOptionPane.showMessageDialog(this,
+                                "Level should be between 1 and " + getLastUnlockedLevel(),
                                 "Error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
+                    else{
+                        currentLevel = goToLevel;
+                        gameState = GameState.GAME;
+                    }
                 }
-                if(goToLevel <= 0 || goToLevel > getLastUnlockedLevel()){
-                    JOptionPane.showMessageDialog(this,
-                            "Level should be between 1 and " + getLastUnlockedLevel(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-                else{
-                    currentLevel = goToLevel;
-                    gameState = GameState.GAME;
-                }
+
             }
         }
         refreshAll();
