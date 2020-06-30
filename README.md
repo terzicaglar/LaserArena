@@ -1,6 +1,6 @@
 # LaserArena
 
-Java GUI for puzzle game [Laser Maze](https://www.thinkfun.com/products/laser-maze/) game. Game rules can be reached from [here.](https://www.thinkfun.com/wp-content/uploads/2013/09/Laser-1014-Instructions.pdf)
+Java GUI for puzzle game [Laser Maze](https://www.thinkfun.com/products/laser-maze/). Game rules can be reached from [here.](https://www.thinkfun.com/wp-content/uploads/2013/09/Laser-1014-Instructions.pdf)
 
 **How to Play**
 
