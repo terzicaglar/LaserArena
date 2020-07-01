@@ -181,7 +181,7 @@ class ArenaPanel extends JPanel implements MouseListener {
 
     public void cleanPanel()
     {
-        if (!t.isLocationFixed()) {
+        if (t != null && !t.isLocationFixed()) {
             map.removeTokenLocatedInXY(x, y);
             map.addWaitingToken(t);
             prevToken = null;
@@ -194,9 +194,25 @@ class ArenaPanel extends JPanel implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         //Left click changes the orientation of token
-        if (t != null && e.getButton() == MouseEvent.BUTTON1) {
-            if (!t.isOrientationFixed()) {
-                t.nextOrientation();
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            if(t != null && t.isLocationFixed()) {
+                if (!t.isOrientationFixed()) {
+                    t.nextOrientation();
+                }
+            }
+            else{
+                if(map.getSelectedWaitingToken() == null){
+                    if (t != null && !t.isOrientationFixed()) {
+                        t.nextOrientation();
+                    }
+                }
+                else {
+                    cleanPanel();
+                    t = map.getSelectedWaitingToken();
+                    map.addToken(t, new Point(x, y));
+                    map.removeWaitingToken(t);
+                    map.setSelectedWaitingToken(null);
+                }
             }
         }
         //Middle click deletes token
@@ -204,31 +220,31 @@ class ArenaPanel extends JPanel implements MouseListener {
             cleanPanel();
         }
         //Right click changes token
-        else if (e.getButton() == MouseEvent.BUTTON3) {
-            if (t == null || !t.isLocationFixed()) {
-                Token newToken = null;
-                int activeTokensSize = map.getActiveTokensCount();
-                //System.out.println("activeTokensSize: " + activeTokensSize);
-
-                if (activeTokensSize > 0) { //more than one item on waiting list
-                    if (prevToken != null)
-                        map.addWaitingToken(prevToken);
-
-                    newToken = map.getNthActiveToken(clickCount);
-
-                    if (newToken != null) {
-                        map.addToken(newToken, new Point(x, y));
-                        map.removeWaitingToken(newToken);
-                    } else {
-                        map.removeTokenLocatedInXY(x, y);
-                    }
-
-                    prevToken = newToken;
-                    t = newToken;
-                    clickCount++;
-                }
-            }
-        }
+//        else if (e.getButton() == MouseEvent.BUTTON3) {
+//            if (t == null || !t.isLocationFixed()) {
+//                Token newToken = null;
+//                int activeTokensSize = map.getActiveTokensCount();
+//                //System.out.println("activeTokensSize: " + activeTokensSize);
+//
+//                if (activeTokensSize > 0) { //more than one item on waiting list
+//                    if (prevToken != null)
+//                        map.addWaitingToken(prevToken);
+//
+//                    newToken = map.getNthActiveToken(clickCount);
+//
+//                    if (newToken != null) {
+//                        map.addToken(newToken, new Point(x, y));
+//                        map.removeWaitingToken(newToken);
+//                    } else {
+//                        map.removeTokenLocatedInXY(x, y);
+//                    }
+//
+//                    prevToken = newToken;
+//                    t = newToken;
+//                    clickCount++;
+//                }
+//            }
+//        }
         //System.out.println("\twaiting tokens: " + map.getWaitingTokens());
         //System.out.println("\tis tokens active: " + map.getIsWaitingTokenActive());
         repaint();

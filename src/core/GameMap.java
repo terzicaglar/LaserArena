@@ -28,6 +28,16 @@ public class GameMap {
     private Token[][] tokens;
     private ArrayList<Token> waitingTokens; // Tokens that are not in the initial map, but waiting to be added by the user
 
+    private Token selectedWaitingToken;
+
+    public Token getSelectedWaitingToken() {
+        return selectedWaitingToken;
+    }
+
+    public void setSelectedWaitingToken(Token selectedWaitingToken) {
+        this.selectedWaitingToken = selectedWaitingToken;
+    }
+
     public ArrayList<Boolean> getIsWaitingTokenActive() {
         return isWaitingTokenActive;
     }
