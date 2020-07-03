@@ -6,7 +6,7 @@ Java GUI for puzzle game [Laser Maze](https://www.thinkfun.com/products/laser-ma
 
 User can change the orientations of the tokens by LEFT CLICKING on it, if their orientation is not fixed. If there is a question mark in the middle of a token it represents that its orientation is not fixed and can be reorientated.
 
-On the top panel there may be tokens that are waiting to be added to the map. User can add them by RIGHT CLICKING an available cell on the map. User can move between waiting tokens by by continuing to LEFT CLICK. Waiting tokens can be placed on an empty cell or it can replace another waiting token placed on map. User can remove placed waiting token from a map by MIDDLE CLICKING. Pre-placed tokens that displayed at the beginning of the level cannot be moved or removed. 
+On the top panel there may be tokens that are waiting to be added to the map. User can add them by LEFT CLICKING an available waiting token from the top panel and then LEFT CLICKING an available cell on the map. Waiting tokens can be placed on an empty cell or it can replace another waiting token placed on map. User can remove placed waiting token from a map by MIDDLE CLICKING. Pre-placed tokens that displayed at the beginning of the level cannot be moved or removed. 
 
 Required number of targets to be hit can be seen from upper-right corner. Level is finished when it displays 0 and turns green. If there are waiting tokens to be placed or all tokens are not passed (except White Obstacle) it will not turn green although all targets are hit. Also, if there are mandatory targets denoted by red and white target sign, they must be targeted in order to finish the level.
 
