@@ -280,8 +280,6 @@ public class Game {
                 map.addToken(fileTokens[x][y], new Point(x, y)); //hinted tokens cannot be moved, since
                 // clickCount and prevToken in ArenaPanel malfunctions
                 map.removeWaitingToken(waitingToken);
-                if(map.getSelectedWaitingToken() == waitingToken)
-                    map.setSelectedWaitingToken(null);
                 return true;
             }
         }

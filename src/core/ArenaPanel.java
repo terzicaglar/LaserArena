@@ -184,6 +184,8 @@ class ArenaPanel extends JPanel implements MouseListener {
         if (t != null && !t.isLocationFixed()) {
             map.removeTokenLocatedInXY(x, y);
             map.addWaitingToken(t);
+            if(map.getSelectedWaitingToken() == null)
+                map.setSelectedWaitingToken(t);
             prevToken = null;
             t = null;
             clickCount = 0;
