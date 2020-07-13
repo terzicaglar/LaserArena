@@ -269,7 +269,6 @@ public class Game {
                 }
             }
         }
-
     }
 
     private boolean retrieveTokenFromWaitingList(int x, int y) {
