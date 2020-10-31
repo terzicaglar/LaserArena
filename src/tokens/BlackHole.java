@@ -28,7 +28,7 @@ public class BlackHole extends Token {
 
     @Override
     public String toIconString() {
-        return "" + this.getClass().getSimpleName().charAt(0);
+        return "BH";
     }
 
     @Override
