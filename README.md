@@ -2,6 +2,8 @@
 
 Java GUI for puzzle game [Laser Maze](https://www.thinkfun.com/products/laser-maze/). Game rules can be reached from [here.](https://www.thinkfun.com/wp-content/uploads/2013/09/Laser-1014-Instructions.pdf)
 
+All images, levels, and other relevant game contents are copyrighted by ThinkFun, Inc. This is an open-source implementation of a game that I like to play.
+
 **How to Play**
 
 User can change the orientations of the tokens by LEFT CLICKING on it, if their orientation is not fixed. If there is a question mark in the middle of a token it represents that its orientation is not fixed and can be reorientated.
