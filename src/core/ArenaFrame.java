@@ -3,6 +3,10 @@ package core;
 import tokens.*;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.SimpleAttributeSet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +24,7 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
 
     private JMenuBar menuBar;
     private JMenu helpMenu;
+    private JMenuItem howToPlay;
     private JMenuItem gameRules;
     private JLabel levelLabel;
     private JButton firstButton, lastButton, prevButton, nextButton/*, ui.solutionButton*/, hintButton;
@@ -44,6 +49,9 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
         helpMenu = new JMenu("Help");
         gameRules = new JMenuItem("Game Rules");
         gameRules.addActionListener(this);
+        howToPlay = new JMenuItem("How To Play");
+        howToPlay.addActionListener(this);
+        helpMenu.add(howToPlay);
         helpMenu.add(gameRules);
         menuBar.add(helpMenu);
         this.setJMenuBar(menuBar);
@@ -285,6 +293,23 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
             refreshAll();
         } else if(e.getSource() == gameRules){
             openFileInDesktop("docs/help.pdf");
+        } else if(e.getSource() == howToPlay){
+            JTextArea textArea = new JTextArea();
+            FileReader reader = null;
+            try {
+                reader = new FileReader("README.md");
+                textArea.read(reader, "README.md"); //Object of JTextArea
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
+            JOptionPane.showMessageDialog(null, scrollPane);
         } else if( e.getSource() == hintButton)
         {
             game.getHint();
