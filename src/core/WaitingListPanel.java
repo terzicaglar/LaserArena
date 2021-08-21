@@ -82,7 +82,7 @@ class WaitingListPanel extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON1){
+        if(t != null && e.getButton() == MouseEvent.BUTTON1){
             if (map.isTokenActive(t)) {
                 if (map.getSelectedWaitingToken() == t) {
                     map.setSelectedWaitingToken(null);
