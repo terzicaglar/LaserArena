@@ -1,6 +1,6 @@
 # LaserArena
 
-Java GUI for puzzle game [Laser Maze](https://www.thinkfun.com/products/laser-maze/). Game rules can be reached from [here.](https://www.thinkfun.com/wp-content/uploads/2013/09/Laser-1014-Instructions.pdf)
+Desktop application of Thinkfun’s [Lazer Maze™](https://www.thinkfun.com/products/laser-maze/) board game. Game rules can be reached from [here.](https://www.thinkfun.com/wp-content/uploads/2013/09/Laser-1014-Instructions.pdf)
 
 All images, levels, and other relevant game contents are copyrighted by ThinkFun, Inc. This is an open-source implementation of a game that I like to play.
 
