@@ -12,6 +12,8 @@ On the top panel there may be tokens that are waiting to be added to the map. Us
 
 Required number of targets to be hit can be seen from upper-right corner. Level is finished when it displays 0 and turns green. If there are waiting tokens to be placed or all tokens are not passed (except White Obstacle) it will not turn green although all targets are hit. Also, if there are mandatory targets denoted by red and white target sign, they must be targeted in order to finish the level.
 
+![image](https://user-images.githubusercontent.com/3480398/144624455-ce9595c3-11e5-4979-b326-bfeba76dbe4f.png)
+
 BUTTONS and LABELS:
 
 **|<:** Goes to first level
