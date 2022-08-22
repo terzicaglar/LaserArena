@@ -134,6 +134,12 @@ public class GameMap {
         }
     }
 
+    public void removeAllWaitingTokens() {
+        for (int i = 0; i < waitingTokens.size(); i++) {
+            isWaitingTokenActive.set(i, false);
+        }
+    }
+
     public void removeWaitingToken(Token token) {
         int loc = waitingTokens.indexOf(token);
         if (loc == -1) {
@@ -175,8 +181,7 @@ public class GameMap {
 
     }
 
-    public ArrayList<Token> getActiveWaitingTokens()
-    {
+    public ArrayList<Token> getActiveWaitingTokens() {
         ArrayList<Token> actives = new ArrayList<>();
         for(int i = 0; i < waitingTokens.size(); i++){
             if (isWaitingTokenActive.get(i)) {
@@ -248,8 +253,7 @@ public class GameMap {
         return getTargetsHit(Direction.MANDATORY_TARGET_HIT, mandatoryTargetsHit);
     }
 
-    public int getTargetsHit(Direction direction, ArrayList list)
-    {
+    public int getTargetsHit(Direction direction, ArrayList list) {
         Token hitToken;
         for (LaserBeam beam : beams) {
             if (beam.getDirection() ==  direction){

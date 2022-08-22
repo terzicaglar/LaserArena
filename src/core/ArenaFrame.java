@@ -1,5 +1,6 @@
 package core;
 
+import solver.ArenaSolver;
 import tokens.*;
 
 import javax.swing.*;
@@ -192,6 +193,9 @@ class ArenaFrame extends JFrame implements ActionListener, MouseListener {
     }
 
     private void updateMap() {
+        //uncomment code below for auto-solver for current level
+        //ArenaSolver.solve(map.getTokens(), map.getWaitingTokens());
+
         map.moveBeamsUntilNotMovable();
         update();
     }
