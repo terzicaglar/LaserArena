@@ -217,8 +217,9 @@ class ArenaPanel extends JPanel implements MouseListener {
                 }
             }
         }
-        //Middle click deletes token
-        else if (t != null && e.getButton() == MouseEvent.BUTTON2) {
+        //Middle click or right click deletes token
+        else if (t != null && (e.getButton() == MouseEvent.BUTTON2 ||
+                                e.getButton() == MouseEvent.BUTTON3)) {
             cleanPanel();
         }
         //Right click changes token
