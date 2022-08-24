@@ -76,7 +76,8 @@ public class GameMap {
         for (int i = 0; i < tokens.length; i++) {
             for (int j = 0; j < tokens[i].length; j++) {
                 if (tokens[i][j] != null && !(tokens[i][j] instanceof RedLaser) &&
-                        !(tokens[i][j] instanceof WhiteObstacle) && !tokens[i][j].isPassed()) {
+                        !(tokens[i][j] instanceof WhiteObstacle) &&
+                        !(tokens[i][j] instanceof BlackHole) && !tokens[i][j].isPassed()) {
                     //System.out.println(i + "," + j + " not passed");
                     return false;
                 }

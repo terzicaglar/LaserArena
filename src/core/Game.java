@@ -12,7 +12,7 @@ public class Game {
     private final String G = "g", G_S = "g-s", G_B = "g-b", B = "b", B_S = "b-s", B_B = "b-b", Y = "y", Y_H = "y-h",
             Y_V = "y-v", R = "r", R_W = "r-w", R_N = "r-n", R_S = "r-s", R_E = "r-e", P = "p", P_W = "p-w",
             P_N = "p-n", P_E = "p-e", P_S = "p-s", PM = "pm", PM_W = "pm-w", PM_N = "pm-n", PM_E = "pm-e",
-            PM_S = "pm-s", W = "w"; //shortNames for each Token used for file read/write
+            PM_S = "pm-s", W = "w", H = "h"; //shortNames for each Token used for file read/write
 
     public Token[][] fileTokens;
     public ArrayList<Token> fileWaitingList;
@@ -338,6 +338,8 @@ public class Game {
             t = new PurpleTarget(Orientation.TARGET_ON_SOUTH, true);
         else if (shortName.equalsIgnoreCase(W))
             t = new WhiteObstacle();
+        else if (shortName.equalsIgnoreCase(H))
+            t = new BlackHole();
         else if (shortName.equalsIgnoreCase("")) //null token, i.e., empty cell
             return null;
         if (t == null)
